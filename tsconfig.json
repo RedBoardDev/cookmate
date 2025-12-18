@@ -1,0 +1,8 @@
+{
+  "extends": "./packages/typescript-config/tsconfig.base.json",
+  "compilerOptions": {
+    "paths": {}
+  },
+  "include": ["apps", "packages"],
+  "exclude": ["node_modules", "dist", ".turbo", ".next"]
+}

@@ -1,0 +1,10 @@
+{
+  "name": "@cookmate/typescript-config",
+  "version": "0.1.0",
+  "private": true,
+  "files": [
+    "tsconfig.base.json",
+    "tsconfig.app.json",
+    "tsconfig.package.json"
+  ]
+}
