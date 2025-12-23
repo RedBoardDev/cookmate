@@ -1,7 +1,10 @@
 {
   "extends": "../../packages/typescript-config/tsconfig.app.json",
   "compilerOptions": {
-    "baseUrl": "."
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"]
+    }
   },
   "include": ["src", "next-env.d.ts"],
   "exclude": ["node_modules", ".next", "dist", ".turbo"]
