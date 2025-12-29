@@ -1,0 +1,417 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// ============================================================================
+// ENUMS
+// ============================================================================
+
+enum Difficulty {
+  EASY
+  MEDIUM
+  HARD
+}
+
+enum Budget {
+  LOW
+  MEDIUM
+  HIGH
+}
+
+enum RecipeSource {
+  MANUAL
+  IMPORT_URL
+  IMPORT_SOCIAL_NETWORK
+  IMPORT_IMAGE
+  IMPORT_TEXT
+  FORK_DISCOVER
+}
+
+enum DiscoverRecipeSource {
+  API
+  SCRAPE_WEB
+  SCRAPE_SOCIAL_NETWORK
+}
+
+enum CollectionVisibility {
+  PRIVATE
+  PUBLIC
+}
+
+enum Tag {
+  // Dietary
+  VEGETARIAN
+  VEGAN
+  GLUTEN_FREE
+  DAIRY_FREE
+  LOW_CARB
+
+  // Meal types
+  BREAKFAST
+  LUNCH
+  DINNER
+  DESSERT
+  APPETIZER
+  SNACK
+  BRUNCH
+
+  // World cuisines
+  FRENCH
+  ITALIAN
+  ASIAN
+  MEXICAN
+  INDIAN
+  MEDITERRANEAN
+  AMERICAN
+  JAPANESE
+  CHINESE
+  THAI
+  GREEK
+  SPANISH
+  MOROCCAN
+  LEBANESE
+
+  // Characteristics
+  QUICK
+  EASY
+  HEALTHY
+  COMFORT_FOOD
+  BUDGET_FRIENDLY
+  GOURMET
+  FAMILY_FRIENDLY
+  BATCH_COOKING
+
+  // Seasons
+  SUMMER
+  WINTER
+  FALL
+  SPRING
+}
+
+// ============================================================================
+// REFERENCE TABLE
+// ============================================================================
+
+model Ingredient {
+  id   String @id @default(uuid(7)) @db.Uuid
+  name String @unique
+
+  createdAt DateTime @default(now())
+
+  recipeIngredients RecipeIngredient[]
+
+  @@map("ingredients")
+}
+
+model Equipment {
+  id   String @id @default(uuid(7)) @db.Uuid
+  name String @unique
+
+  createdAt DateTime @default(now())
+
+  recipes         Recipe[]
+  discoverRecipes DiscoverRecipe[]
+
+  @@map("equipments")
+}
+
+model Unit {
+  id           String @id @default(uuid(7)) @db.Uuid
+  name         String @unique
+  abbreviation String @unique
+
+  createdAt DateTime @default(now())
+
+  recipeIngredients RecipeIngredient[]
+
+  @@map("units")
+}
+
+// ============================================================================
+// AUTHENTICATION (Better Auth)
+// ============================================================================
+
+model User {
+  id            String  @id @default(uuid(7)) @db.Uuid
+  email         String  @unique
+  emailVerified Boolean @default(false)
+  name          String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Better Auth
+  sessions Session[]
+  accounts Account[]
+
+  // Cookmate
+  recipes           Recipe[]
+  collections       Collection[]
+  collectionMembers CollectionMember[]
+
+  @@map("users")
+}
+
+model Session {
+  id        String   @id @default(uuid(7)) @db.Uuid
+  token     String   @unique
+  expiresAt DateTime
+  ipAddress String?
+  userAgent String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  userId String @db.Uuid
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("sessions")
+}
+
+model Account {
+  id                    String    @id @default(uuid(7)) @db.Uuid
+  accountId             String
+  providerId            String
+  accessToken           String?
+  refreshToken          String?
+  idToken               String?
+  accessTokenExpiresAt  DateTime?
+  refreshTokenExpiresAt DateTime?
+  scope                 String?
+  password              String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  userId String @db.Uuid
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("accounts")
+}
+
+model Verification {
+  id         String   @id @default(uuid(7)) @db.Uuid
+  identifier String
+  value      String
+  expiresAt  DateTime
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("verifications")
+}
+
+// ============================================================================
+// DISCOVER RECIPE (feed public)
+// ============================================================================
+
+model DiscoverRecipe {
+  id          String  @id @default(uuid(7)) @db.Uuid
+  title       String
+  description String?
+  servings    Int
+
+  prepTimeMin  Int?
+  cookTimeMin  Int?
+  restTimeMin  Int?
+  totalTimeMin Int
+
+  difficulty Difficulty?
+  budget     Budget?
+
+  source    DiscoverRecipeSource
+  sourceUrl String?
+  shortUrl  String?              @unique
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Recipe content
+  images       RecipeImage[]
+  ingredients  RecipeIngredient[]
+  equipments   Equipment[]
+  instructions Instruction[]
+  tags         Tag[]
+
+  // Recipes forked from this one
+  forkedRecipes Recipe[]
+
+  @@map("discover_recipes")
+}
+
+// ============================================================================
+// RECIPE (user recipes)
+// ============================================================================
+
+model Recipe {
+  id          String  @id @default(uuid(7)) @db.Uuid
+  title       String
+  description String?
+  servings    Int
+
+  prepTimeMin  Int?
+  cookTimeMin  Int?
+  restTimeMin  Int?
+  totalTimeMin Int
+
+  difficulty Difficulty?
+  budget     Budget?
+
+  source    RecipeSource
+  sourceUrl String?
+  shortUrl  String?      @unique
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Owner
+  userId String @db.Uuid
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  // If forked from Discover
+  forkedFromDiscoverId String?         @db.Uuid
+  forkedFromDiscover   DiscoverRecipe? @relation(fields: [forkedFromDiscoverId], references: [id], onDelete: SetNull)
+
+  // Recipe content
+  images       RecipeImage[]
+  ingredients  RecipeIngredient[]
+  equipments   Equipment[]
+  instructions Instruction[]
+  tags         Tag[]
+
+  // Presence in collections
+  collections Collection[]
+
+  @@index([userId])
+  @@index([forkedFromDiscoverId])
+  @@map("recipes")
+}
+
+// ============================================================================
+// RECIPE CONTENT (shared between Recipe and DiscoverRecipe)
+// Each table: recipeId XOR discoverRecipeId (only one filled)
+// ============================================================================
+
+model RecipeImage {
+  id       String @id @default(uuid(7)) @db.Uuid
+  s3Url    String
+  name     String
+  mimeType String
+  size     Int
+  order    Int    @default(0)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  recipeId         String? @db.Uuid
+  discoverRecipeId String? @db.Uuid
+
+  recipe         Recipe?         @relation(fields: [recipeId], references: [id], onDelete: Cascade)
+  discoverRecipe DiscoverRecipe? @relation(fields: [discoverRecipeId], references: [id], onDelete: Cascade)
+
+  @@index([recipeId])
+  @@index([discoverRecipeId])
+  @@map("recipe_images")
+}
+
+model RecipeIngredient {
+  id          String  @id @default(uuid(7)) @db.Uuid
+  quantity    Float?
+  preparation String?
+  optional    Boolean @default(false)
+  order       Int     @default(0)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  ingredientId String     @db.Uuid
+  ingredient   Ingredient @relation(fields: [ingredientId], references: [id], onDelete: Restrict)
+
+  unitId String? @db.Uuid
+  unit   Unit?   @relation(fields: [unitId], references: [id], onDelete: Restrict)
+
+  recipeId         String? @db.Uuid
+  discoverRecipeId String? @db.Uuid
+
+  recipe         Recipe?         @relation(fields: [recipeId], references: [id], onDelete: Cascade)
+  discoverRecipe DiscoverRecipe? @relation(fields: [discoverRecipeId], references: [id], onDelete: Cascade)
+
+  @@index([recipeId])
+  @@index([discoverRecipeId])
+  @@index([ingredientId])
+  @@map("recipe_ingredients")
+}
+
+model Instruction {
+  id          String @id @default(uuid(7)) @db.Uuid
+  text        String
+  durationMin Int?
+  order       Int
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  recipeId         String? @db.Uuid
+  discoverRecipeId String? @db.Uuid
+
+  recipe         Recipe?         @relation(fields: [recipeId], references: [id], onDelete: Cascade)
+  discoverRecipe DiscoverRecipe? @relation(fields: [discoverRecipeId], references: [id], onDelete: Cascade)
+
+  @@index([recipeId])
+  @@index([discoverRecipeId])
+  @@map("instructions")
+}
+
+// ============================================================================
+// COLLECTIONS
+// ============================================================================
+
+model Collection {
+  id          String  @id @default(uuid(7)) @db.Uuid
+  name        String
+  emoji       String
+  description String?
+
+  visibility CollectionVisibility @default(PRIVATE)
+  shortUrl   String?              @unique
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Creator/owner
+  userId String @db.Uuid
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  // Recipes in this collection
+  recipes Recipe[]
+
+  // Collaborators
+  members CollectionMember[]
+
+  @@unique([userId, name])
+  @@index([userId])
+  @@map("collections")
+}
+
+model CollectionMember {
+  id       String   @id @default(uuid(7)) @db.Uuid
+  joinedAt DateTime @default(now())
+
+  collectionId String     @db.Uuid
+  collection   Collection @relation(fields: [collectionId], references: [id], onDelete: Cascade)
+
+  userId String @db.Uuid
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([collectionId, userId])
+  @@index([collectionId])
+  @@index([userId])
+  @@map("collection_members")
+}
