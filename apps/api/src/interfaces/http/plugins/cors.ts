@@ -3,12 +3,12 @@ import fp from "fastify-plugin";
 import type { FastifyPluginAsync } from "fastify";
 
 export interface CorsOptions {
-  origins?: string;
+  origins?: string[];
 }
 
 const corsPlugin: FastifyPluginAsync<CorsOptions> = async (app, opts) => {
   await app.register(cors, {
-    origin: opts.origins ? opts.origins.split(",").map((o) => o.trim()) : true,
+    origin: opts.origins ?? true,
     credentials: true,
   });
 };

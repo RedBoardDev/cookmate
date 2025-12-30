@@ -16,6 +16,7 @@ import {
 } from "@/interfaces/http/plugins/index";
 import { registerRoutes } from "@/interfaces/http/routes/index";
 import { errorHandler } from "@/interfaces/http/errors/index";
+import { closePrisma } from "@/infra/db/prisma";
 // import { createAuthService } from "@/infra/services/auth-service";
 
 export function buildApp(env: AppEnv) {
@@ -46,6 +47,11 @@ export function buildApp(env: AppEnv) {
 
   // Global error handler
   app.setErrorHandler(errorHandler);
+
+  // Graceful shutdown - close database connections
+  app.addHook("onClose", async () => {
+    await closePrisma();
+  });
 
   return app;
 }

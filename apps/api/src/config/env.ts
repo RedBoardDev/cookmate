@@ -5,7 +5,10 @@ const EnvSchema = z.object({
   HOST: z.string().default("0.0.0.0"),
   PORT: z.coerce.number().default(3001),
   DATABASE_URL: z.url(),
-  CORS_ORIGINS: z.string().optional(),
+  CORS_ORIGINS: z
+    .string()
+    .optional()
+    .transform((s) => s?.split(",").map((o) => o.trim())),
   RATE_LIMIT_MAX: z.coerce.number().optional().default(100),
   RATE_LIMIT_WINDOW: z.string().optional().default("1 minute"),
   SWAGGER_ENABLED: z.coerce.boolean().optional().default(true),
