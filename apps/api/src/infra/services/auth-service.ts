@@ -1,16 +1,39 @@
 import { betterAuth } from "better-auth";
 import { prismaAdapter } from "better-auth/adapters/prisma";
+import { openAPI } from "better-auth/plugins";
 import type { AppEnv } from "@/config/env";
 import { getPrisma } from "@/infra/db/prisma";
 
 export function createAuthService(env: AppEnv) {
   return betterAuth({
+    appName: "Cookmate",
+
+    plugins: [
+      openAPI({
+        disableDefaultReference: true,
+      }),
+    ],
+
     database: prismaAdapter(getPrisma(), {
       provider: "postgresql",
     }),
 
     baseURL: env.BETTER_AUTH_URL,
     secret: env.BETTER_AUTH_SECRET,
+
+    // Mapping des models Prisma
+    user: {
+      modelName: "User",
+    },
+    session: {
+      modelName: "Session",
+    },
+    account: {
+      modelName: "Account",
+    },
+    verification: {
+      modelName: "Verification",
+    },
 
     emailAndPassword: {
       enabled: true,
@@ -47,3 +70,9 @@ export function createAuthService(env: AppEnv) {
 }
 
 export type AuthService = ReturnType<typeof createAuthService>;
+
+export type AuthSession = Awaited<ReturnType<AuthService["api"]["getSession"]>>;
+
+export type AuthUser = NonNullable<AuthSession>["user"];
+
+export type AuthSessionData = NonNullable<AuthSession>["session"];

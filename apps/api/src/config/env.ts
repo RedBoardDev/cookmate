@@ -13,17 +13,17 @@ const EnvSchema = z.object({
   RATE_LIMIT_WINDOW: z.string().optional().default("1 minute"),
   SWAGGER_ENABLED: z.coerce.boolean().optional().default(true),
 
-  // // Better Auth
-  // BETTER_AUTH_SECRET: z.string().min(32),
-  // BETTER_AUTH_URL: z.url(),
+  // Better Auth
+  BETTER_AUTH_SECRET: z.string().min(32),
+  BETTER_AUTH_URL: z.string().url(),
 
-  // // OAuth Providers (optional)
-  // GOOGLE_CLIENT_ID: z.string().optional(),
-  // GOOGLE_CLIENT_SECRET: z.string().optional(),
-  // FACEBOOK_CLIENT_ID: z.string().optional(),
-  // FACEBOOK_CLIENT_SECRET: z.string().optional(),
-  // TWITTER_CLIENT_ID: z.string().optional(),
-  // TWITTER_CLIENT_SECRET: z.string().optional(),
+  // OAuth Providers (optional)
+  GOOGLE_CLIENT_ID: z.string().optional(),
+  GOOGLE_CLIENT_SECRET: z.string().optional(),
+  FACEBOOK_CLIENT_ID: z.string().optional(),
+  FACEBOOK_CLIENT_SECRET: z.string().optional(),
+  TWITTER_CLIENT_ID: z.string().optional(),
+  TWITTER_CLIENT_SECRET: z.string().optional(),
 });
 
 export type AppEnv = z.infer<typeof EnvSchema>;
