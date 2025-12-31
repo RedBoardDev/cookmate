@@ -15,8 +15,8 @@ import {
   // registerAuth,
 } from "@/interfaces/http/plugins/index";
 import { registerRoutes } from "@/interfaces/http/routes/index";
-import { errorHandler } from "@/interfaces/http/errors/index";
 import { closePrisma } from "@/infra/db/prisma";
+import { errorHandler } from "@/interfaces/http/errors/error-handler";
 // import { createAuthService } from "@/infra/services/auth-service";
 
 export function buildApp(env: AppEnv) {
