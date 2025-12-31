@@ -22,15 +22,13 @@ const swaggerPlugin: FastifyPluginAsync<SwaggerOptions> = async (app, opts) => {
           url: "http://localhost:3001",
           description: "Development server",
         },
-      ],
+      ]
     },
     transform: jsonSchemaTransform,
   });
-
-  // Expose OpenAPI JSON at /docs/json
-  app.get("/docs/json", { schema: { hide: true } }, () => {
-    return app.swagger();
-  });
 };
 
-export const registerSwagger = fp(swaggerPlugin, { name: "swagger" });
+export const registerSwagger = fp(swaggerPlugin, {
+  name: "swagger",
+  dependencies: ["auth"],
+});
