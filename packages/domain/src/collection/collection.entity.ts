@@ -1,5 +1,5 @@
 import { Entity, UniqueEntityID } from "@cookmate/core";
-import type { CollectionProps } from "./collection.schema";
+import type { CollectionProps, CollectionSnapshot } from "./collection.schema";
 import { collectionPropsSchema } from "./collection.schema";
 import {
   CannotRemoveOwnerError,
@@ -13,13 +13,13 @@ export class CollectionEntity extends Entity<CollectionProps> {
     super(props, id);
   }
 
-  static create(props: CollectionProps): CollectionEntity {
+  static create(props: CollectionProps, id?: string): CollectionEntity {
     const result = collectionPropsSchema.safeParse(props);
     if (!result.success) {
       throw new InvalidCollectionDataError();
     }
 
-    return new CollectionEntity(result.data, new UniqueEntityID(result.data.id));
+    return new CollectionEntity(result.data, new UniqueEntityID(id));
   }
 
   get id(): string {
@@ -78,5 +78,12 @@ export class CollectionEntity extends Entity<CollectionProps> {
     if (!this.isOwner(userId) && !isMember) {
       throw new NotCollectionMemberError();
     }
+  }
+
+  toSnapshot(): CollectionSnapshot {
+    return {
+      id: this.id,
+      ...this.props,
+    };
   }
 }

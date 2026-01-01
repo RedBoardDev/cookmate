@@ -62,3 +62,12 @@ export class CannotRemoveOwnerError extends DomainError {
     super("Cannot remove the owner from the collection");
   }
 }
+
+export class CollectionLimitReachedError extends DomainError {
+  readonly code = "COLLECTION_LIMIT_REACHED";
+  readonly httpStatus = 403;
+
+  constructor(limit = 15) {
+    super(`Collection limit reached (${limit} max)`);
+  }
+}

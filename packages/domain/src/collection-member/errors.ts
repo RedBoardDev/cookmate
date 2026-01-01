@@ -17,3 +17,12 @@ export class InvalidCollectionMemberDataError extends DomainError {
     super(message);
   }
 }
+
+export class CollectionMemberAlreadyExistsError extends DomainError {
+  readonly code = "COLLECTION_MEMBER_ALREADY_EXISTS";
+  readonly httpStatus = 400;
+
+  constructor(message = "Collection member already exists") {
+    super(message);
+  }
+}
