@@ -1,7 +1,9 @@
 {
   "extends": "../typescript-config/tsconfig.package.json",
   "compilerOptions": {
-    "baseUrl": "."
+    "baseUrl": ".",
+    "rootDir": "src",
+    "outDir": "dist"
   },
   "include": ["src"],
   "exclude": ["node_modules", "dist", ".turbo"]
