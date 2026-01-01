@@ -1,6 +1,6 @@
 import { Prisma } from "@/generated/prisma/client";
 import { ApiError } from "@/interfaces/http/errors/api.error";
-import { DomainError } from "@/domain/errors/domain.error";
+import { DomainError } from "@cookmate/domain/errors";
 
 /**
  * Maps Prisma error codes to ApiError instances.

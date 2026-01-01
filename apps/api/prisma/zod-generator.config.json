@@ -1,0 +1,26 @@
+{
+  "mode": "custom",
+  "pureModels": true,
+  "pureModelsLean": true,
+  "dateTimeStrategy": "coerce",
+  "variants": {
+    "pure": { "enabled": true },
+    "input": { "enabled": false },
+    "result": { "enabled": false }
+  },
+  "emit": {
+    "pureModels": true,
+    "enums": true,
+    "objects": false,
+    "crud": false,
+    "variants": false
+  },
+  "naming": {
+    "pureModel": {
+      "filePattern": "{Model}.schema.ts",
+      "exportNamePattern": "{Model}DBSchema",
+      "schemaSuffix": "DBSchema",
+      "typeSuffix": "DB"
+    }
+  }
+}

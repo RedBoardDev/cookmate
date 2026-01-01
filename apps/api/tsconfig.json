@@ -3,7 +3,11 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "@/*": ["src/*"]
+      "@/*": ["src/*"],
+      "@cookmate/core": ["../../packages/core/src/index.ts"],
+      "@cookmate/core/*": ["../../packages/core/src/*"],
+      "@cookmate/domain": ["../../packages/domain/src/index.ts"],
+      "@cookmate/domain/*": ["../../packages/domain/src/*"]
     }
   },
   "include": ["src"],
