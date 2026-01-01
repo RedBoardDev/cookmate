@@ -1,7 +1,7 @@
 import type { Prisma } from "@/generated/prisma/client";
 import { getPrisma } from "@/infra/db/prisma";
 import { handleError } from "@/shared/utils/handle-error";
-import { CollectionMemberNotFoundError } from "@/domain/collection-member/errors";
+import { CollectionMemberNotFoundError } from "@cookmate/domain/collection-member";
 import type { CollectionMemberSelectResult } from "./types";
 
 /**

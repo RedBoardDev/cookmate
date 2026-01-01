@@ -1,6 +1,6 @@
 import type { FastifyError, FastifyReply, FastifyRequest } from "fastify";
 import { ApiError } from "./api.error";
-import { DomainError } from "@/domain/errors/domain.error";
+import { DomainError } from "@cookmate/domain/errors";
 import { formatError } from "@/interfaces/http/helpers/reply";
 import { ErrorCode } from "@/shared/enums/error-code.enum";
 import { HttpStatus } from "@/shared/enums/http-status.enum";

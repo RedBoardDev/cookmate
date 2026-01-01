@@ -1,6 +1,14 @@
 import type { FastifyInstance } from "fastify";
-import { membersRoutes } from "./members";
+import { createCollectionRoute } from "./create-collection";
+import { listCollectionsRoute } from "./list-collections";
+import { getCollectionRoute } from "./get-collection";
+import { deleteCollectionRoute } from "./delete-collection";
 
 export async function collectionsRoutes(app: FastifyInstance) {
-  await app.register(membersRoutes, { prefix: "/:collectionId/members" });
+  await app.register(listCollectionsRoute);
+  await app.register(getCollectionRoute);
+  await app.register(createCollectionRoute);
+  // await app.register(updateCollectionRoute);
+  await app.register(deleteCollectionRoute);
+  // await app.register(membersRoutes, { prefix: "/:collectionId/members" });
 }
