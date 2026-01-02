@@ -1,0 +1,31 @@
+No,Category,Issue,Platform,Description,Do,Don't,Code Example Good,Code Example Bad,Severity
+1,Spacing,Use scale,Web,Use Tailwind spacing scale for consistency,Use px-4/6/8 etc from scale,Use arbitrary pixels everywhere,px-6 py-8,px-[17px] py-[23px],Medium
+2,Typography,Clamp text,Web,Clamp long text in cards,Use line-clamp utilities,Let text overflow,`line-clamp-2 text-sm`,Long title wrapping multiple lines,Medium
+3,Typography,Readable width,Web,Limit text width for readability,Use max-w-prose or max-w-3xl,Full-width paragraphs,max-w-prose,mx-4 w-full text-left,Medium
+4,Layout,Container widths,Web,Use consistent max-w with responsive padding,Use max-w-6xl/7xl + px-4,Full-bleed content unintentionally,`max-w-6xl mx-auto px-4`,`w-full mx-auto px-1`,Medium
+5,Layout,Grid gap,Web,Use gap utilities instead of margin hacks,Use gap-x/gap-y on parent,Add margins on children to simulate gaps,`grid gap-4`,`grid > *:ml-4`,Medium
+6,Layout,Aspect ratio,Web,Prevent layout shift for media,Use aspect-video/aspect-square,Leave images without height/ratio,`aspect-video overflow-hidden`,`img w-full`,High
+7,Layout,Safe areas,Mobile,Respect safe-area inset on fixed elements,Use pb-[env(safe-area-inset-bottom)] etc,Ignore safe areas leading to overlap,`pb-[calc(4rem+env(safe-area-inset-bottom))]`,`pb-16`,Medium
+8,Flex/Grid,Responsive order,Web,Reorder content responsibly,Use md:flex-row sm:flex-col,Reverse with negative margins,`flex flex-col md:flex-row`,`flex-row-reverse -mx-4`,Low
+9,Colors,Use theme tokens,Web,Use design tokens/colors from Tailwind config,Use random hex values,`text-primary bg-accent`,`text-[#ab12ff]`,Medium
+10,Colors,Opacity control,Web,Use /opacity shorthand,Stack multiple opacity classes,`bg-black/60`,`bg-black opacity-60`,Low
+11,Borders,Consistent radius,Web,Use 2-4 radius values across app,Set arbitrary rounded values everywhere,`rounded-3xl`,rounded-[7px],Medium
+12,Borders,Visible borders,Web,Ensure border contrast in light mode,Use border-border/70 or similar,Use border-white/10 on white bg,`border border-border/70`,`border border-white/10`,High
+13,Shadows,Subtle shadows,Web,Use small shadows for depth,Use huge drop-shadows everywhere,`shadow-sm shadow-black/10`,`shadow-2xl shadow-black/80`,Medium
+14,Focus,Ring styles,All,Visible focus rings for keyboard users,Use focus-visible:ring and ring-offset,Remove outline without replacement,`focus-visible:ring-2 focus-visible:ring-accent`,`focus:outline-none`,High
+15,Hover,No layout shift,Web,Change color/opacity, avoid size shift,Use hover:bg/opacity with transitions,Scale or move layout on hover,`transition-colors hover:bg-accent/20`,`hover:translate-y-2 causing jump`,Medium
+16,Transitions,Reasonable duration,All,Keep micro-interactions 150-300ms,Use duration-200 ease-out,Use >500ms for simple hovers,`transition-colors duration-200`,`duration-700`,Low
+17,Motion,Reduced motion,All,Respect prefers-reduced-motion,Wrap animations in media query,Force animations always,@media (prefers-reduced-motion: reduce) { .animate-spin { animation: none; } },No reduced-motion handling,High
+18,Icons,Consistent size,All,Use w-4/5/6 with matching stroke widths,Mix random icon sizes,`<Icon className="h-5 w-5" />`,`<Icon className="h-3 w-7" />`,Medium
+19,Images,Next/Image sizing,Web,Set width/height or fill with sizes,Use unbounded images causing CLS,`<Image src=... width={400} height={300} />`,`<Image src=... />`,High
+20,Forms,Labels & spacing,Web,Pair inputs with labels and spacing,Use placeholder-only,`<Label htmlFor="email" /> <Input id="email" />`,`<input placeholder="Email" />`,High
+21,Forms,Disabled/loading,Web,Show disabled states to prevent double submit,Use disabled variant + spinner,Allow clicks while loading,`<Button disabled={isLoading}>...</Button>`,`<button>Save</button>`,Medium
+22,State,Empty/loading/error,Web,Provide stateful feedback,Use skeletons/empty copy/error text,Show blank screen,`animate-pulse skeleton` + message,No content,High
+23,Responsive,Breakpoints,Web,Test key breakpoints,Use sm/md/lg/xl for layout shifts,Ignore mobile layouts,`grid-cols-1 md:grid-cols-3`,`grid-cols-3` only,High
+24,Utilities,Overusing arbitrary,Web,Prefer standard utilities; only use arbitrary when needed,Keep arbitrary values minimal,Use arbitrary for everything,`px-6 py-8 text-lg`,`px-[19px] text-[17px]`,Medium
+25,Accessibility,ARIA/role,All,Use role/aria where semantic tags missing,Leave interactive divs without role,`role="button" tabIndex={0} onClick=...`,`<div onClick=...>`,High
+26,Accessibility,Color alone,All,Don’t rely solely on color,Add icons/text to status badges,Use red/green only,`bg-success text-success-foreground flex items-center gap-2` with icon,`text-red-500` only,High
+27,Performance,Purge/unused,Build,Ensure Purge/Content paths correct in tailwind.config,Keep unused paths leading to bloat,content: ["./src/**/*.{ts,tsx,js,jsx}"],Missing content paths,High
+28,Performance,JIT specific,Build,Use JIT-friendly class names (no dynamic concatenation),Avoid building class names at runtime strings,Use template literals with fixed tokens,`className={cn("text-sm", active && "text-primary")}`,`className={"text-" + size}`,High
+29,Data States,ARIA live,Web,Announce async results when needed,Use aria-live on status text,No announcement for dynamic updates,`<p aria-live="polite">Loading...</p>`,Plain text without aria-live,Medium
+30,Layout,Overflow scroll,Web,Use overflow-auto for scrollable panels,Hide overflow and cut content,`overflow-auto max-h-96`,`overflow-hidden cutting list`,Medium
