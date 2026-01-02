@@ -3,6 +3,8 @@ import { getPrisma } from "@/infra/db/prisma";
 import { handleError } from "@/shared/utils/handle-error";
 import { paginationForComplexQuery, type Pagination } from "@/shared/lib/pagination";
 import type { CollectionMemberSelectResult } from "./types";
+import { CollectionMemberEntity } from "@cookmate/domain/collection-member";
+import { collectionMemberEntitySelect, toCollectionMemberEntity } from "./collection-entity";
 
 /**
  * LIST
@@ -26,6 +28,18 @@ const listCollectionMembersSelectFn = async <TSelect extends Prisma.CollectionMe
 };
 
 export const listCollectionMembersSelect = handleError(listCollectionMembersSelectFn);
+
+/**
+ * LIST ENTITIES
+ */
+export const listCollectionMembersEntity = async (
+  where: Prisma.CollectionMemberWhereInput,
+  orderBy?: Prisma.CollectionMemberOrderByWithRelationInput | Prisma.CollectionMemberOrderByWithRelationInput[],
+  pagination?: Pagination
+): Promise<CollectionMemberEntity[]> => {
+  const collectionMembers = await listCollectionMembersSelect(where, collectionMemberEntitySelect, orderBy, pagination);
+  return collectionMembers.map(toCollectionMemberEntity);
+};
 
 /**
  * COUNT

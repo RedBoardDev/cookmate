@@ -3,6 +3,7 @@ import { getPrisma } from "@/infra/db/prisma";
 import { handleError } from "@/shared/utils/handle-error";
 import { CollectionMemberNotFoundError } from "@cookmate/domain/collection-member";
 import type { CollectionMemberSelectResult } from "./types";
+import { collectionMemberEntitySelect, toCollectionMemberEntity } from "./collection-entity";
 
 /**
  * GET
@@ -17,6 +18,14 @@ const getCollectionMemberSelectFn = async <TSelect extends Prisma.CollectionMemb
 };
 
 export const getCollectionMemberSelect = handleError(getCollectionMemberSelectFn);
+
+/**
+ * GET ENTITY
+ */
+export const getCollectionMemberEntity = async (where: Prisma.CollectionMemberWhereUniqueInput) => {
+  const collectionMember = await getCollectionMemberSelect(where, collectionMemberEntitySelect);
+  return toCollectionMemberEntity(collectionMember);
+};
 
 /**
  * FIND FIRST

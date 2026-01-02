@@ -1,5 +1,5 @@
 import { Entity, UniqueEntityID } from "@cookmate/core";
-import type { CollectionMemberProps } from "./collection-member.schema";
+import type { CollectionMemberProps, CollectionMemberSnapshot } from "./collection-member.schema";
 import { collectionMemberPropsSchema } from "./collection-member.schema";
 import { InvalidCollectionMemberDataError } from "./errors";
 
@@ -8,16 +8,13 @@ export class CollectionMemberEntity extends Entity<CollectionMemberProps> {
     super(props, id);
   }
 
-  static create(props: CollectionMemberProps): CollectionMemberEntity {
+  static create(props: CollectionMemberProps, id?: string): CollectionMemberEntity {
     const result = collectionMemberPropsSchema.safeParse(props);
     if (!result.success) {
       throw new InvalidCollectionMemberDataError();
     }
 
-    return new CollectionMemberEntity(
-      result.data,
-      new UniqueEntityID(result.data.id)
-    );
+    return new CollectionMemberEntity(result.data, new UniqueEntityID(id));
   }
 
   get id(): string {
@@ -34,5 +31,12 @@ export class CollectionMemberEntity extends Entity<CollectionMemberProps> {
 
   get joinedAt(): Date {
     return this.props.joinedAt;
+  }
+
+  toSnapshot(): CollectionMemberSnapshot {
+    return {
+      id: this.id,
+      ...this.props,
+    };
   }
 }
