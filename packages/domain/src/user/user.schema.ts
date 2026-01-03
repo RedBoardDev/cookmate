@@ -1,0 +1,35 @@
+import { z } from "zod";
+
+const USER_NAME_MAX_LENGTH = 50;
+
+export const userField = {
+  email: z.email(),
+  name: z.string().min(1).max(USER_NAME_MAX_LENGTH),
+};
+
+export const userSystemField = {
+  emailVerified: z.boolean(),
+  createdAt: z.date(),
+  updatedAt: z.date(),
+};
+
+export const userFields = {
+  email: { email: userField.email },
+  name: { name: userField.name },
+  emailVerified: { emailVerified: userSystemField.emailVerified },
+  createdAt: { createdAt: userSystemField.createdAt },
+  updatedAt: { updatedAt: userSystemField.updatedAt },
+};
+
+export const userPropsSchema = z.object({
+  ...userField,
+  ...userSystemField,
+});
+
+export type UserProps = z.infer<typeof userPropsSchema>;
+
+export const userSnapshotSchema = userPropsSchema.extend({
+  id: z.uuid(),
+});
+
+export type UserSnapshot = z.infer<typeof userSnapshotSchema>;
