@@ -34,6 +34,13 @@ export type RouteContext<T extends RouteSchemas> = Prettify<{
 export interface RouteResult {
   status: number;
   data?: unknown;
+  metadata?: {
+    pagination: {
+      page: number;
+      pageSize: number;
+      totalItems: number;
+    };
+  };
 }
 
 export type RouteHandler<T extends RouteSchemas> = (

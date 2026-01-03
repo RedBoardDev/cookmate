@@ -99,7 +99,15 @@ class RouteBuilderImpl {
           return reply.status(result.status).send();
         }
 
-        return reply.status(result.status).send(formatSuccess(result.data));
+        const responseBody = result.metadata
+          ? {
+              success: true as const,
+              data: result.data,
+              metadata: result.metadata,
+            }
+          : formatSuccess(result.data);
+
+        return reply.status(result.status).send(responseBody);
       });
     };
   }

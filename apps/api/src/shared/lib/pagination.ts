@@ -6,6 +6,8 @@ export type Pagination = {
   findId?: string;
 };
 
+type PaginationParams = Partial<Pick<Pagination, "page" | "pageSize" | "findId">>;
+
 export type PaginationQuery = {
   skip: number;
   take: number;
@@ -14,6 +16,15 @@ export type PaginationQuery = {
 export const paginationForQuery = (pagination: Pagination): PaginationQuery => ({
   skip: (pagination.page - 1) * pagination.pageSize,
   take: pagination.pageSize,
+});
+
+export const buildPagination = (
+  params: PaginationParams,
+  defaultPageSize = 25,
+): Pagination => ({
+  page: params.page ?? 1,
+  pageSize: params.pageSize ?? defaultPageSize,
+  findId: params.findId,
 });
 
 /**
