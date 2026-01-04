@@ -1,6 +1,6 @@
 ---
 name: backend-context-loader
-description: Load the minimal Cookmate backend context fast. Use only for backend tasks to avoid repeated discovery: Prisma schema, domain modules, repositories, route patterns, shared route helpers.
+description: "Load the minimal Cookmate backend context fast. Use only for backend tasks to avoid repeated discovery: Prisma schema, domain modules, repositories, route patterns, shared route helpers."
 ---
 # Context Loader (Cookmate backend)
 

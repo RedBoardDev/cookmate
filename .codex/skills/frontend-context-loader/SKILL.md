@@ -1,6 +1,6 @@
 ---
 name: frontend-context-loader
-description: Load the minimal Cookmate frontend context fast. Use only for frontend tasks to avoid repeated discovery: Next.js app structure, shared layouts, modules, and UI patterns.
+description: "Load the minimal Cookmate frontend context fast. Use only for frontend tasks to avoid repeated discovery: Next.js app structure, shared layouts, modules, and UI patterns."
 ---
 # Frontend Context Loader (Cookmate)
 
