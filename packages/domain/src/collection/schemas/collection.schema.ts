@@ -20,7 +20,6 @@ export const collectionField = {
     .string()
     .min(1)
     .max(COLLECTION_DESCRIPTION_MAX_LENGTH)
-    .optional()
     .nullable(),
 };
 
@@ -29,7 +28,6 @@ export const collectionSystemField = {
   visibility: collectionVisibilitySchema,
   shortUrl: z
     .string()
-    .optional()
     .nullable(),
   createdAt: z.date(),
   updatedAt: z.date(),

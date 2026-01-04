@@ -2,6 +2,7 @@ import { Entity, UniqueEntityID } from "@cookmate/core";
 import type { UserProps, UserSnapshot } from "./user.schema";
 import { userPropsSchema } from "./user.schema";
 import { InvalidUserDataError } from "./errors";
+import { UserPolicies } from "./user.policies";
 
 export class UserEntity extends Entity<UserProps> {
   private constructor(props: UserProps, id?: UniqueEntityID) {
@@ -39,6 +40,24 @@ export class UserEntity extends Entity<UserProps> {
 
   get updatedAt(): Date {
     return this.props.updatedAt;
+  }
+
+  // Policies
+
+  isEmailVerified(): boolean {
+    return UserPolicies.isEmailVerified(this.props.emailVerified);
+  }
+
+  assertEmailVerified(): void {
+    UserPolicies.assertEmailVerified(this.props.emailVerified);
+  }
+
+  canOwnMoreCollections(currentOwnedCount: number): boolean {
+    return UserPolicies.canOwnMoreCollections(currentOwnedCount);
+  }
+
+  assertReachMaxCollections(currentOwnedCount: number): void {
+    UserPolicies.assertReachMaxCollections(currentOwnedCount);
   }
 
   toSnapshot(): UserSnapshot {

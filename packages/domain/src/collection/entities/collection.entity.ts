@@ -1,12 +1,8 @@
 import { Entity, UniqueEntityID } from "@cookmate/core";
-import type { CollectionProps, CollectionSnapshot } from "./collection.schema";
-import { collectionPropsSchema } from "./collection.schema";
-import {
-  CannotRemoveOwnerError,
-  InvalidCollectionDataError,
-  NotCollectionMemberError,
-  NotCollectionOwnerError,
-} from "./errors";
+import type { CollectionProps, CollectionSnapshot } from "../schemas/collection.schema";
+import { collectionPropsSchema } from "../schemas/collection.schema";
+import { CollectionPolicies } from "../collection.policies";
+import { InvalidCollectionDataError } from "../errors";
 
 export class CollectionEntity extends Entity<CollectionProps> {
   private constructor(props: CollectionProps, id?: UniqueEntityID) {
@@ -58,26 +54,26 @@ export class CollectionEntity extends Entity<CollectionProps> {
     return this.props.updatedAt;
   }
 
+  // Policies
+
   isOwner(userId: string): boolean {
-    return this.ownerId === userId;
+    return CollectionPolicies.isOwner(this.ownerId, userId);
+  }
+
+  canView(userId: string, isMember: boolean): boolean {
+    return CollectionPolicies.canView(this.ownerId, userId, isMember);
   }
 
   assertOwner(userId: string): void {
-    if (!this.isOwner(userId)) {
-      throw new NotCollectionOwnerError();
-    }
+    CollectionPolicies.assertOwner(this.ownerId, userId);
+  }
+
+  assertCanView(userId: string, isMember: boolean): void {
+    CollectionPolicies.assertCanView(this.ownerId, userId, isMember);
   }
 
   assertCanRemoveMember(memberId: string): void {
-    if (memberId === this.ownerId) {
-      throw new CannotRemoveOwnerError();
-    }
-  }
-
-  assertCanViewMembers(userId: string, isMember: boolean): void {
-    if (!this.isOwner(userId) && !isMember) {
-      throw new NotCollectionMemberError();
-    }
+    CollectionPolicies.assertCanRemoveMember(this.ownerId, memberId);
   }
 
   toSnapshot(): CollectionSnapshot {

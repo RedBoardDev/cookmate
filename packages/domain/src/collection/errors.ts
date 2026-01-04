@@ -71,3 +71,21 @@ export class CollectionLimitReachedError extends DomainError {
     super(`Collection limit reached (${limit} max)`);
   }
 }
+
+export class InvalidCollectionMemberDataError extends DomainError {
+  readonly code = "INVALID_COLLECTION_MEMBER_DATA";
+  readonly httpStatus = 400;
+
+  constructor(message = "Invalid collection member data") {
+    super(message);
+  }
+}
+
+export class CannotAddMemberError extends DomainError {
+  readonly code = "CANNOT_ADD_MEMBER";
+  readonly httpStatus = 403;
+
+  constructor() {
+    super("You cannot add yourself as a member of this collection");
+  }
+}
