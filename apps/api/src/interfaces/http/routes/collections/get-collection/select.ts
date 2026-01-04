@@ -2,8 +2,6 @@ import type { Prisma } from "@/generated/prisma/client";
 import {
   collectionSnapshotSchema,
   collectionMemberSnapshotSchema,
-  collectionPropsSchema,
-  collectionMemberPropsSchema,
 } from "@cookmate/domain";
 import { z } from "zod";
 
