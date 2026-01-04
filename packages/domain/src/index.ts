@@ -1,5 +1,4 @@
 export * from "./collection";
-export * from "./collection-member";
 export * from "./equipment";
 export * from "./ingredient";
 export * from "./instruction";
@@ -9,3 +8,4 @@ export * from "./recipe-ingredient";
 export * from "./unit";
 export * from "./user";
 export * from "./errors";
+export * from "./shared";

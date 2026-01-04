@@ -1,7 +1,7 @@
 import { Entity, UniqueEntityID } from "@cookmate/core";
 import type { InstructionProps, InstructionSnapshot } from "./instruction.schema";
 import { instructionPropsSchema } from "./instruction.schema";
-import { InvalidInstructionDataError } from "./errors";
+import { InvalidInstructionDataError, InstructionNotBelongsToRecipeError } from "./errors";
 
 export class InstructionEntity extends Entity<InstructionProps> {
   private constructor(props: InstructionProps, id?: UniqueEntityID) {
@@ -47,6 +47,17 @@ export class InstructionEntity extends Entity<InstructionProps> {
 
   get updatedAt(): Date {
     return this.props.updatedAt;
+  }
+
+  // Policies
+  belongsToRecipe(recipeId: string): boolean {
+    return this.recipeId === recipeId;
+  }
+
+  assertBelongsToRecipe(recipeId: string): void {
+    if (!this.belongsToRecipe(recipeId)) {
+      throw new InstructionNotBelongsToRecipeError();
+    }
   }
 
   toSnapshot(): InstructionSnapshot {

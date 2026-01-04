@@ -17,3 +17,12 @@ export class InvalidInstructionDataError extends DomainError {
     super(message);
   }
 }
+
+export class InstructionNotBelongsToRecipeError extends DomainError {
+  readonly code = "INSTRUCTION_NOT_BELONGS_TO_RECIPE";
+  readonly httpStatus = 400;
+
+  constructor() {
+    super("Instruction does not belong to this recipe");
+  }
+}

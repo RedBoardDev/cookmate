@@ -17,3 +17,12 @@ export class InvalidRecipeIngredientDataError extends DomainError {
     super(message);
   }
 }
+
+export class RecipeIngredientNotBelongsToRecipeError extends DomainError {
+  readonly code = "RECIPE_INGREDIENT_NOT_BELONGS_TO_RECIPE";
+  readonly httpStatus = 400;
+
+  constructor() {
+    super("Recipe ingredient does not belong to this recipe");
+  }
+}
