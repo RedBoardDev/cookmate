@@ -1,18 +1,16 @@
 import type { RouteHandler } from "@/shared/lib/route";
 import { HttpStatus } from "@/shared/enums/http-status.enum";
-import { getCollectionEntity } from "@/infra/db/repositories/collection/get-collection";
 import { deleteCollectionMember } from "./db-access";
 import { schemas } from "./schema";
+import { removeMemberErrors } from "./errors";
 
 export const removeMemberHandler: RouteHandler<typeof schemas> = async (
   ctx
 ) => {
   const { collectionId, userId } = ctx.params;
-  const currentUserId = ctx.user.id;
+  const { id: currentUserId } = ctx.user;
 
-  const collection = await getCollectionEntity({ id: collectionId });
-  collection.assertOwner(currentUserId);
-  collection.assertCanRemoveMember(userId);
+  await removeMemberErrors(collectionId, currentUserId, userId);
 
   await deleteCollectionMember({ collectionId, userId });
 

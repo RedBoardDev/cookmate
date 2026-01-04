@@ -1,16 +1,18 @@
 import { findFirstCollectionMember } from "@/infra/db/repositories/collection-member/get-collection-member";
-import type { CollectionEntity } from "@cookmate/domain/collection";
+import { CollectionPolicies } from "@cookmate/domain";
+import type { SelectResult } from "./select";
 
 export const getCollectionErrors = async (
-  collection: CollectionEntity,
+  collection: SelectResult,
   userId: string
-): Promise<void> => {
-  const isOwner = collection.isOwner(userId);
-
+) => {
+  const isOwner = CollectionPolicies.isOwner(collection.userId, userId);
   const membership = isOwner
     ? null
     : await findFirstCollectionMember({ collectionId: collection.id, userId }, { id: true });
   const isMember = isOwner || Boolean(membership);
 
-  collection.assertCanViewMembers(userId, isMember);
+  CollectionPolicies.assertCanView(collection.userId, userId, isMember);
+
+  return isOwner;
 };

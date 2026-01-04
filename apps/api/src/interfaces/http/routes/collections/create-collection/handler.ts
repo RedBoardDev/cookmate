@@ -10,7 +10,9 @@ export const createCollectionHandler: RouteHandler<typeof schemas> = async (ctx)
   await createCollectionErrors(userId);
 
   const collection = await createCollection({
-    ...ctx.body,
+    name: ctx.body.name,
+    emoji: ctx.body.emoji,
+    description: ctx.body.description ?? null,
     ownerId: userId,
   });
 

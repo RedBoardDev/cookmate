@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { collectionMemberSnapshotSchema } from "@cookmate/domain/collection-member";
+import { collectionMemberSnapshotSchema } from "@cookmate/domain/collection";
 
 export const params = z.object({
   collectionId: z.uuid(),

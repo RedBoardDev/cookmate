@@ -1,6 +1,6 @@
 import { getPrisma } from "@/infra/db/prisma";
 import { handleError } from "@/shared/utils/handle-error";
-import { CollectionMemberEntity } from "@cookmate/domain/collection-member";
+import { CollectionMemberEntity } from "@cookmate/domain/collection";
 
 interface CreateMemberInput {
   collectionId: string;

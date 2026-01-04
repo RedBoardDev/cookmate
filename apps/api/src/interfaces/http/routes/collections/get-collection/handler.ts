@@ -1,8 +1,9 @@
-import type { RouteHandler } from "@/shared/lib/route";
+import { getCollectionSelect } from "@/infra/db/repositories/collection/get-collection";
 import { HttpStatus } from "@/shared/enums/http-status.enum";
-import { getCollectionErrors } from "./errors";
+import type { RouteHandler } from "@/shared/lib/route";
 import { schemas } from "./schema";
-import { getCollectionEntity } from "@/infra/db/repositories/collection/get-collection";
+import { selectConfig } from "./select";
+import { getCollectionErrors } from "./errors";
 
 export const getCollectionHandler: RouteHandler<typeof schemas> = async (
   ctx
@@ -10,9 +11,12 @@ export const getCollectionHandler: RouteHandler<typeof schemas> = async (
   const { collectionId } = ctx.params;
   const { id: userId } = ctx.user;
 
-  const collection = await getCollectionEntity({ id: collectionId });
+  const collection = await getCollectionSelect({ id: collectionId }, selectConfig.select);
 
-  await getCollectionErrors(collection, userId);
+  const isOwner = await getCollectionErrors(collection, userId);
 
-  return { status: HttpStatus.OK, data: collection.toSnapshot() };
+  return {
+    status: HttpStatus.OK,
+    data: selectConfig.transform(collection, { isOwner }),
+  };
 };
