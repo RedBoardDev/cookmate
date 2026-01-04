@@ -10,7 +10,9 @@ import type { RecipeIngredientSelectResult } from "./types";
 const listRecipeIngredientsSelectFn = async <TSelect extends Prisma.RecipeIngredientSelect>(
   where: Prisma.RecipeIngredientWhereInput,
   select: TSelect,
-  orderBy?: Prisma.RecipeIngredientOrderByWithRelationInput | Prisma.RecipeIngredientOrderByWithRelationInput[],
+  orderBy?:
+    | Prisma.RecipeIngredientOrderByWithRelationInput
+    | Prisma.RecipeIngredientOrderByWithRelationInput[],
   pagination?: Pagination
 ): Promise<RecipeIngredientSelectResult<TSelect>[]> => {
   const paginationQuery = await paginationForComplexQuery(pagination, () =>

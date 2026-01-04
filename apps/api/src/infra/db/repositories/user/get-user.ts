@@ -1,7 +1,7 @@
 import type { Prisma } from "@/generated/prisma/client";
 import { getPrisma } from "@/infra/db/prisma";
 import { handleError } from "@/shared/utils/handle-error";
-import { UserNotFoundError } from "@/domain/user/errors";
+import { UserNotFoundError } from "@cookmate/domain/user";
 import type { UserSelectResult } from "./types";
 
 /**

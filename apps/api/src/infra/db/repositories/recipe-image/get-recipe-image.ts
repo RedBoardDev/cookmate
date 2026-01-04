@@ -1,7 +1,7 @@
 import type { Prisma } from "@/generated/prisma/client";
 import { getPrisma } from "@/infra/db/prisma";
 import { handleError } from "@/shared/utils/handle-error";
-import { RecipeImageNotFoundError } from "@/domain/recipe-image/errors";
+import { RecipeImageNotFoundError } from "@cookmate/domain/recipe-image";
 import type { RecipeImageSelectResult } from "./types";
 
 /**

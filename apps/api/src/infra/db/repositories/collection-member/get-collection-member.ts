@@ -1,9 +1,8 @@
 import type { Prisma } from "@/generated/prisma/client";
 import { getPrisma } from "@/infra/db/prisma";
 import { handleError } from "@/shared/utils/handle-error";
-import { CollectionMemberNotFoundError } from "@cookmate/domain/collection-member";
+import { MemberNotFoundError } from "@cookmate/domain/collection";
 import type { CollectionMemberSelectResult } from "./types";
-import { collectionMemberEntitySelect, toCollectionMemberEntity } from "./collection-entity";
 
 /**
  * GET
@@ -13,19 +12,11 @@ const getCollectionMemberSelectFn = async <TSelect extends Prisma.CollectionMemb
   select: TSelect
 ): Promise<CollectionMemberSelectResult<TSelect>> => {
   const collectionMember = await getPrisma().collectionMember.findUnique({ where, select });
-  if (!collectionMember) throw new CollectionMemberNotFoundError(where.id);
+  if (!collectionMember) throw new MemberNotFoundError();
   return collectionMember;
 };
 
 export const getCollectionMemberSelect = handleError(getCollectionMemberSelectFn);
-
-/**
- * GET ENTITY
- */
-export const getCollectionMemberEntity = async (where: Prisma.CollectionMemberWhereUniqueInput) => {
-  const collectionMember = await getCollectionMemberSelect(where, collectionMemberEntitySelect);
-  return toCollectionMemberEntity(collectionMember);
-};
 
 /**
  * FIND FIRST

@@ -3,10 +3,6 @@ import { getPrisma } from "@/infra/db/prisma";
 import { handleError } from "@/shared/utils/handle-error";
 import { CollectionNotFoundError } from "@cookmate/domain/collection";
 import type { CollectionSelectResult } from "./types";
-import {
-  collectionEntitySelect,
-  toCollectionEntity,
-} from "./collection-entity";
 
 /**
  * GET
@@ -21,16 +17,6 @@ const getCollectionSelectFn = async <TSelect extends Prisma.CollectionSelect>(
 };
 
 export const getCollectionSelect = handleError(getCollectionSelectFn);
-
-/**
- * GET ENTITY
- */
-export const getCollectionEntity = async (
-  where: Prisma.CollectionWhereUniqueInput,
-) => {
-  const collection = await getCollectionSelect(where, collectionEntitySelect);
-  return toCollectionEntity(collection);
-};
 
 /**
  * FIND FIRST

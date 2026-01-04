@@ -10,7 +10,9 @@ import type { RecipeImageSelectResult } from "./types";
 const listRecipeImagesSelectFn = async <TSelect extends Prisma.RecipeImageSelect>(
   where: Prisma.RecipeImageWhereInput,
   select: TSelect,
-  orderBy?: Prisma.RecipeImageOrderByWithRelationInput | Prisma.RecipeImageOrderByWithRelationInput[],
+  orderBy?:
+    | Prisma.RecipeImageOrderByWithRelationInput
+    | Prisma.RecipeImageOrderByWithRelationInput[],
   pagination?: Pagination
 ): Promise<RecipeImageSelectResult<TSelect>[]> => {
   const paginationQuery = await paginationForComplexQuery(pagination, () =>

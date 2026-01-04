@@ -10,7 +10,9 @@ import type { InstructionSelectResult } from "./types";
 const listInstructionsSelectFn = async <TSelect extends Prisma.InstructionSelect>(
   where: Prisma.InstructionWhereInput,
   select: TSelect,
-  orderBy?: Prisma.InstructionOrderByWithRelationInput | Prisma.InstructionOrderByWithRelationInput[],
+  orderBy?:
+    | Prisma.InstructionOrderByWithRelationInput
+    | Prisma.InstructionOrderByWithRelationInput[],
   pagination?: Pagination
 ): Promise<InstructionSelectResult<TSelect>[]> => {
   const paginationQuery = await paginationForComplexQuery(pagination, () =>
