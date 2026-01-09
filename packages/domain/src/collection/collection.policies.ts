@@ -9,8 +9,8 @@ export const CollectionPolicies = {
   /**
    * Check if user is a member of the collection
    */
-  isMember(ownerId: string, userId: string): boolean {
-    return this.isOwner(ownerId, userId) || this.isMember(ownerId, userId);
+  isMember(ownerId: string, userId: string, isMember = false): boolean {
+    return this.isOwner(ownerId, userId) || isMember;
   },
 
   /**
@@ -31,7 +31,7 @@ export const CollectionPolicies = {
    * Check if user can add a member to the collection
    */
   canAddMember(ownerId: string, userId: string): boolean {
-    return this.isOwner(ownerId, userId) || this.isMember(ownerId, userId);
+    return this.isOwner(ownerId, userId);
   },
 
   /**
@@ -69,11 +69,36 @@ export const CollectionPolicies = {
   },
 
   /**
+   * Assert user is a member of the collection, throws NotCollectionMemberError if not
+   */
+  assertIsMember(ownerId: string, userId: string, isMember: boolean): void {
+    if (!this.isMember(ownerId, userId, isMember)) {
+      throw new NotCollectionMemberError();
+    }
+  },
+
+  /**
    * Assert a member can be removed (owner cannot be removed)
    */
   assertCanRemoveMember(ownerId: string, memberIdToRemove: string): void {
     if (ownerId === memberIdToRemove) {
       throw new CannotRemoveOwnerError();
+    }
+  },
+
+  /**
+   * Check if user can add a recipe to the collection (owner OR member)
+   */
+  canAddRecipe(ownerId: string, userId: string, isMember: boolean): boolean {
+    return this.canView(ownerId, userId, isMember);
+  },
+
+  /**
+   * Assert user can add a recipe to the collection, throws NotCollectionMemberError if not
+   */
+  assertCanAddRecipe(ownerId: string, userId: string, isMember: boolean): void {
+    if (!this.canAddRecipe(ownerId, userId, isMember)) {
+      throw new NotCollectionMemberError();
     }
   },
 };

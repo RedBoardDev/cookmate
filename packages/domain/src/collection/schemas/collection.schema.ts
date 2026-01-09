@@ -2,20 +2,13 @@ import { z } from "zod";
 
 const COLLECTION_NAME_MAX_LENGTH = 100;
 const COLLECTION_DESCRIPTION_MAX_LENGTH = 500;
-const COLLECTION_EMOJI_MAX_LENGTH = 32;
-
-const emojiRegex = /^(?:\p{Extended_Pictographic}|\p{Emoji_Component}|\u200D|\uFE0F)+$/u;
 
 export const collectionVisibilitySchema = z.enum(["PRIVATE", "PUBLIC"]);
 export type CollectionVisibility = z.infer<typeof collectionVisibilitySchema>;
 
 export const collectionField = {
   name: z.string().min(1).max(COLLECTION_NAME_MAX_LENGTH),
-  emoji: z
-    .string()
-    .min(1)
-    .max(COLLECTION_EMOJI_MAX_LENGTH)
-    .refine((value) => emojiRegex.test(value)),
+  emoji: z.emoji(),
   description: z
     .string()
     .min(1)
@@ -24,7 +17,7 @@ export const collectionField = {
 };
 
 export const collectionSystemField = {
-  ownerId: z.uuid(),
+  ownerId: z.string().min(1),
   visibility: collectionVisibilitySchema,
   shortUrl: z
     .string()

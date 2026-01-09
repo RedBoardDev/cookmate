@@ -72,6 +72,10 @@ export class CollectionEntity extends Entity<CollectionProps> {
     CollectionPolicies.assertCanView(this.ownerId, userId, isMember);
   }
 
+  assertIsMember(userId: string, isMember: boolean): void {
+    CollectionPolicies.assertIsMember(this.ownerId, userId, isMember);
+  }
+
   assertCanRemoveMember(memberId: string): void {
     CollectionPolicies.assertCanRemoveMember(this.ownerId, memberId);
   }

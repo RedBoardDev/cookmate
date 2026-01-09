@@ -89,3 +89,21 @@ export class CannotAddMemberError extends DomainError {
     super("You cannot add yourself as a member of this collection");
   }
 }
+
+export class RecipeAlreadyInCollectionError extends DomainError {
+  readonly code = "RECIPE_ALREADY_IN_COLLECTION";
+  readonly httpStatus = 409;
+
+  constructor() {
+    super("Recipe is already in this collection");
+  }
+}
+
+export class RecipeNotInCollectionError extends DomainError {
+  readonly code = "RECIPE_NOT_IN_COLLECTION";
+  readonly httpStatus = 404;
+
+  constructor() {
+    super("Recipe is not in this collection");
+  }
+}

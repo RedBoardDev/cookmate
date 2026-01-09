@@ -29,6 +29,14 @@ export class CollectionMemberEntity extends Entity<CollectionMemberProps> {
     return this.props.userId;
   }
 
+  get email(): string {
+    return this.props.email;
+  }
+
+  get avatar(): string {
+    return this.props.avatar;
+  }
+
   get joinedAt(): Date {
     return this.props.joinedAt;
   }
@@ -36,7 +44,10 @@ export class CollectionMemberEntity extends Entity<CollectionMemberProps> {
   toSnapshot(): CollectionMemberSnapshot {
     return {
       id: this.id,
-      ...this.props,
+      userId: this.userId,
+      email: this.email,
+      avatar: this.avatar,
+      joinedAt: this.joinedAt,
     };
   }
 }
