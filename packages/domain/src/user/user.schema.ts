@@ -5,10 +5,10 @@ const USER_NAME_MAX_LENGTH = 50;
 export const userField = {
   email: z.email(),
   name: z.string().min(1).max(USER_NAME_MAX_LENGTH),
+  avatar: z.string().min(1),
 };
 
 export const userSystemField = {
-  emailVerified: z.boolean(),
   createdAt: z.date(),
   updatedAt: z.date(),
 };
@@ -16,7 +16,7 @@ export const userSystemField = {
 export const userFields = {
   email: { email: userField.email },
   name: { name: userField.name },
-  emailVerified: { emailVerified: userSystemField.emailVerified },
+  avatar: { avatar: userField.avatar },
   createdAt: { createdAt: userSystemField.createdAt },
   updatedAt: { updatedAt: userSystemField.updatedAt },
 };
@@ -29,7 +29,7 @@ export const userPropsSchema = z.object({
 export type UserProps = z.infer<typeof userPropsSchema>;
 
 export const userSnapshotSchema = userPropsSchema.extend({
-  id: z.uuid(),
+  id: z.string().min(1),
 });
 
 export type UserSnapshot = z.infer<typeof userSnapshotSchema>;

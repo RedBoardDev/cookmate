@@ -30,8 +30,8 @@ export class UserEntity extends Entity<UserProps> {
     return this.props.name;
   }
 
-  get emailVerified(): boolean {
-    return this.props.emailVerified;
+  get avatar(): string {
+    return this.props.avatar;
   }
 
   get createdAt(): Date {
@@ -43,14 +43,6 @@ export class UserEntity extends Entity<UserProps> {
   }
 
   // Policies
-
-  isEmailVerified(): boolean {
-    return UserPolicies.isEmailVerified(this.props.emailVerified);
-  }
-
-  assertEmailVerified(): void {
-    UserPolicies.assertEmailVerified(this.props.emailVerified);
-  }
 
   canOwnMoreCollections(currentOwnedCount: number): boolean {
     return UserPolicies.canOwnMoreCollections(currentOwnedCount);
