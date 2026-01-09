@@ -9,6 +9,7 @@ import {
   type SourceValue,
   type TagValue,
 } from "../shared/value-objects";
+import { collectionSnapshotSchema } from "../collection/schemas/collection.schema";
 
 export const recipeDifficultySchema = z.enum(DIFFICULTIES);
 export const recipeBudgetSchema = z.enum(BUDGETS);
@@ -37,7 +38,7 @@ export const recipeSystemField = {
   source: recipeSourceSchema,
   sourceUrl: z.string().min(1).nullable(),
   shortUrl: z.string().min(1).nullable(),
-  userId: z.uuid(),
+  userId: z.string().min(1),
   forkedFromDiscoverId: z.uuid().nullable(),
   createdAt: z.date(),
   updatedAt: z.date(),
@@ -72,6 +73,9 @@ export type RecipeProps = z.infer<typeof recipePropsSchema>;
 
 export const recipeSnapshotSchema = recipePropsSchema.extend({
   id: z.uuid(),
+  collections: z
+    .array(collectionSnapshotSchema.pick({ id: true, name: true, emoji: true }))
+    .optional(),
 });
 
 export type RecipeSnapshot = z.infer<typeof recipeSnapshotSchema>;

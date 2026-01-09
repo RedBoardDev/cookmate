@@ -2,44 +2,15 @@ import { ValueObject } from "@cookmate/core";
 import { DomainError } from "../../errors";
 
 export const TAGS = [
-  "VEGETARIAN",
-  "VEGAN",
-  "GLUTEN_FREE",
-  "DAIRY_FREE",
-  "LOW_CARB",
-  "BREAKFAST",
-  "LUNCH",
-  "DINNER",
-  "DESSERT",
+  "MAIN_COURSE",
   "APPETIZER",
-  "SNACK",
-  "BRUNCH",
-  "FRENCH",
-  "ITALIAN",
-  "ASIAN",
-  "MEXICAN",
-  "INDIAN",
-  "MEDITERRANEAN",
-  "AMERICAN",
-  "JAPANESE",
-  "CHINESE",
-  "THAI",
-  "GREEK",
-  "SPANISH",
-  "MOROCCAN",
-  "LEBANESE",
+  "SIDE_DISH",
+  "DESSERT",
+  "DRINK",
   "QUICK",
   "EASY",
   "HEALTHY",
-  "COMFORT_FOOD",
-  "BUDGET_FRIENDLY",
-  "GOURMET",
-  "FAMILY_FRIENDLY",
-  "BATCH_COOKING",
-  "SUMMER",
-  "WINTER",
-  "FALL",
-  "SPRING",
+  "VEGETARIAN",
 ] as const;
 export type TagValue = (typeof TAGS)[number];
 
@@ -85,33 +56,20 @@ export class Tag extends ValueObject<TagProps> {
   }
 
   isDietaryRestriction(): boolean {
-    return ["VEGETARIAN", "VEGAN", "GLUTEN_FREE", "DAIRY_FREE", "LOW_CARB"].includes(this.props.value);
+    return ["VEGETARIAN"].includes(this.props.value);
   }
 
   isMealType(): boolean {
-    return ["BREAKFAST", "LUNCH", "DINNER", "DESSERT", "APPETIZER", "SNACK", "BRUNCH"].includes(this.props.value);
+    return ["MAIN_COURSE", "APPETIZER", "SIDE_DISH", "DESSERT", "DRINK"].includes(
+      this.props.value
+    );
   }
 
   isCuisine(): boolean {
-    return [
-      "FRENCH",
-      "ITALIAN",
-      "ASIAN",
-      "MEXICAN",
-      "INDIAN",
-      "MEDITERRANEAN",
-      "AMERICAN",
-      "JAPANESE",
-      "CHINESE",
-      "THAI",
-      "GREEK",
-      "SPANISH",
-      "MOROCCAN",
-      "LEBANESE",
-    ].includes(this.props.value);
+    return false;
   }
 
   isSeason(): boolean {
-    return ["SUMMER", "WINTER", "FALL", "SPRING"].includes(this.props.value);
+    return false;
   }
 }
