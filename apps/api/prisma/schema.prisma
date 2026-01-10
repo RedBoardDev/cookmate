@@ -50,53 +50,18 @@ enum CollectionVisibility {
 }
 
 enum Tag {
-  // Dietary
-  VEGETARIAN
-  VEGAN
-  GLUTEN_FREE
-  DAIRY_FREE
-  LOW_CARB
-
   // Meal types
-  BREAKFAST
-  LUNCH
-  DINNER
-  DESSERT
+  MAIN_COURSE
   APPETIZER
-  SNACK
-  BRUNCH
-
-  // World cuisines
-  FRENCH
-  ITALIAN
-  ASIAN
-  MEXICAN
-  INDIAN
-  MEDITERRANEAN
-  AMERICAN
-  JAPANESE
-  CHINESE
-  THAI
-  GREEK
-  SPANISH
-  MOROCCAN
-  LEBANESE
+  SIDE_DISH
+  DESSERT
+  DRINK
 
   // Characteristics
   QUICK
   EASY
   HEALTHY
-  COMFORT_FOOD
-  BUDGET_FRIENDLY
-  GOURMET
-  FAMILY_FRIENDLY
-  BATCH_COOKING
-
-  // Seasons
-  SUMMER
-  WINTER
-  FALL
-  SPRING
+  VEGETARIAN
 }
 
 // ============================================================================
@@ -147,6 +112,7 @@ model User {
   email         String  @unique
   emailVerified Boolean @default(false)
   name          String
+  avatar        String
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

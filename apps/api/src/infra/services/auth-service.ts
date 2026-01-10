@@ -24,6 +24,15 @@ export function createAuthService(env: AppEnv) {
     // Mapping des models Prisma
     user: {
       modelName: "User",
+      fields: {
+        image: "avatar", // * Map Better Auth's 'image' field to Prisma's 'avatar' field
+      },
+      additionalFields: {
+        avatar: {
+          type: "string",
+          required: true,
+        },
+      },
     },
     session: {
       modelName: "Session",
@@ -42,30 +51,44 @@ export function createAuthService(env: AppEnv) {
     socialProviders: {
       ...(env.GOOGLE_CLIENT_ID &&
         env.GOOGLE_CLIENT_SECRET && {
-          google: {
-            clientId: env.GOOGLE_CLIENT_ID,
-            clientSecret: env.GOOGLE_CLIENT_SECRET,
-          },
-        }),
+        google: {
+          clientId: env.GOOGLE_CLIENT_ID,
+          clientSecret: env.GOOGLE_CLIENT_SECRET,
+        },
+      }),
 
       ...(env.FACEBOOK_CLIENT_ID &&
         env.FACEBOOK_CLIENT_SECRET && {
-          facebook: {
-            clientId: env.FACEBOOK_CLIENT_ID,
-            clientSecret: env.FACEBOOK_CLIENT_SECRET,
-          },
-        }),
+        facebook: {
+          clientId: env.FACEBOOK_CLIENT_ID,
+          clientSecret: env.FACEBOOK_CLIENT_SECRET,
+        },
+      }),
 
       ...(env.TWITTER_CLIENT_ID &&
         env.TWITTER_CLIENT_SECRET && {
-          twitter: {
-            clientId: env.TWITTER_CLIENT_ID,
-            clientSecret: env.TWITTER_CLIENT_SECRET,
-          },
-        }),
+        twitter: {
+          clientId: env.TWITTER_CLIENT_ID,
+          clientSecret: env.TWITTER_CLIENT_SECRET,
+        },
+      }),
     },
 
-    trustedOrigins: env.CORS_ORIGINS ?? [],
+    // * Only set trustedOrigins if CORS_ORIGINS is defined and non-empty
+    // * If undefined/empty, Better Auth will accept all origins (useful for dev/testing tools like Apidog)
+    ...(env.CORS_ORIGINS && env.CORS_ORIGINS.length > 0
+      ? { trustedOrigins: env.CORS_ORIGINS }
+      : {}),
+
+    // * Disable origin check in development/testing to allow tools like Apidog/curl without Origin header
+    // * WARNING: This disables CSRF protection. Only use in development/testing environments.
+    ...(env.BETTER_AUTH_DISABLE_ORIGIN_CHECK
+      ? {
+        advanced: {
+          disableOriginCheck: true,
+        },
+      }
+      : {}),
   });
 }
 
