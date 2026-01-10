@@ -12,6 +12,7 @@ const swaggerPlugin: FastifyPluginAsync<SwaggerOptions> = async (app, opts) => {
 
   await app.register(swagger, {
     openapi: {
+      openapi: "3.1.1",
       info: {
         title: "Cookmate API",
         version: "0.1.0",

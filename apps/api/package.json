@@ -11,7 +11,10 @@
     "format": "biome format --write .",
     "typecheck": "tsc --noEmit",
     "prisma:generate": "prisma generate",
-    "prisma:migrate:dev": "prisma migrate dev"
+    "prisma:migrate:dev": "prisma migrate dev",
+    "db:seed": "tsx prisma/seed/index.ts",
+    "db:seed:clean": "tsx prisma/seed/index.ts --clean",
+    "db:reset": "prisma migrate reset --force && yarn prisma:generate && yarn db:seed"
   },
   "dependencies": {
     "@cookmate/domain": "workspace:*",
@@ -31,6 +34,7 @@
     "zod": "4.2.1"
   },
   "devDependencies": {
+    "@faker-js/faker": "^9.3.0",
     "@types/node": "25.0.3",
     "@types/pg": "^8.16.0",
     "pino-pretty": "^13.0.0",
