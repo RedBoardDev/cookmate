@@ -1,0 +1,55 @@
+---
+description: UI Architecture rules for modules - Structure, components, hooks, forms, states
+globs: src/modules/**/ui/**/*
+alwaysApply: false
+---
+
+# UI Architecture Rules
+
+## Structure (ALWAYS follow):
+```
+ui/
+├── <Feature>Screen.tsx    # Container: loading/error/data → View
+├── <Feature>View.tsx      # Pure presentation (props only)
+├── components/            # UI components
+│   ├── [subfolder]/      # If 3+ related files (hero/, filters/, create/, etc.)
+│   └── Simple.tsx        # Single components at root
+├── hooks/                 # ALL UI hooks (forms, filters, view state)
+└── states/                # Loading/error/empty states
+```
+
+## Rules:
+- **Screen**: Handles loading/error/data, calls View with props, "use client"
+- **View**: Pure presentation, receives props, can use UI hooks (NOT API hooks)
+- **Components**: Decouple if >300 lines OR distinct logic (actions, content, stats)
+- **Subfolders**: Create if 3+ related files OR distinct feature (create/, list/, hero/)
+- **Naming**:
+  - Hooks/States/Screen/View: `<Feature>Name`
+  - Components in subfolders: `Name.tsx` (no Feature prefix)
+  - Components at root: `<Feature>Name.tsx` if needed for clarity
+
+## Forms:
+- Use TanStack Form ONLY
+- Pattern: See `Collections/ui/create/useCreateCollectionForm.ts`
+- Return: `{ form, isSubmitting, error }`
+
+## States:
+- Create `states/<Feature>Skeleton.tsx`, `ErrorState.tsx`, `EmptyState.tsx`
+- Use in Screen: `if (isLoading) return <Skeleton />`
+
+## Hooks:
+- ALL UI logic → `hooks/` folder
+- Forms: `use<Feature>Form.ts`
+- Filters: `use<Feature>Filters.ts` (pattern: `Recipes/ui/hooks/useQuickFilters.ts`)
+- View state: `use<Feature><State>.ts`
+
+## Contextual Decisions:
+- >300 lines → MUST decouple
+- 3+ related files → Create subfolder
+- Distinct feature → Create subfolder
+- Adapt states/hooks according to needs
+
+## References:
+- Forms: `Collections/ui/create/useCreateCollectionForm.ts`
+- Filters: `Recipes/ui/hooks/useQuickFilters.ts`
+- Structure: `Recipes/ui/` (Screen/View/components/hooks/states)
