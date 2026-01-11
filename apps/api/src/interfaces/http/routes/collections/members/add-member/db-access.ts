@@ -5,28 +5,35 @@ import { CollectionMemberEntity } from "@cookmate/domain/collection";
 interface CreateMemberInput {
   collectionId: string;
   userId: string;
+  email: string;
+  avatar: string;
 }
 
-const createCollectionMemberFn = async (input: CreateMemberInput) => {
+const addCollectionMemberFn = async (input: CreateMemberInput) => {
   const joinedAt = new Date();
 
   const member = CollectionMemberEntity.create(
     {
       collectionId: input.collectionId,
       userId: input.userId,
-      joinedAt
+      email: input.email,
+      avatar: input.avatar,
+      joinedAt,
     },
   );
 
-  await getPrisma().collectionMember.create({
+  const result = await getPrisma().collectionMember.create({
     data: {
       collectionId: member.collectionId,
       userId: member.userId,
       joinedAt: member.joinedAt,
     },
+    select: {
+      id: true,
+    }
   });
 
-  return member;
+  return { id: result.id };
 };
 
-export const createCollectionMember = handleError(createCollectionMemberFn);
+export const addCollectionMember = handleError(addCollectionMemberFn);

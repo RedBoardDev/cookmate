@@ -1,7 +1,7 @@
 import type { RouteHandler } from "@/shared/lib/route";
 import { HttpStatus } from "@/shared/enums/http-status.enum";
 import { getUserSelect } from "@/infra/db/repositories/user/get-user";
-import { createCollectionMember } from "./db-access";
+import { addCollectionMember } from "./db-access";
 import { addMemberErrors, selectError } from "./errors";
 import { schemas } from "./schema";
 import { getCollectionSelect } from "@/infra/db/repositories/collection/get-collection";
@@ -15,14 +15,19 @@ export const addMemberHandler: RouteHandler<typeof schemas> = async (ctx) => {
   const collection = await getCollectionSelect({ id: collectionId }, selectError);
   CollectionPolicies.assertCanAddMember(collection.userId, userId);
 
-  const userToAdd = await getUserSelect({ email }, { id: true });
+  const userToAdd = await getUserSelect(
+    { email },
+    { id: true, email: true, avatar: true }
+  );
 
   await addMemberErrors(collection, userToAdd.id);
 
-  const member = await createCollectionMember({
+  const result = await addCollectionMember({
     collectionId,
     userId: userToAdd.id,
+    email: userToAdd.email,
+    avatar: userToAdd.avatar,
   });
 
-  return { status: HttpStatus.Created, data: member.toSnapshot() };
+  return { status: HttpStatus.Created, data: result };
 };
