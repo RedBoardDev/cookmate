@@ -22,6 +22,13 @@ const select = {
   forkedFromDiscoverId: true,
   createdAt: true,
   updatedAt: true,
+  collections: {
+    select: {
+      id: true,
+      name: true,
+      emoji: true,
+    },
+  },
 } satisfies Prisma.RecipeSelect;
 
 type SelectResult = Prisma.RecipeGetPayload<{ select: typeof select }>[];

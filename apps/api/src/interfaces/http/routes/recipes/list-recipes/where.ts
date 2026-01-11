@@ -2,12 +2,14 @@ import type { Prisma } from "@/generated/prisma/client";
 import {
   defineWhereConfigs,
   whereDateRange,
+  whereEnumArray,
   whereEnumValue,
   whereString,
   whereUuidArray,
   whereCustom,
 } from "@/shared/lib/list-query";
-import { recipeDifficultySchema, recipeBudgetSchema, recipeSourceSchema } from "@cookmate/domain";
+import { arrayParamSchema } from "@/shared/lib/list-query/utils/array-param-schema";
+import { recipeDifficultySchema, recipeBudgetSchema, recipeSourceSchema, recipeTagSchema } from "@cookmate/domain";
 import { z } from "zod";
 
 type WhereInput = Prisma.RecipeWhereInput;
@@ -52,6 +54,23 @@ export const listRecipesWhereConfigs = defineWhereConfigs<WhereInput>([
   whereDateRange("whereUpdatedAt", {
     field: "updatedAt",
     description: "Filter by updatedAt range",
+  }),
+  whereEnumArray("whereTags", {
+    field: "tags",
+    description: "Filter by tags (has at least one of the specified tags)",
+    schema: recipeTagSchema,
+    op: "hasSome",
+  }),
+  whereCustom("whereCollectionIds", {
+    description: "Filter by collection IDs",
+    schema: arrayParamSchema(z.uuid()),
+    toWhere: (value) => ({
+      collections: {
+        some: {
+          id: { in: value },
+        },
+      },
+    }),
   }),
   whereCustom("whereTotalTimeMax", {
     description: "Filter by max total time (minutes)",
