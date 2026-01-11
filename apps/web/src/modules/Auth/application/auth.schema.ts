@@ -1,8 +1,8 @@
+import { userField } from "@cookmate/domain/user";
 import { z } from "zod";
 
 export const loginSchema = z.object({
-  email: z
-    .email("Please enter a valid email address")
+  email: userField.email
     .toLowerCase()
     .trim(),
 

@@ -6,7 +6,7 @@ import Skeleton from "react-loading-skeleton";
 import { Button } from "@/shared/ui/primitives/button";
 import { cn } from "@/shared/lib/utils";
 import type { CollectionAggregate } from "@/modules/Recipes/domain/collection.aggregate";
-import { CollectionsManageModal } from "@/modules/Collections/ui";
+import { CollectionsManageModal } from "@/modules/Collections/ui/CollectionsManageModal";
 
 interface RecipesCollectionsProps {
   collections: CollectionAggregate[];
@@ -25,7 +25,6 @@ export function RecipesCollections({
 }: RecipesCollectionsProps) {
   const [isManageOpen, setIsManageOpen] = useState(false);
 
-  // * Build collection options for UI (includes "All" option)
   const collectionOptions = useMemo(() => {
     return [
       { id: "all", label: "All", count: totalRecipes, emoji: null },
