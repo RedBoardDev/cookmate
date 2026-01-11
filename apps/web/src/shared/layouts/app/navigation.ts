@@ -1,5 +1,11 @@
 import type { LucideIcon } from "lucide-react";
-import { BookOpen, Calendar, Compass, Plus, ShoppingCart } from "lucide-react";
+import {
+  BookOpen,
+  Calendar,
+  Compass,
+  Plus,
+  ShoppingCart
+} from "lucide-react";
 
 type NavMatch = {
   path: string[];
@@ -10,12 +16,6 @@ type NavItem = {
   label: string;
   href: string;
   icon: LucideIcon;
-  match: NavMatch;
-};
-
-type NavLink = {
-  label: string;
-  href: string;
   match: NavMatch;
 };
 
@@ -81,11 +81,20 @@ export const NAV_ITEMS: NavItem[] = [
 
 export const MOBILE_NAV_ITEMS: NavItem[] = [
   {
-    label: "Add",
-    href: "/recipes/add",
-    icon: Plus,
+    label: "Recipes",
+    href: "/recipes",
+    icon: BookOpen,
     match: {
-      path: ["recipes", "add"],
+      path: ["recipes"],
+      mode: "exact"
+    }
+  },
+  {
+    label: "Discover",
+    href: "/discover",
+    icon: Compass,
+    match: {
+      path: ["discover"],
       mode: "prefix"
     }
   },
@@ -106,24 +115,16 @@ export const MOBILE_NAV_ITEMS: NavItem[] = [
       path: ["groceries"],
       mode: "prefix"
     }
-  },
-  {
-    label: "Discover",
-    href: "/discover",
-    icon: Compass,
-    match: {
-      path: ["discover"],
-      mode: "prefix"
-    }
   }
 ] as const;
 
-export const MOBILE_HOME: NavLink = {
-  label: "Recipes",
-  href: "/recipes",
+export const MOBILE_PRIMARY_ACTION: NavItem = {
+  label: "Add",
+  href: "/recipes/add",
+  icon: Plus,
   match: {
-    path: ["recipes"],
-    mode: "exact"
+    path: ["recipes", "add"],
+    mode: "prefix"
   }
 } as const;
 

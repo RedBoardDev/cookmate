@@ -1,14 +1,12 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { useSelectedLayoutSegments } from "next/navigation";
 import { Button } from "@/shared/ui/primitives/button";
 import { cn } from "@/shared/lib/utils";
-import iconImage from "@/app/icon.png";
 import {
-  MOBILE_HOME,
   MOBILE_NAV_ITEMS,
+  MOBILE_PRIMARY_ACTION,
   isNavActive
 } from "@/shared/layouts/app/navigation";
 
@@ -16,13 +14,13 @@ export function BottomNav() {
   const segments = useSelectedLayoutSegments();
   const leftItems = MOBILE_NAV_ITEMS.slice(0, 2);
   const rightItems = MOBILE_NAV_ITEMS.slice(2);
-  const homeActive = isNavActive(segments, MOBILE_HOME.match);
+  const addActive = isNavActive(segments, MOBILE_PRIMARY_ACTION.match);
 
   return (
     <nav
       className={cn(
         "fixed bottom-0 left-0 right-0 z-40 border-t border-border/80",
-        "bg-background/95 backdrop-blur md:hidden"
+        "bg-background/95 backdrop-blur md:hidden overflow-visible"
       )}
     >
       <div
@@ -59,29 +57,20 @@ export function BottomNav() {
         <div className="flex items-center justify-center">
           <Button
             asChild
-            size="sm"
-            variant="ghost"
+            size="icon"
             className={cn(
-              "h-auto flex-col gap-1 rounded-2xl px-2 py-2 text-xs font-medium",
-              "transition-colors hover:bg-accent/15 hover:text-foreground",
-              homeActive
-                ? "bg-accent text-accent-foreground shadow-sm"
-                : "text-muted-foreground"
+              "h-[3.25rem] w-[3.25rem] rounded-full shadow-md",
+              "bg-primary text-primary-foreground hover:bg-primary/90",
+              addActive ? "ring-2 ring-primary/40 ring-offset-2" : "",
+              "ring-offset-background"
             )}
+            aria-label={MOBILE_PRIMARY_ACTION.label}
           >
             <Link
-              href={MOBILE_HOME.href}
-              aria-current={homeActive ? "page" : undefined}
+              href={MOBILE_PRIMARY_ACTION.href}
+              aria-current={addActive ? "page" : undefined}
             >
-              <Image
-                src={iconImage}
-                alt={MOBILE_HOME.label}
-                width={20}
-                height={20}
-                className="h-5 w-5"
-                priority
-              />
-              <span>{MOBILE_HOME.label}</span>
+              <MOBILE_PRIMARY_ACTION.icon className="h-8 w-8" />
             </Link>
           </Button>
         </div>

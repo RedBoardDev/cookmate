@@ -3,7 +3,6 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useSelectedLayoutSegments } from "next/navigation";
-import { Search } from "lucide-react";
 import { Button } from "@/shared/ui/primitives/button";
 import { cn } from "@/shared/lib/utils";
 import iconImage from "@/app/icon.png";
@@ -12,6 +11,7 @@ import {
   PRIMARY_ACTION,
   isNavActive
 } from "@/shared/layouts/app/navigation";
+import { UserMenu } from "@/shared/layouts/app/UserMenu";
 
 export function Topbar() {
   const segments = useSelectedLayoutSegments();
@@ -68,23 +68,13 @@ export function Topbar() {
         </nav>
 
         <div className="hidden items-center gap-2 md:flex">
-          <Button
-            asChild
-            aria-label="Search"
-            size="icon"
-            variant="ghost"
-            className="rounded-xl text-muted-foreground hover:bg-accent/20 hover:text-foreground"
-          >
-            <Link href="/search">
-              <Search className="h-4 w-4" />
-            </Link>
-          </Button>
           <Button asChild className="rounded-xl px-5 shadow-sm">
             <Link href={PRIMARY_ACTION.href}>
               <PRIMARY_ACTION.icon className="h-4 w-4" />
               {PRIMARY_ACTION.label}
             </Link>
           </Button>
+          <UserMenu />
         </div>
       </div>
     </header>
