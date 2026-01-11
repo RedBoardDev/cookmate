@@ -1,108 +1,83 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+/* src/styles/globals.css */
+@layer theme, base, components, utilities;
 
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "@heroui/styles";
+
+/* Dark variant compatible Tailwind v4 (HeroUI l’utilise aussi dans ses exemples) */
+@custom-variant dark (&:is(.dark *));
+
+/*
+  Tailwind v4:
+  - On expose nos tokens (bg-background, text-foreground, bg-card, border-border, etc.)
+  - IMPORTANT: on utilise `@theme inline` quand on référence d'autres variables
+    (sinon pièges de résolution CSS vars). :contentReference[oaicite:1]{index=1}
+*/
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+
+  --color-sidebar-background: var(--sidebar-background);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+
+  /* Utility font-display (tu l’utilises dans tes classes) */
+  --font-display: var(--font-display);
+}
+
+/* =========
+   BASE / THEME
+   ========= */
 @layer base {
-  :root {
-    --background: 32 52% 94%;
-    --foreground: 25 21% 11%;
-
-    --card: 0 0% 100%;
-    --card-foreground: 25 21% 11%;
-
-    --popover: 0 0% 100%;
-    --popover-foreground: 25 21% 11%;
-
-    --primary: 14 64% 47%;
-    --primary-foreground: 0 0% 100%;
-
-    --secondary: 106 17% 41%;
-    --secondary-foreground: 0 0% 100%;
-
-    --muted: 32 46% 93%;
-    --muted-foreground: 27 11% 39%;
-
-    --accent: 37 85% 62%;
-    --accent-foreground: 25 21% 11%;
-
-    --destructive: 14 64% 47%;
-    --destructive-foreground: 0 0% 100%;
-
-    --border: 31 38% 84%;
-    --input: 31 38% 84%;
-    --ring: 37 85% 62%;
-
-    --radius: 0.75rem;
-
-    --chart-1: 14 64% 47%;
-    --chart-2: 37 85% 62%;
-    --chart-3: 106 17% 41%;
-    --chart-4: 27 11% 39%;
-    --chart-5: 14 64% 38%;
-
-    --sidebar-background: 32 46% 93%;
-    --sidebar-foreground: 25 21% 11%;
-    --sidebar-primary: 14 64% 47%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 37 85% 62%;
-    --sidebar-accent-foreground: 25 21% 11%;
-    --sidebar-border: 31 38% 84%;
-    --sidebar-ring: 37 85% 62%;
-  }
-
-  .dark {
-    --background: 25 21% 11%;
-    --foreground: 32 52% 94%;
-
-    --card: 23 18% 14%;
-    --card-foreground: 32 52% 94%;
-
-    --popover: 23 18% 14%;
-    --popover-foreground: 32 52% 94%;
-
-    --primary: 15 69% 57%;
-    --primary-foreground: 0 0% 100%;
-
-    --secondary: 112 14% 57%;
-    --secondary-foreground: 25 21% 11%;
-
-    --muted: 20 17% 17%;
-    --muted-foreground: 28 28% 76%;
-
-    --accent: 37 85% 62%;
-    --accent-foreground: 25 21% 11%;
-
-    --destructive: 15 69% 57%;
-    --destructive-foreground: 0 0% 100%;
-
-    --border: 22 19% 20%;
-    --input: 22 19% 20%;
-    --ring: 37 85% 62%;
-
-    --radius: 0.75rem;
-
-    --chart-1: 15 69% 57%;
-    --chart-2: 37 85% 62%;
-    --chart-3: 112 14% 57%;
-    --chart-4: 28 28% 76%;
-    --chart-5: 14 64% 38%;
-
-    --sidebar-background: 23 18% 14%;
-    --sidebar-foreground: 32 52% 94%;
-    --sidebar-primary: 15 69% 57%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 37 85% 62%;
-    --sidebar-accent-foreground: 25 21% 11%;
-    --sidebar-border: 22 19% 20%;
-    --sidebar-ring: 37 85% 62%;
-  }
-
-  * {
-    @apply border-border;
+  /*
+    IMPORTANT pour retrouver ton background EXACT :
+    - HeroUI recommande: <body class="bg-background text-foreground"> :contentReference[oaicite:2]{index=2}
+    - On force aussi html/body à peindre le fond, pas seulement un wrapper.
+  */
+  html,
+  body {
+    height: 100%;
   }
 
   body {
-    @apply bg-background text-foreground font-sans;
+    @apply min-h-dvh bg-background text-foreground font-sans antialiased;
   }
 
   h1,
@@ -111,15 +86,316 @@
   h4 {
     @apply font-display;
   }
+
+  /*
+    Compat border color (Tailwind v4 a changé le défaut)
+  */
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-200, currentcolor);
+  }
+
+  /*
+    Light theme (shadcn)
+    On cible : :root + .light + [data-theme="light"]
+    (comme ça ça marche quel que soit ton setup HTML). :contentReference[oaicite:3]{index=3}
+  */
+  :root,
+  .light,
+  [data-theme="light"] {
+    color-scheme: light;
+
+    /* Shadcn channels (valeurs d’origine) */
+    --cm-background: 32 52% 94%;
+    --cm-foreground: 25 21% 11%;
+
+    --cm-card: 0 0% 100%;
+    --cm-card-foreground: 25 21% 11%;
+
+    --cm-popover: 0 0% 100%;
+    --cm-popover-foreground: 25 21% 11%;
+
+    --cm-primary: 14 64% 47%;
+    --cm-primary-foreground: 0 0% 100%;
+
+    --cm-secondary: 106 17% 41%;
+    --cm-secondary-foreground: 0 0% 100%;
+
+    --cm-muted: 32 46% 93%;
+    --cm-muted-foreground: 27 11% 39%;
+
+    --cm-accent: 37 85% 62%;
+    --cm-accent-foreground: 25 21% 11%;
+
+    --cm-destructive: 14 64% 47%;
+    --cm-destructive-foreground: 0 0% 100%;
+
+    --cm-border: 31 38% 84%;
+    --cm-input: 31 38% 84%;
+    --cm-ring: 37 85% 62%;
+
+    --radius: 0.75rem;
+
+    --cm-chart-1: 14 64% 47%;
+    --cm-chart-2: 37 85% 62%;
+    --cm-chart-3: 106 17% 41%;
+    --cm-chart-4: 27 11% 39%;
+    --cm-chart-5: 14 64% 38%;
+
+    --cm-sidebar-background: 32 46% 93%;
+    --cm-sidebar-foreground: 25 21% 11%;
+    --cm-sidebar-primary: 14 64% 47%;
+    --cm-sidebar-primary-foreground: 0 0% 100%;
+    --cm-sidebar-accent: 37 85% 62%;
+    --cm-sidebar-accent-foreground: 25 21% 11%;
+    --cm-sidebar-border: 31 38% 84%;
+    --cm-sidebar-ring: 37 85% 62%;
+
+    /* Variables “finales” (ce sont elles que Tailwind/HeroUI consomment) */
+    --background: hsl(var(--cm-background));
+    --foreground: hsl(var(--cm-foreground));
+
+    --card: hsl(var(--cm-card));
+    --card-foreground: hsl(var(--cm-card-foreground));
+
+    --popover: hsl(var(--cm-popover));
+    --popover-foreground: hsl(var(--cm-popover-foreground));
+
+    --primary: hsl(var(--cm-primary));
+    --primary-foreground: hsl(var(--cm-primary-foreground));
+
+    --secondary: hsl(var(--cm-secondary));
+    --secondary-foreground: hsl(var(--cm-secondary-foreground));
+
+    --muted: hsl(var(--cm-muted));
+    --muted-foreground: hsl(var(--cm-muted-foreground));
+
+    --accent: hsl(var(--cm-accent));
+    --accent-foreground: hsl(var(--cm-accent-foreground));
+
+    --destructive: hsl(var(--cm-destructive));
+    --destructive-foreground: hsl(var(--cm-destructive-foreground));
+
+    --border: hsl(var(--cm-border));
+    --input: hsl(var(--cm-input));
+    --ring: hsl(var(--cm-ring));
+
+    --chart-1: hsl(var(--cm-chart-1));
+    --chart-2: hsl(var(--cm-chart-2));
+    --chart-3: hsl(var(--cm-chart-3));
+    --chart-4: hsl(var(--cm-chart-4));
+    --chart-5: hsl(var(--cm-chart-5));
+
+    --sidebar-background: hsl(var(--cm-sidebar-background));
+    --sidebar-foreground: hsl(var(--cm-sidebar-foreground));
+    --sidebar-primary: hsl(var(--cm-sidebar-primary));
+    --sidebar-primary-foreground: hsl(var(--cm-sidebar-primary-foreground));
+    --sidebar-accent: hsl(var(--cm-sidebar-accent));
+    --sidebar-accent-foreground: hsl(var(--cm-sidebar-accent-foreground));
+    --sidebar-border: hsl(var(--cm-sidebar-border));
+    --sidebar-ring: hsl(var(--cm-sidebar-ring));
+
+    /* HeroUI surfaces (pour coller à shadcn) */
+    --surface: var(--card);
+    --surface-foreground: var(--card-foreground);
+    --surface-secondary: var(--card);
+    --surface-tertiary: var(--muted);
+    --surface-quaternary: var(--muted);
+
+    /* HeroUI semantics */
+    --danger: var(--destructive);
+    --danger-foreground: var(--destructive-foreground);
+    --success: var(--secondary);
+    --success-foreground: var(--secondary-foreground);
+
+    /*
+      Optionnel (mais utile) : form controls HeroUI (inputs, checkbox, radio)
+      HeroUI indique que ça passe par les variables --field-* :contentReference[oaicite:4]{index=4}
+      On les aligne sur ton style shadcn.
+    */
+    --field: var(--background);
+    --field-foreground: var(--foreground);
+    --field-border: var(--input);
+    --field-ring: var(--ring);
+  }
+
+  /* Dark theme (shadcn) */
+  .dark,
+  [data-theme="dark"] {
+    color-scheme: dark;
+
+    --cm-background: 25 21% 11%;
+    --cm-foreground: 32 52% 94%;
+
+    --cm-card: 23 18% 14%;
+    --cm-card-foreground: 32 52% 94%;
+
+    --cm-popover: 23 18% 14%;
+    --cm-popover-foreground: 32 52% 94%;
+
+    --cm-primary: 15 69% 57%;
+    --cm-primary-foreground: 0 0% 100%;
+
+    --cm-secondary: 112 14% 57%;
+    --cm-secondary-foreground: 25 21% 11%;
+
+    --cm-muted: 20 17% 17%;
+    --cm-muted-foreground: 28 28% 76%;
+
+    --cm-accent: 37 85% 62%;
+    --cm-accent-foreground: 25 21% 11%;
+
+    --cm-destructive: 15 69% 57%;
+    --cm-destructive-foreground: 0 0% 100%;
+
+    --cm-border: 22 19% 20%;
+    --cm-input: 22 19% 20%;
+    --cm-ring: 37 85% 62%;
+
+    --radius: 0.75rem;
+
+    --cm-chart-1: 15 69% 57%;
+    --cm-chart-2: 37 85% 62%;
+    --cm-chart-3: 112 14% 57%;
+    --cm-chart-4: 28 28% 76%;
+    --cm-chart-5: 14 64% 38%;
+
+    --cm-sidebar-background: 23 18% 14%;
+    --cm-sidebar-foreground: 32 52% 94%;
+    --cm-sidebar-primary: 15 69% 57%;
+    --cm-sidebar-primary-foreground: 0 0% 100%;
+    --cm-sidebar-accent: 37 85% 62%;
+    --cm-sidebar-accent-foreground: 25 21% 11%;
+    --cm-sidebar-border: 22 19% 20%;
+    --cm-sidebar-ring: 37 85% 62%;
+
+    --background: hsl(var(--cm-background));
+    --foreground: hsl(var(--cm-foreground));
+
+    --card: hsl(var(--cm-card));
+    --card-foreground: hsl(var(--cm-card-foreground));
+
+    --popover: hsl(var(--cm-popover));
+    --popover-foreground: hsl(var(--cm-popover-foreground));
+
+    --primary: hsl(var(--cm-primary));
+    --primary-foreground: hsl(var(--cm-primary-foreground));
+
+    --secondary: hsl(var(--cm-secondary));
+    --secondary-foreground: hsl(var(--cm-secondary-foreground));
+
+    --muted: hsl(var(--cm-muted));
+    --muted-foreground: hsl(var(--cm-muted-foreground));
+
+    --accent: hsl(var(--cm-accent));
+    --accent-foreground: hsl(var(--cm-accent-foreground));
+
+    --destructive: hsl(var(--cm-destructive));
+    --destructive-foreground: hsl(var(--cm-destructive-foreground));
+
+    --border: hsl(var(--cm-border));
+    --input: hsl(var(--cm-input));
+    --ring: hsl(var(--cm-ring));
+
+    --chart-1: hsl(var(--cm-chart-1));
+    --chart-2: hsl(var(--cm-chart-2));
+    --chart-3: hsl(var(--cm-chart-3));
+    --chart-4: hsl(var(--cm-chart-4));
+    --chart-5: hsl(var(--cm-chart-5));
+
+    --sidebar-background: hsl(var(--cm-sidebar-background));
+    --sidebar-foreground: hsl(var(--cm-sidebar-foreground));
+    --sidebar-primary: hsl(var(--cm-sidebar-primary));
+    --sidebar-primary-foreground: hsl(var(--cm-sidebar-primary-foreground));
+    --sidebar-accent: hsl(var(--cm-sidebar-accent));
+    --sidebar-accent-foreground: hsl(var(--cm-sidebar-accent-foreground));
+    --sidebar-border: hsl(var(--cm-sidebar-border));
+    --sidebar-ring: hsl(var(--cm-sidebar-ring));
+
+    --surface: var(--card);
+    --surface-foreground: var(--card-foreground);
+    --surface-secondary: var(--card);
+    --surface-tertiary: var(--muted);
+    --surface-quaternary: var(--muted);
+
+    --danger: var(--destructive);
+    --danger-foreground: var(--destructive-foreground);
+    --success: var(--secondary);
+    --success-foreground: var(--secondary-foreground);
+
+    --field: var(--background);
+    --field-foreground: var(--foreground);
+    --field-border: var(--input);
+    --field-ring: var(--ring);
+  }
 }
 
+/* =========
+   UTILITIES (sans nesting, donc pas besoin de postcss-nested)
+   ========= */
 @layer utilities {
   .no-scrollbar {
     -ms-overflow-style: none;
     scrollbar-width: none;
   }
-
   .no-scrollbar::-webkit-scrollbar {
     display: none;
   }
+
+  .scrollbar-thin {
+    scrollbar-width: thin;
+  }
+  .scrollbar-thin::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  .scrollbar-thin::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  .scrollbar-thin::-webkit-scrollbar-thumb {
+    background-color: hsl(var(--cm-border));
+    border-radius: 4px;
+  }
+  .scrollbar-thin::-webkit-scrollbar-thumb:hover {
+    background-color: hsl(var(--cm-border) / 0.7);
+  }
+}
+
+/* =========
+   COMPONENT OVERRIDES (HeroUI BEM)
+   ========= */
+@layer components {
+  /* Card (rendu shadcn) */
+  .card {
+    @apply rounded-xl border border-border/70 bg-card shadow-sm p-0;
+  }
+  .card__header {
+    @apply space-y-2 px-6 pt-6 pb-0;
+  }
+  .card__title {
+    @apply text-2xl font-display text-foreground;
+  }
+  .card__description {
+    @apply text-sm text-muted-foreground;
+  }
+  .card__content {
+    @apply px-6 pb-6 pt-4;
+  }
+  .card__footer {
+    @apply px-6 pb-6 pt-0;
+  }
+
+  /* Input (rendu shadcn) */
+  .input {
+    @apply flex h-10 w-full rounded-md border border-input bg-white px-3 py-2 text-base shadow-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 md:text-sm;
+  }
+
+  /* Textarea (rendu shadcn) */
+  .textarea {
+    @apply flex min-h-[60px] w-full rounded-md border border-input bg-white px-3 py-2 text-base shadow-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 md:text-sm;
+  }
+
 }
