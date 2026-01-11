@@ -91,6 +91,13 @@ const select = {
       createdAt: true,
     },
   },
+  collections: {
+    select: {
+      id: true,
+      name: true,
+      emoji: true,
+    },
+  },
 } satisfies Prisma.RecipeSelect;
 
 export type SelectResult = Prisma.RecipeGetPayload<{ select: typeof select }>;
@@ -114,6 +121,13 @@ export const responseSchema = recipeSnapshotSchema.extend({
   instructions: z.array(instructionSnapshotSchema),
   images: z.array(recipeImageSnapshotSchema),
   equipments: z.array(equipmentSnapshotSchema),
+  collections: z.array(
+    z.object({
+      id: z.string(),
+      name: z.string(),
+      emoji: z.string(),
+    })
+  ),
 });
 
 export type ResponseDto = z.infer<typeof responseSchema>;
