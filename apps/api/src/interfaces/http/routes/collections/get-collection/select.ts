@@ -18,8 +18,13 @@ const select = {
   members: {
     select: {
       id: true,
-      userId: true,
       joinedAt: true,
+      user: {
+        select: {
+          email: true,
+          avatar: true,
+        },
+      },
     },
   },
 } satisfies Prisma.CollectionSelect;
@@ -28,9 +33,7 @@ export type SelectResult = Prisma.CollectionGetPayload<{ select: typeof select }
 
 
 export const responseSchema = collectionSnapshotSchema.extend({
-  members: z
-    .array(collectionMemberSnapshotSchema.omit({ collectionId: true }))
-    .nullable(),
+  members: z.array(collectionMemberSnapshotSchema).nullable(),
 });
 
 export type ResponseDto = z.infer<typeof responseSchema>;
@@ -44,7 +47,14 @@ const transform = (data: SelectResult, options: TransformOptions): ResponseDto =
   return {
     ...rest,
     ownerId: userId,
-    members: options.isOwner ? members : null,
+    members: options.isOwner
+      ? members.map((member) => ({
+          id: member.id,
+          email: member.user.email,
+          avatar: member.user.avatar,
+          joinedAt: member.joinedAt,
+        }))
+      : null,
   };
 };
 

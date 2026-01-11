@@ -1,4 +1,4 @@
-import { collectionFields, collectionSnapshotSchema } from "@cookmate/domain/collection";
+import { collectionFields } from "@cookmate/domain/collection";
 import { z } from "zod";
 
 export const body = z.object({
@@ -8,7 +8,9 @@ export const body = z.object({
 });
 
 export const response = {
-  201: collectionSnapshotSchema,
+  201: z.object({
+    id: z.uuid(),
+  }),
 };
 
 export const schemas = { body, response } as const;

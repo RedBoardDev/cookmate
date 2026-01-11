@@ -13,16 +13,29 @@ const select = {
   userId: true,
   createdAt: true,
   updatedAt: true,
+  _count: {
+    select: {
+      recipes: true,
+    },
+  },
 } satisfies Prisma.CollectionSelect;
 
 type SelectResult = Prisma.CollectionGetPayload<{ select: typeof select }>[];
 
-const responseSchema = z.array(collectionSnapshotSchema);
+const responseSchema = z.array(
+  collectionSnapshotSchema.extend({
+    recipeCount: z.number(),
+  })
+);
 
 type ResponseDto = z.infer<typeof responseSchema>;
 
 const transform = (data: SelectResult): ResponseDto => {
-  return data.map(({ userId, ...rest }) => ({ ...rest, ownerId: userId }));
+  return data.map(({ userId, _count, ...rest }) => ({
+    ...rest,
+    ownerId: userId,
+    recipeCount: _count.recipes,
+  }));
 };
 
 export const selectConfig: SelectConfig<typeof select, SelectResult, ResponseDto> = {

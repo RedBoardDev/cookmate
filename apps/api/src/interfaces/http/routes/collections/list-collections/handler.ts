@@ -20,19 +20,11 @@ export const listCollectionsHandler: RouteHandler<typeof schemas> = async (
   const pagination = parsePagination(ctx.query);
   const filters = parseWhereParams(ctx.query, listCollectionsWhereConfigs);
   const orderBy = parseSortParams(ctx.query, listCollectionsSortConfig);
-  const where = combineWhere(
-    { OR: [{ userId }, { members: { some: { userId } } }] },
-    filters
-  );
+  const where = combineWhere({ userId }, filters);
 
   const [collections, total] = await Promise.all([
-    listCollectionsSelect(
-      where,
-      selectConfig.select,
-      orderBy,
-      pagination
-    ),
-    countCollections(where)
+    listCollectionsSelect(where, selectConfig.select, orderBy, pagination),
+    countCollections(where),
   ]);
 
   return {

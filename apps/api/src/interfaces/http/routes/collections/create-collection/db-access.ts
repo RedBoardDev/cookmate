@@ -27,8 +27,8 @@ const createCollectionFn = async (input: CreateCollectionInput) => {
     },
   );
 
-  await getPrisma().$transaction(async (tx) => {
-    await tx.collection.create({
+  const result = await getPrisma().$transaction(async (tx) => {
+    return await tx.collection.create({
       data: {
         name: collection.name,
         emoji: collection.emoji,
@@ -39,10 +39,13 @@ const createCollectionFn = async (input: CreateCollectionInput) => {
         createdAt: collection.createdAt,
         updatedAt: collection.updatedAt,
       },
+      select: {
+        id: true,
+      },
     });
   });
 
-  return collection;
+  return { id: result.id };
 };
 
 export const createCollection = handleError(createCollectionFn);
