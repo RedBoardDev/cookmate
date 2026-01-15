@@ -2,10 +2,18 @@
 
 import { useRouter } from "next/navigation";
 import { Loader2 } from "lucide-react";
-import { Card, Button, Input } from "@heroui/react";
+import { Button } from "@heroui/react";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/shared/ui/primitives/card";
 import { Form } from "@/shared/ui/primitives/form";
 import { FieldError } from "@/shared/ui/form/FieldError";
 import { ErrorMessage } from "@/shared/ui/form/ErrorMessage";
+import { Input } from "@/shared/ui/primitives/input";
 import { useLoginForm } from "./useLoginForm";
 
 type LoginViewProps = {
@@ -21,15 +29,15 @@ export function LoginView({ redirectTo = "/recipes" }: LoginViewProps) {
 
   return (
     <section className="w-full max-w-sm">
-      <Card>
-        <Card.Header>
-          <Card.Title>Welcome back</Card.Title>
-          <Card.Description>
+      <Card variant="soft" border="soft" shadow="flat" radius="3xl">
+        <CardHeader>
+          <CardTitle>Welcome back</CardTitle>
+          <CardDescription>
             Sign in to access your recipes and planners.
-          </Card.Description>
-        </Card.Header>
+          </CardDescription>
+        </CardHeader>
 
-        <Card.Content>
+        <CardContent>
           <Form form={form} className="space-y-4">
             {/* Email Field */}
             <form.Field name="email">
@@ -117,7 +125,7 @@ export function LoginView({ redirectTo = "/recipes" }: LoginViewProps) {
               )}
             </Button>
           </Form>
-        </Card.Content>
+        </CardContent>
       </Card>
     </section>
   );
