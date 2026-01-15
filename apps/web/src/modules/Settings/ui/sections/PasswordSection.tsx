@@ -35,7 +35,7 @@ export function PasswordSection({
   const hasChanges = form.state.isDirty;
 
   return (
-    <Card className="border-border/70 bg-card/95 shadow-sm">
+    <Card variant="soft" border="soft" shadow="flat" radius="3xl">
       <CardHeader>
         <CardTitle className="text-xl font-display">Password</CardTitle>
         <CardDescription>
@@ -68,7 +68,12 @@ export function PasswordSection({
                   <button
                     type="button"
                     onClick={() => setShowCurrentPassword(!showCurrentPassword)}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                    aria-label={
+                      showCurrentPassword
+                        ? "Hide current password"
+                        : "Show current password"
+                    }
+                    className="absolute right-3 top-1/2 -translate-y-1/2 rounded-md text-muted-foreground hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/30"
                   >
                     {showCurrentPassword ? (
                       <EyeOff className="h-4 w-4" />
@@ -106,7 +111,10 @@ export function PasswordSection({
                   <button
                     type="button"
                     onClick={() => setShowNewPassword(!showNewPassword)}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                    aria-label={
+                      showNewPassword ? "Hide new password" : "Show new password"
+                    }
+                    className="absolute right-3 top-1/2 -translate-y-1/2 rounded-md text-muted-foreground hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/30"
                   >
                     {showNewPassword ? (
                       <EyeOff className="h-4 w-4" />
@@ -146,7 +154,12 @@ export function PasswordSection({
                     onClick={() =>
                       setShowConfirmPassword(!showConfirmPassword)
                     }
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                    aria-label={
+                      showConfirmPassword
+                        ? "Hide confirm password"
+                        : "Show confirm password"
+                    }
+                    className="absolute right-3 top-1/2 -translate-y-1/2 rounded-md text-muted-foreground hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/30"
                   >
                     {showConfirmPassword ? (
                       <EyeOff className="h-4 w-4" />
@@ -190,10 +203,15 @@ export function PasswordSection({
                 variant="outline"
                 onClick={() => form.reset()}
                 disabled={isSubmitting}
+                className="rounded-full"
               >
                 Cancel
               </Button>
-              <Button type="submit" disabled={isSubmitting || !hasChanges}>
+              <Button
+                type="submit"
+                disabled={isSubmitting || !hasChanges}
+                className="rounded-full"
+              >
                 {isSubmitting ? (
                   <>
                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />

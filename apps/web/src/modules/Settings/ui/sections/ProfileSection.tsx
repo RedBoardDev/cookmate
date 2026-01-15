@@ -62,7 +62,7 @@ export function ProfileSection({
   const isDisabled = isSubmitting || isDataLoading;
 
   return (
-    <Card className="border-border/70 bg-card/95 shadow-sm">
+    <Card variant="soft" border="soft" shadow="flat" radius="3xl">
       <CardHeader>
         <CardTitle className="text-xl font-display">Profile</CardTitle>
         <CardDescription>
@@ -98,7 +98,7 @@ export function ProfileSection({
                             {isDataLoading ? (
                               <Skeleton circle width={64} height={64} />
                             ) : (
-                              <div className="relative h-16 w-16 rounded-full border-2 border-border/60 bg-muted/70 overflow-hidden">
+                              <div className="relative h-16 w-16 rounded-full border-2 border-border/60 bg-muted/70 shadow-sm overflow-hidden">
                                 {avatarError ? (
                                   <div className="flex h-full w-full items-center justify-center bg-secondary text-secondary-foreground text-lg font-medium">
                                     {avatarFallback}
@@ -123,6 +123,7 @@ export function ProfileSection({
                                     <button
                                       key={option.id}
                                       type="button"
+                                      aria-pressed={isSelected}
                                       onClick={() => {
                                         setAvatarError(false);
                                         avatarField.handleChange(option.path);
@@ -130,7 +131,9 @@ export function ProfileSection({
                                       disabled={isDisabled}
                                       className={cn(
                                         "relative h-10 w-10 rounded-full border-2 transition-all",
-                                        "hover:scale-110 focus:outline-none focus:ring-2 focus:ring-primary/40",
+                                        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40",
+                                        "motion-safe:hover:scale-110",
+                                        "bg-background/80 shadow-sm",
                                         isSelected
                                           ? "border-primary ring-2 ring-primary/20"
                                           : "border-border/60 hover:border-primary/60",
@@ -192,10 +195,15 @@ export function ProfileSection({
                         variant="outline"
                         onClick={() => form.reset()}
                         disabled={isDisabled}
+                        className="rounded-full"
                       >
                         Cancel
                       </Button>
-                      <Button type="submit" disabled={isDisabled || !isDirty}>
+                      <Button
+                        type="submit"
+                        disabled={isDisabled || !isDirty}
+                        className="rounded-full"
+                      >
                         {isSubmitting ? (
                           <>
                             <Loader2 className="mr-2 h-4 w-4 animate-spin" />

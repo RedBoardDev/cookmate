@@ -38,7 +38,7 @@ export function AccountSection({
   const formattedDate = createdAt ? formatDate(createdAt) : "";
 
   return (
-    <Card className="border-border/70 bg-card/95 shadow-sm">
+    <Card variant="soft" border="soft" shadow="flat" radius="3xl">
       <CardHeader>
         <CardTitle className="text-xl font-display">Account</CardTitle>
         <CardDescription>
@@ -62,7 +62,7 @@ export function AccountSection({
                 type="email"
                 value={email}
                 disabled
-                className="pl-9 bg-muted/50 cursor-not-allowed"
+                className="pl-9 cursor-not-allowed"
               />
             )}
           </div>
@@ -98,7 +98,7 @@ export function AccountSection({
                 type="text"
                 value={formattedDate}
                 disabled
-                className="pl-9 bg-muted/50 cursor-not-allowed"
+                className="pl-9 cursor-not-allowed"
               />
             )}
           </div>
