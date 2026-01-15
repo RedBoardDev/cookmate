@@ -19,8 +19,10 @@ export function BottomNav() {
   return (
     <nav
       className={cn(
-        "fixed bottom-0 left-0 right-0 z-40 border-t border-border/80",
-        "bg-background/95 backdrop-blur md:hidden overflow-visible"
+        "fixed bottom-0 left-0 right-0 z-40 border-t border-border/60",
+        "bg-background/90 backdrop-blur-xl md:hidden overflow-visible",
+        "rounded-t-3xl shadow-[0_-12px_32px_-24px_rgba(0,0,0,0.35)]",
+        "supports-[backdrop-filter]:bg-background/80"
       )}
     >
       <div
@@ -38,13 +40,15 @@ export function BottomNav() {
               asChild
               size="sm"
               variant="ghost"
-              className={cn(
-                "h-auto flex-col gap-1 rounded-2xl px-2 py-2 text-xs font-medium",
-                "transition-colors hover:bg-accent/15 hover:text-foreground",
-                active
-                  ? "bg-accent text-accent-foreground shadow-sm"
-                  : "text-muted-foreground"
-              )}
+                className={cn(
+                  "h-auto flex-col gap-1 rounded-2xl px-2 py-2 text-xs font-medium",
+                  "transition-all hover:bg-accent/15 hover:text-foreground",
+                  "focus-visible:ring-2 focus-visible:ring-accent/40",
+                  "focus-visible:ring-offset-2 focus-visible:ring-offset-background",
+                  active
+                    ? "bg-accent text-accent-foreground shadow-sm ring-1 ring-accent/30"
+                    : "text-muted-foreground"
+                )}
             >
               <Link href={item.href} aria-current={active ? "page" : undefined}>
                 <Icon className="h-5 w-5" />
@@ -61,6 +65,9 @@ export function BottomNav() {
             className={cn(
               "h-[3.25rem] w-[3.25rem] rounded-full shadow-md",
               "bg-primary text-primary-foreground hover:bg-primary/90",
+              "transition-transform hover:shadow-lg motion-safe:hover:-translate-y-0.5",
+              "focus-visible:ring-2 focus-visible:ring-accent/40",
+              "focus-visible:ring-offset-2 focus-visible:ring-offset-background",
               addActive ? "ring-2 ring-primary/40 ring-offset-2" : "",
               "ring-offset-background"
             )}
@@ -84,13 +91,15 @@ export function BottomNav() {
               asChild
               size="sm"
               variant="ghost"
-              className={cn(
-                "h-auto flex-col gap-1 rounded-2xl px-2 py-2 text-xs font-medium",
-                "transition-colors hover:bg-accent/15 hover:text-foreground",
-                active
-                  ? "bg-accent text-accent-foreground shadow-sm"
-                  : "text-muted-foreground"
-              )}
+                className={cn(
+                  "h-auto flex-col gap-1 rounded-2xl px-2 py-2 text-xs font-medium",
+                  "transition-all hover:bg-accent/15 hover:text-foreground",
+                  "focus-visible:ring-2 focus-visible:ring-accent/40",
+                  "focus-visible:ring-offset-2 focus-visible:ring-offset-background",
+                  active
+                    ? "bg-accent text-accent-foreground shadow-sm ring-1 ring-accent/30"
+                    : "text-muted-foreground"
+                )}
             >
               <Link href={item.href} aria-current={active ? "page" : undefined}>
                 <Icon className="h-5 w-5" />
