@@ -8,6 +8,8 @@ import { HttpStatus } from "@/shared/enums/http-status.enum";
 /**
  * Global error handler for Fastify.
  * Transforms all errors into a consistent API response format.
+ *
+ * Note: The API returns stable error codes. User-facing messages are localized in the frontend.
  */
 export function errorHandler(
   error: FastifyError,
@@ -16,43 +18,41 @@ export function errorHandler(
 ) {
   request.log.error(error);
 
-  // ApiError - already formatted
+  // ApiError
   if (error instanceof ApiError) {
     return reply
       .status(error.httpStatus)
-      .send(formatError(error.code, error.message, error.details));
+      .send(formatError(error.code, { details: error.details, args: error.args }));
   }
 
-  // DomainError - business rule violation (uses its own code and httpStatus)
+  // DomainError
   if (error instanceof DomainError) {
     return reply
       .status(error.httpStatus)
-      .send(formatError(error.code, error.message));
+      .send(formatError(error.code, { details: error.details, args: error.args }));
   }
 
   // Fastify validation error (from Zod type provider)
   if (error.validation) {
     return reply
       .status(HttpStatus.BadRequest)
-      .send(formatError(ErrorCode.VALIDATION_ERROR, "Validation failed", error.validation));
+      .send(formatError(ErrorCode.VALIDATION_ERROR, { details: error.validation }));
   }
 
   // Fastify 404 - route not found
   if (error.statusCode === 404) {
-    return reply
-      .status(HttpStatus.NotFound)
-      .send(formatError(ErrorCode.NOT_FOUND, "Route not found"));
+    return reply.status(HttpStatus.NotFound).send(formatError(ErrorCode.NOT_FOUND));
   }
 
   // Rate limit error (from @fastify/rate-limit)
   if (error.statusCode === 429) {
     return reply
       .status(HttpStatus.TooManyRequests)
-      .send(formatError(ErrorCode.RATE_LIMIT_EXCEEDED, "Too many requests"));
+      .send(formatError(ErrorCode.RATE_LIMIT_EXCEEDED));
   }
 
   // Unknown error - 500
   return reply
     .status(HttpStatus.InternalServerError)
-    .send(formatError(ErrorCode.INTERNAL_ERROR, "Internal server error"));
+    .send(formatError(ErrorCode.INTERNAL_ERROR));
 }

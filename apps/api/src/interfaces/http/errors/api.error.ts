@@ -1,5 +1,6 @@
 import { HttpStatus } from "@/shared/enums/http-status.enum";
 import { ErrorCode } from "@/shared/enums/error-code.enum";
+import type { ApiErrorArgs } from "@/interfaces/http/helpers/reply";
 
 export class ApiError extends Error {
   readonly type = "ApiError";
@@ -8,7 +9,8 @@ export class ApiError extends Error {
     public readonly httpStatus: HttpStatus,
     public readonly code: ErrorCode,
     message?: string,
-    public readonly details?: unknown
+    public readonly details?: unknown,
+    public readonly args?: ApiErrorArgs
   ) {
     super(message ?? code);
     this.name = "ApiError";
@@ -98,8 +100,8 @@ export class ApiError extends Error {
     return new ApiError(HttpStatus.NotFound, ErrorCode.RESOURCE_NOT_FOUND, message);
   }
 
-  static resourceAlreadyExists(message = "Resource already exists") {
-    return new ApiError(HttpStatus.Conflict, ErrorCode.RESOURCE_ALREADY_EXISTS, message);
+  static resourceAlreadyExists(message = "Resource already exists", details?: unknown) {
+    return new ApiError(HttpStatus.Conflict, ErrorCode.RESOURCE_ALREADY_EXISTS, message, details);
   }
 
   static resourceDeleted(message = "Resource has been deleted") {

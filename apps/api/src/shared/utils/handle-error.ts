@@ -5,45 +5,56 @@ import { DomainError } from "@cookmate/domain/errors";
 /**
  * Maps Prisma error codes to ApiError instances.
  * Reference: https://www.prisma.io/docs/orm/reference/error-reference
+ *
+ * Note: Messages are for server logs only. User-facing messages come from the frontend.
  */
 function mapPrismaErrorCode(code: string, meta?: Record<string, unknown>): ApiError {
   switch (code) {
     // Unique constraint violation
-    case "P2002":
-      return ApiError.resourceAlreadyExists(
-        meta?.target
-          ? `A record with this ${(meta.target as string[]).join(", ")} already exists`
-          : "A record with this value already exists"
-      );
+    case "P2002": {
+      // Put field names in details (safe for API response)
+      const details = meta?.target
+        ? { fields: (meta.target as string[]).join(", ") }
+        : undefined;
+      return ApiError.resourceAlreadyExists(undefined, details);
+    }
 
     // Foreign key constraint failed
     case "P2003":
-      return ApiError.invalidForeignKey("Related resource not found");
+      return ApiError.invalidForeignKey();
 
     // Record not found (for OrThrow methods - but we use findUnique + manual check)
     case "P2025":
-      return ApiError.resourceNotFound("Record not found");
+      return ApiError.resourceNotFound();
 
     // Value too long for column
-    case "P2000":
-      return ApiError.invalidBody("Value too long for field");
+    case "P2000": {
+      const details = meta?.column_name ? { field: meta.column_name } : undefined;
+      return ApiError.invalidBody(undefined, details);
+    }
 
     // Required field missing
-    case "P2012":
-      return ApiError.invalidBody("Required field is missing");
+    case "P2012": {
+      const details = meta?.path ? { field: String(meta.path) } : undefined;
+      return ApiError.invalidBody(undefined, details);
+    }
 
     // Missing required argument
-    case "P2013":
-      return ApiError.invalidBody("Missing required argument");
+    case "P2013": {
+      const details = meta?.argument_name ? { argument: String(meta.argument_name) } : undefined;
+      return ApiError.invalidBody(undefined, details);
+    }
 
     // Null constraint violation
-    case "P2011":
-      return ApiError.invalidBody("Null constraint violation");
+    case "P2011": {
+      const details = meta?.constraint ? { constraint: String(meta.constraint) } : undefined;
+      return ApiError.invalidBody(undefined, details);
+    }
 
     // Invalid value for field type
     case "P2005":
     case "P2006":
-      return ApiError.invalidBody("Invalid value for field type");
+      return ApiError.invalidBody();
 
     // Invalid query
     case "P2008":
@@ -52,20 +63,22 @@ function mapPrismaErrorCode(code: string, meta?: Record<string, unknown>): ApiEr
     case "P2026":
     case "P2029":
     case "P2033":
-      return ApiError.badRequest("Invalid database query");
+      return ApiError.badRequest();
 
     // Value out of range
-    case "P2020":
-      return ApiError.invalidBody("Value out of range");
+    case "P2020": {
+      const details = meta?.column_name ? { field: meta.column_name } : undefined;
+      return ApiError.invalidBody(undefined, details);
+    }
 
     // Table/column not found (schema issue)
     case "P2021":
     case "P2022":
-      return ApiError.database("Database schema error");
+      return ApiError.database();
 
     // Default: generic database error
     default:
-      return ApiError.database("Database operation failed");
+      return ApiError.database();
   }
 }
 
@@ -108,22 +121,22 @@ export function handleError<TArgs extends unknown[], TReturn>(
 
       // Prisma validation error
       if (error instanceof Prisma.PrismaClientValidationError) {
-        throw ApiError.invalidBody("Invalid data provided to database");
+        throw ApiError.invalidBody();
       }
 
       // Prisma initialization error
       if (error instanceof Prisma.PrismaClientInitializationError) {
-        throw ApiError.databaseConnection("Database connection failed");
+        throw ApiError.databaseConnection();
       }
 
       // Prisma Rust panic
       if (error instanceof Prisma.PrismaClientRustPanicError) {
-        throw ApiError.database("Database engine error");
+        throw ApiError.database();
       }
 
       // Unknown error - wrap in internal error
       // Note: The error will be logged by the global error handler
-      throw ApiError.internal("An unexpected error occurred");
+      throw ApiError.internal();
     }
   };
 }
