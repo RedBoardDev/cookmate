@@ -25,9 +25,11 @@ const nextConfig = {
   // * Turbopack gère automatiquement le code splitting et l'optimisation
   // * Les optimisations sont gérées via experimental.optimizePackageImports
   experimental: {
-    optimizePackageImports: ["lucide-react"],
+    optimizePackageImports: ["lucide-react", "@lingui/react"],
     // * Optimiser les imports de CSS
     optimizeCss: true,
+    // * Lingui SWC macro support
+    swcPlugins: [["@lingui/swc-plugin", {}]],
   },
 
 

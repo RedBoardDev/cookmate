@@ -2,7 +2,8 @@
 const nextConfig = {
   reactStrictMode: true,
   experimental: {
-    externalDir: true
+    externalDir: true,
+    swcPlugins: [["@lingui/swc-plugin", {}]]
   },
   images: {
     remotePatterns: [
