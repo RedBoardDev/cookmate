@@ -34,9 +34,14 @@ export function CollectionsListScreen({
   const renderSkeletonItems = (actionCount: 1 | 2) => (
     <div className="space-y-3">
       {skeletonTitleWidths.map((titleWidth, index) => (
-        <div
+        <Card
           key={`collection-skeleton-${index}`}
-          className="flex items-center gap-4 rounded-lg border border-border/70 bg-card/95 p-4 shadow-sm"
+          variant="solid"
+          border="soft"
+          shadow="flat"
+          radius="xl"
+          padding="sm"
+          className="flex items-center gap-4 bg-card/95"
         >
           <div className="flex flex-1 items-center gap-3 min-w-0">
             <Skeleton width={48} height={48} borderRadius={12} />
@@ -62,23 +67,25 @@ export function CollectionsListScreen({
               />
             ))}
           </div>
-        </div>
+        </Card>
       ))}
     </div>
   );
 
   return (
-    <div className="flex flex-1 flex-col overflow-hidden p-6">
-      <DialogHeader>
-        <DialogTitle>Manage Collections</DialogTitle>
+    <div className="flex flex-1 flex-col gap-4 overflow-hidden p-6">
+      <DialogHeader className="text-left">
+        <DialogTitle className="text-2xl font-display tracking-tight">
+          Manage Collections
+        </DialogTitle>
         <DialogDescription>
           Organize your recipes into collections.
         </DialogDescription>
       </DialogHeader>
 
-      <div className="flex flex-1 flex-col gap-4 overflow-hidden mt-4">
+      <div className="flex flex-1 flex-col gap-4 overflow-hidden">
         <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2 text-sm font-semibold">
+          <div className="flex items-center gap-2 text-sm font-semibold text-foreground">
             <span>My Collections</span>
             {isLoading ? (
               <Skeleton width={24} height={12} />
@@ -92,18 +99,25 @@ export function CollectionsListScreen({
           <Button
             size="sm"
             onClick={onCreate}
-            className="gap-2"
+            className="gap-2 rounded-full"
           >
             <Plus className="h-4 w-4" />
             Create
           </Button>
         </div>
 
-        <div className="mt-4 max-h-[400px] overflow-y-auto pb-2">
+        <div className="flex-1 overflow-y-auto pb-2">
           {isLoading ? (
             renderSkeletonItems(1)
           ) : collections.length === 0 ? (
-            <Card className="p-6 text-center rounded-3xl border-border/70 bg-card/95 shadow-sm">
+            <Card
+              variant="subtle"
+              border="dashed"
+              shadow="flat"
+              radius="2xl"
+              padding="md"
+              className="text-center"
+            >
               <p className="text-sm text-muted-foreground">
                 You don&apos;t have any collections yet. Create one to get started!
               </p>

@@ -4,6 +4,7 @@ import { Dialog, DialogContent } from "@/shared/ui/primitives/dialog";
 import { CollectionsListScreen } from "@/modules/Collections/ui/list/CollectionsListScreen";
 import { CreateCollectionScreen } from "@/modules/Collections/ui/create/CreateCollectionScreen";
 import { useCollectionsManageModal } from "@/modules/Collections/ui/hooks/useCollectionsManageModal";
+import { cn } from "@/shared/lib/utils";
 
 interface CollectionsManageModalProps {
   open: boolean;
@@ -32,7 +33,13 @@ export function CollectionsManageModal({
 
   return (
     <Dialog open={open} onOpenChange={handleOpenChange}>
-      <DialogContent className="max-h-[90vh] w-full max-w-2xl overflow-hidden flex flex-col p-0">
+      <DialogContent
+        className={cn(
+          "flex max-h-[90vh] w-full max-w-2xl flex-col overflow-hidden p-0",
+          "rounded-3xl border-border/70 bg-background",
+          "shadow-[0_12px_24px_-20px_rgba(0,0,0,0.24)]"
+        )}
+      >
         {screen === "list" && (
           <CollectionsListScreen
             collections={collections}

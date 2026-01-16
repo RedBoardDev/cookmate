@@ -40,7 +40,7 @@ export function CreateCollectionScreen({ onBack }: CreateCollectionScreenProps) 
       disabled={isSubmitting}
     >
       <Form form={form} className="space-y-4">
-        <div className="flex items-end gap-3">
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-end">
           <form.Field name="name">
             {(field) => (
               <div className="flex-1 space-y-2">
@@ -76,7 +76,7 @@ export function CreateCollectionScreen({ onBack }: CreateCollectionScreenProps) 
                       variant="outline"
                       size="icon"
                       disabled={isSubmitting}
-                      className="h-10 w-10"
+                      className="h-10 w-10 rounded-full"
                     >
                       {field.state.value ? (
                         <span className="text-lg">{field.state.value}</span>
@@ -85,7 +85,10 @@ export function CreateCollectionScreen({ onBack }: CreateCollectionScreenProps) 
                       )}
                     </Button>
                   </DropdownMenuTrigger>
-                  <DropdownMenuContent align="end" className="p-0 border-0 bg-transparent shadow-none">
+                  <DropdownMenuContent
+                    align="end"
+                    className="border-0 bg-transparent p-0 shadow-none"
+                  >
                     <EmojiPicker
                       columns={8}
                       onEmojiSelect={(emoji) => {
@@ -134,10 +137,20 @@ export function CreateCollectionScreen({ onBack }: CreateCollectionScreenProps) 
         <ErrorMessage error={error} />
 
         <div className="flex justify-end gap-2 pt-2">
-          <Button type="button" variant="outline" onClick={onBack} disabled={isSubmitting}>
+          <Button
+            type="button"
+            variant="outline"
+            onClick={onBack}
+            disabled={isSubmitting}
+            className="rounded-full"
+          >
             Cancel
           </Button>
-          <Button type="submit" disabled={isSubmitting}>
+          <Button
+            type="submit"
+            disabled={isSubmitting}
+            className="rounded-full"
+          >
             {isSubmitting ? "Creating..." : "Create"}
           </Button>
         </div>

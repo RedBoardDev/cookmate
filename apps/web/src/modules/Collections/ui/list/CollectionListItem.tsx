@@ -4,6 +4,7 @@ import { Trash2 } from "lucide-react";
 import { Button } from "@/shared/ui/primitives/button";
 import { PopConfirm } from "@/shared/ui/primitives/popconfirm";
 import { Badge } from "@/shared/ui/primitives/badge";
+import { Card } from "@/shared/ui/primitives/card";
 import { cn } from "@/shared/lib/utils";
 import type { CollectionEntity } from "@cookmate/domain/collection";
 
@@ -21,15 +22,21 @@ export function CollectionListItem({
   isDeleting
 }: CollectionListItemProps) {
   return (
-    <div
+    <Card
+      variant="solid"
+      border="soft"
+      shadow="flat"
+      radius="xl"
+      padding="sm"
+      interactive="border"
       className={cn(
-        "group flex items-center gap-4 rounded-lg border border-border/70",
-        "bg-card/95 p-4 transition-colors shadow-sm",
-        "hover:border-primary/30 hover:bg-card"
+        "group flex items-center gap-4",
+        "bg-card/95 transition-colors",
+        "hover:border-primary/20"
       )}
     >
       <div className="flex flex-1 items-center gap-3 min-w-0">
-        <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg bg-muted text-2xl">
+        <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-muted/60 text-2xl">
           {collection.emoji}
         </div>
 
@@ -72,7 +79,7 @@ export function CollectionListItem({
           <Button
             variant="ghost"
             size="icon"
-            className="h-8 w-8 shrink-0 text-destructive hover:text-destructive"
+            className="h-8 w-8 shrink-0 rounded-full text-destructive hover:text-destructive"
             disabled={isDeleting}
           >
             <Trash2 className="h-4 w-4" />
@@ -80,6 +87,6 @@ export function CollectionListItem({
           </Button>
         </PopConfirm>
       )}
-    </div>
+    </Card>
   );
 }
