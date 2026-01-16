@@ -1,12 +1,13 @@
 {
   "$schema": "https://turbo.build/schema.json",
-  "pipeline": {
+  "tasks": {
     "build": {
-      "dependsOn": ["^build"],
+      "dependsOn": ["^build", "@cookmate/i18n#compile"],
       "outputs": ["dist/**", "build/**", ".next/**"]
     },
     "dev": {
-      "cache": false
+      "cache": false,
+      "dependsOn": ["@cookmate/i18n#compile"]
     },
     "lint": {
       "outputs": []
@@ -20,6 +21,14 @@
     },
     "clean": {
       "cache": false
+    },
+    "extract": {
+      "cache": false,
+      "outputs": ["locales/**/*.po"]
+    },
+    "compile": {
+      "inputs": ["locales/**/*.po", "lingui.config.ts"],
+      "outputs": ["locales/**/*.mjs"]
     }
   }
 }

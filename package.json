@@ -16,7 +16,9 @@
     "lint": "turbo lint",
     "format": "turbo format",
     "clean": "turbo clean",
-    "typecheck": "turbo run typecheck --filter=...[HEAD]"
+    "typecheck": "turbo run typecheck --filter=...[HEAD]",
+    "i18n:extract": "turbo run extract --filter=@cookmate/i18n",
+    "i18n:compile": "turbo run compile --filter=@cookmate/i18n"
   },
   "devDependencies": {
     "@biomejs/biome": "^2.3.10",
