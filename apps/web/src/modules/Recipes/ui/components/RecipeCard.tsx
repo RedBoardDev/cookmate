@@ -1,8 +1,9 @@
 import Link from "next/link";
 import type { SyntheticEvent } from "react";
 import type { LucideIcon } from "lucide-react";
-import { Card, Chip } from "@heroui/react";
+import { Chip } from "@heroui/react";
 import Skeleton from "react-loading-skeleton";
+import { Card } from "@/shared/ui/primitives/card";
 import { cn } from "@/shared/lib/utils";
 
 const FALLBACK_IMAGE_SRC = "/image_not_found.png";
@@ -42,12 +43,16 @@ export function RecipeCard({
 
   return (
     <Card
+      variant="solid"
+      border="soft"
+      shadow="flat"
       radius="xl"
-      shadow="md"
       className={cn(
         "group relative flex h-full flex-col overflow-hidden",
-        "transition-shadow duration-300",
-        "hover:shadow-lg",
+        "bg-card/95 transition-colors duration-300",
+        "hover:border-primary/20",
+        "focus-within:ring-2 focus-within:ring-accent/40",
+        "focus-within:ring-offset-2 focus-within:ring-offset-background",
         href && !isLoading ? "cursor-pointer" : "cursor-default",
         className
       )}
@@ -116,6 +121,7 @@ export function RecipeCard({
                   variant="flat"
                   size="sm"
                   radius="full"
+                  className="bg-muted/70 text-muted-foreground"
                 >
                   {tag}
                 </Chip>

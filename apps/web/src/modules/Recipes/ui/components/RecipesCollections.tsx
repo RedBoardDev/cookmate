@@ -41,6 +41,18 @@ export function RecipesCollections({
   const otherCollections = collectionOptions.filter((c) => c.id !== "all");
   const skeletonWidths = [96, 84, 72, 110, 64, 88];
 
+  const manageButton = (
+    <Button
+      size="sm"
+      variant="outline"
+      className="gap-2 rounded-full px-4 shadow-sm hover:shadow-md"
+      onClick={() => setIsManageOpen(true)}
+    >
+      <Settings2 className="h-4 w-4" />
+      Manage
+    </Button>
+  );
+
   return (
     <div
       className={cn(
@@ -48,37 +60,53 @@ export function RecipesCollections({
         "md:flex-row md:items-center md:justify-between"
       )}
     >
-      <div className="flex min-w-0 flex-1 items-center gap-2">
-        {isLoading ? (
-          <Skeleton height={36} width={96} borderRadius={999} />
-        ) : allCollection ? (
-          <Button
-            size="sm"
-            variant={selectedIds.includes(allCollection.id) ? "secondary" : "outline"}
-            className={cn(
-              "shrink-0 rounded-full px-4",
-              "flex items-center gap-2"
-            )}
-            aria-pressed={selectedIds.includes(allCollection.id)}
-            onClick={() => onToggle(allCollection.id)}
-          >
-            <BookOpen className="h-4 w-4" />
-            <span>{allCollection.label}</span>
-            <span className={cn(
-              "rounded-full px-2 py-0.5 text-xs",
-              selectedIds.includes(allCollection.id)
-                ? "bg-background/20 text-secondary-foreground"
-                : "bg-muted text-muted-foreground"
-            )}>
-              {allCollection.count}
-            </span>
-          </Button>
-        ) : null}
+      <div
+        className={cn(
+          "flex min-w-0 flex-1 flex-col gap-3",
+          "md:flex-row md:items-center md:gap-2"
+        )}
+      >
+        <div className="flex items-center justify-between gap-2 md:justify-start">
+          {isLoading ? (
+            <Skeleton height={36} width={96} borderRadius={999} />
+          ) : allCollection ? (
+            <Button
+              size="sm"
+              variant={
+                selectedIds.includes(allCollection.id) ? "secondary" : "outline"
+              }
+              className={cn(
+                "shrink-0 rounded-full px-4",
+                "flex items-center gap-2 transition-shadow",
+                selectedIds.includes(allCollection.id)
+                  ? "shadow-sm"
+                  : "hover:shadow-sm"
+              )}
+              aria-pressed={selectedIds.includes(allCollection.id)}
+              onClick={() => onToggle(allCollection.id)}
+            >
+              <BookOpen className="h-4 w-4" />
+              <span>{allCollection.label}</span>
+              <span
+                className={cn(
+                  "rounded-full px-2 py-0.5 text-xs",
+                  selectedIds.includes(allCollection.id)
+                    ? "bg-background/30 text-secondary-foreground"
+                    : "bg-muted/70 text-muted-foreground"
+                )}
+              >
+                {allCollection.count}
+              </span>
+            </Button>
+          ) : null}
+          <div className="md:hidden">{manageButton}</div>
+        </div>
         <div
           className={cn(
-            "flex min-w-0 flex-1 items-center gap-2",
+            "flex w-full min-w-0 items-center gap-2",
             "overflow-x-auto pb-2 md:pb-0",
-            "no-scrollbar"
+            "no-scrollbar",
+            "md:flex-1"
           )}
         >
           {isLoading
@@ -100,7 +128,8 @@ export function RecipesCollections({
                     variant={isActive ? "secondary" : "outline"}
                     className={cn(
                       "shrink-0 rounded-full px-4",
-                      "flex items-center gap-2"
+                      "flex items-center gap-2 transition-shadow",
+                      isActive ? "shadow-sm" : "hover:shadow-sm"
                     )}
                     aria-pressed={isActive}
                     onClick={() => onToggle(collection.id)}
@@ -114,8 +143,8 @@ export function RecipesCollections({
                     <span className={cn(
                       "rounded-full px-2 py-0.5 text-xs",
                       isActive
-                        ? "bg-background/20 text-secondary-foreground"
-                        : "bg-muted text-muted-foreground"
+                        ? "bg-background/30 text-secondary-foreground"
+                        : "bg-muted/70 text-muted-foreground"
                     )}>
                       {collection.count}
                     </span>
@@ -124,21 +153,11 @@ export function RecipesCollections({
               })}
         </div>
       </div>
-      <div className="flex justify-end">
-        <Button
-          size="sm"
-          variant="outline"
-          className="gap-2"
-          onClick={() => setIsManageOpen(true)}
-        >
-          <Settings2 className="h-4 w-4" />
-          Manage
-        </Button>
-        <CollectionsManageModal
-          open={isManageOpen}
-          onOpenChange={setIsManageOpen}
-        />
-      </div>
+      <div className="hidden justify-end md:flex">{manageButton}</div>
+      <CollectionsManageModal
+        open={isManageOpen}
+        onOpenChange={setIsManageOpen}
+      />
     </div>
   );
 }

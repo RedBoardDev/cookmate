@@ -26,35 +26,55 @@ export function RecipesFilters({
   const otherFilters = quickFilters.filter((f) => f.id !== "all");
   const skeletonWidths = [72, 96, 84, 110, 64];
 
+  const filtersButton = (
+    <Button
+      size="sm"
+      variant="outline"
+      className="rounded-full px-4 shadow-sm hover:shadow-md"
+    >
+      <SlidersHorizontal className="h-4 w-4" />
+      Filters
+    </Button>
+  );
+
   return (
     <div
       className={cn(
-        "flex flex-col gap-4 border-b border-border/70 pb-4",
+        "flex flex-col gap-3 border-t border-border/60 pt-4",
         "md:flex-row md:items-center md:justify-between"
       )}
     >
-      <div className="flex min-w-0 flex-1 items-center gap-2">
-        {isLoading ? (
-          <Skeleton height={36} width={84} borderRadius={999} />
-        ) : allFilter ? (
-          <Button
-            size="sm"
-            variant={isSelected(allFilter.id) ? "secondary" : "outline"}
-            className={cn(
-              "shrink-0 rounded-full px-4",
-              isSelected(allFilter.id) && "bg-secondary"
-            )}
-            aria-pressed={isSelected(allFilter.id)}
-            onClick={() => onToggle(allFilter.id)}
-          >
-            {allFilter.label}
-          </Button>
-        ) : null}
+      <div
+        className={cn(
+          "flex min-w-0 flex-1 flex-col gap-3",
+          "md:flex-row md:items-center md:gap-2"
+        )}
+      >
+        <div className="flex items-center justify-between gap-2 md:justify-start">
+          {isLoading ? (
+            <Skeleton height={36} width={84} borderRadius={999} />
+          ) : allFilter ? (
+            <Button
+              size="sm"
+              variant={isSelected(allFilter.id) ? "secondary" : "outline"}
+              className={cn(
+                "shrink-0 rounded-full px-4 transition-shadow",
+                isSelected(allFilter.id) && "bg-secondary"
+              )}
+              aria-pressed={isSelected(allFilter.id)}
+              onClick={() => onToggle(allFilter.id)}
+            >
+              {allFilter.label}
+            </Button>
+          ) : null}
+          <div className="md:hidden">{filtersButton}</div>
+        </div>
         <div
           className={cn(
-            "flex min-w-0 flex-1 items-center gap-2",
+            "flex w-full min-w-0 items-center gap-2",
             "overflow-x-auto pb-2 md:pb-0",
-            "no-scrollbar"
+            "no-scrollbar",
+            "md:flex-1"
           )}
         >
           {isLoading
@@ -74,7 +94,7 @@ export function RecipesFilters({
                     key={filterItem.id}
                     size="sm"
                     variant={active ? "secondary" : "outline"}
-                    className="shrink-0 rounded-full px-4"
+                    className="shrink-0 rounded-full px-4 transition-shadow"
                     aria-pressed={active}
                     onClick={() => onToggle(filterItem.id)}
                   >
@@ -85,16 +105,7 @@ export function RecipesFilters({
         </div>
       </div>
 
-      <div className="flex items-center gap-2">
-        <Button
-          size="sm"
-          variant="outline"
-          className="rounded-full px-4"
-        >
-          <SlidersHorizontal className="h-4 w-4" />
-          Filters
-        </Button>
-      </div>
+      <div className="hidden items-center gap-2 md:flex">{filtersButton}</div>
     </div>
   );
 }

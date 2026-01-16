@@ -3,15 +3,23 @@
 import { useRouter } from "next/navigation";
 import { UtensilsCrossed } from "lucide-react";
 import { Button } from "@heroui/react";
+import { Card } from "@/shared/ui/primitives/card";
 
 export function RecipesEmptyState() {
   const router = useRouter();
 
   return (
     <section className="mx-auto w-full max-w-6xl px-4 py-10">
-      <div className="rounded-xl border border-dashed border-border/80 bg-muted/20 px-6 py-12 text-center">
-        <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-background/80 shadow-sm">
-          <UtensilsCrossed className="h-5 w-5 text-muted-foreground" />
+      <Card
+        variant="subtle"
+        border="dashed"
+        shadow="flat"
+        radius="3xl"
+        padding="md"
+        className="text-center md:p-12"
+      >
+        <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-accent/20 shadow-sm">
+          <UtensilsCrossed className="h-5 w-5 text-accent-foreground" />
         </div>
         <h2 className="mt-4 text-lg font-semibold text-foreground">
           No recipes yet
@@ -28,7 +36,7 @@ export function RecipesEmptyState() {
             Add a recipe
           </Button>
         </div>
-      </div>
+      </Card>
     </section>
   );
 }

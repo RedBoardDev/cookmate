@@ -19,7 +19,9 @@ export function RecipesHeader({
     <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
       <div className="space-y-3">
         <div className="flex items-start justify-between gap-4 md:items-center">
-          <h1 className="text-3xl font-display md:text-4xl">My recipes</h1>
+          <h1 className="text-3xl font-display tracking-tight md:text-4xl">
+            My recipes
+          </h1>
           <div className="md:hidden">
             <UserMenu />
           </div>
@@ -28,7 +30,17 @@ export function RecipesHeader({
           {isLoading ? (
             <Skeleton width={220} />
           ) : (
-            `${totalRecipes} recipes across ${collectionsCount} collections.`
+            <span
+              className={cn(
+                "inline-flex items-center gap-2 rounded-full border border-border/60",
+                "bg-muted/60 px-3 py-1 text-xs font-medium text-muted-foreground",
+                "shadow-[0_6px_18px_-14px_rgba(0,0,0,0.3)]"
+              )}
+            >
+              {totalRecipes} recipes
+              <span aria-hidden>•</span>
+              {collectionsCount} collections
+            </span>
           )}
         </p>
       </div>
@@ -36,14 +48,16 @@ export function RecipesHeader({
       <div className="relative w-full md:max-w-sm">
         <Search
           className={cn(
-            "absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2",
-            "text-muted-foreground pointer-events-none"
+            "pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2",
+            "text-muted-foreground"
           )}
         />
         <Input
           aria-label="Search recipes"
+          variant="search"
+          radius="full"
           placeholder="Search recipes, ingredients..."
-          className="w-full rounded-full pl-10"
+          className="pl-11 pr-4"
         />
       </div>
     </div>

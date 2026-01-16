@@ -1,5 +1,6 @@
 import { AlertTriangle } from "lucide-react";
 import { Button } from "@heroui/react";
+import { Card } from "@/shared/ui/primitives/card";
 
 interface RecipesErrorStateProps {
   onRetry?: () => void;
@@ -8,10 +9,17 @@ interface RecipesErrorStateProps {
 export function RecipesErrorState({ onRetry }: RecipesErrorStateProps) {
   return (
     <section className="mx-auto w-full max-w-6xl px-4 py-10">
-      <div className="rounded-xl border border-border/70 bg-card/95 p-6 shadow-sm md:p-8">
+      <Card
+        variant="soft"
+        border="soft"
+        shadow="flat"
+        radius="3xl"
+        padding="md"
+        className="md:p-8"
+      >
         <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
           <div className="flex items-start gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-destructive/10 text-destructive">
+            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-destructive/10 text-destructive shadow-sm">
               <AlertTriangle className="h-5 w-5" />
             </div>
             <div>
@@ -34,7 +42,7 @@ export function RecipesErrorState({ onRetry }: RecipesErrorStateProps) {
             </Button>
           ) : null}
         </div>
-      </div>
+      </Card>
     </section>
   );
 }

@@ -27,7 +27,7 @@ interface RecipesGridProps {
 export function RecipesGrid({ recipes, isLoading = false }: RecipesGridProps) {
   if (isLoading) {
     return (
-      <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+      <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3 motion-safe:animate-in motion-safe:fade-in-0">
         {Array.from({ length: 6 }).map((_, index) => (
           <RecipeCard key={`skeleton-${index}`} isLoading />
         ))}
@@ -36,7 +36,7 @@ export function RecipesGrid({ recipes, isLoading = false }: RecipesGridProps) {
   }
 
   return (
-    <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+    <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3 motion-safe:animate-in motion-safe:fade-in-0">
       {recipes.map((aggregate) => {
         const { recipe } = aggregate;
         const meta = [
