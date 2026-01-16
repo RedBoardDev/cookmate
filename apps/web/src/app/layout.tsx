@@ -3,6 +3,7 @@ import "react-loading-skeleton/dist/skeleton.css";
 import type { ReactNode } from "react";
 import { Barlow, Barlow_Semi_Condensed } from "next/font/google";
 import { Toaster } from "@/shared/ui/primitives/sonner";
+import { I18nProviderWrapper } from "@/shared/providers/i18n-provider";
 
 const barlow = Barlow({
   subsets: ["latin"],
@@ -18,10 +19,12 @@ const barlowSemiCondensed = Barlow_Semi_Condensed({
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="en" className="light" data-theme="light">
+    <html lang="en" className="light" data-theme="light" suppressHydrationWarning>
       <body className={`bg-background text-foreground ${barlow.variable} ${barlowSemiCondensed.variable}`}>
-        {children}
-        <Toaster />
+        <I18nProviderWrapper>
+          {children}
+          <Toaster />
+        </I18nProviderWrapper>
       </body>
     </html>
   );
