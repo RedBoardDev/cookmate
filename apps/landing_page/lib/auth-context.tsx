@@ -26,7 +26,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
-    // Check for existing session
     const storedUser = localStorage.getItem("cookmate_user")
     if (storedUser) {
       setUser(JSON.parse(storedUser))
@@ -35,7 +34,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, [])
 
   const login = async (email: string, password: string) => {
-    // Simulate API call
     await new Promise((resolve) => setTimeout(resolve, 1000))
 
     const newUser: User = {
@@ -49,7 +47,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }
 
   const signup = async (email: string, password: string, name: string) => {
-    // Simulate API call
     await new Promise((resolve) => setTimeout(resolve, 1000))
 
     const newUser: User = {

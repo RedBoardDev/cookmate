@@ -47,12 +47,9 @@ export function AuthModal({ isOpen, onClose, defaultTab = "login" }: AuthModalPr
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-      {/* Backdrop */}
       <div className="absolute inset-0 bg-foreground/60 backdrop-blur-sm" onClick={onClose} />
 
-      {/* Modal */}
       <div className="relative bg-card rounded-2xl shadow-elevated w-full max-w-md overflow-hidden">
-        {/* Close button */}
         <button
           onClick={onClose}
           className="absolute top-4 right-4 p-2 rounded-xl hover:bg-muted transition-colors z-10"
@@ -60,7 +57,6 @@ export function AuthModal({ isOpen, onClose, defaultTab = "login" }: AuthModalPr
           <X className="w-5 h-5" />
         </button>
 
-        {/* Header */}
         <div className="p-6 pb-0">
           <div className="flex items-center gap-3 mb-6">
             <div className="w-12 h-12 bg-primary rounded-xl flex items-center justify-center">
@@ -74,7 +70,6 @@ export function AuthModal({ isOpen, onClose, defaultTab = "login" }: AuthModalPr
             </div>
           </div>
 
-          {/* Tabs */}
           <div className="flex bg-muted rounded-xl p-1 mb-6">
             <button
               onClick={() => setActiveTab("login")}
@@ -99,7 +94,6 @@ export function AuthModal({ isOpen, onClose, defaultTab = "login" }: AuthModalPr
           </div>
         </div>
 
-        {/* Form */}
         <form onSubmit={handleSubmit} className="p-6 pt-0 space-y-4">
           {activeTab === "signup" && (
             <div>

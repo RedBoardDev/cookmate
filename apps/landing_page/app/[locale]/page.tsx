@@ -6,7 +6,7 @@ import { LandingPage } from "@/components/landing/landing-page"
 export default function Page() {
   return (
     <AuthProvider>
-      <LandingPage onEnterApp={() => {}} />
+      <LandingPage />
     </AuthProvider>
   )
 }

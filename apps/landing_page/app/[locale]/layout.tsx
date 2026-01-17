@@ -40,8 +40,8 @@ export async function generateMetadata({
   const { locale } = await params;
 
   const titles: Record<Locale, string> = {
-    en: "Cookmate - Recipe Book & Kitchen Organization | Free",
-    fr: "Cookmate - Carnet de Recettes & Organisation Cuisine | Gratuit",
+    en: "Cookmate - Recipe book & Kitchen organization",
+    fr: "Cookmate - Carnet de recettes & Organisation cuisine",
   };
 
   const descriptions: Record<Locale, string> = {
@@ -112,21 +112,8 @@ export async function generateMetadata({
       },
     },
     icons: {
-      icon: [
-        {
-          url: "/icon-light-32x32.png",
-          media: "(prefers-color-scheme: light)",
-        },
-        {
-          url: "/icon-dark-32x32.png",
-          media: "(prefers-color-scheme: dark)",
-        },
-        {
-          url: "/icon.svg",
-          type: "image/svg+xml",
-        },
-      ],
-      apple: "/apple-icon.png",
+      icon: "/icon.png",
+      apple: "/icon.png",
     },
     manifest: "/manifest.json",
     category: "food",
@@ -148,8 +135,8 @@ export default async function LocaleLayout({
   children: React.ReactNode;
   params: Promise<{ locale: Locale }>;
 }>) {
-  const { locale } = await params;
-  const validLocale = isValidLocale(locale) ? locale : defaultLocale;
+  const { locale: localeParam } = await params;
+  const validLocale = isValidLocale(localeParam) ? localeParam : defaultLocale;
 
   const messageLoaders: Record<Locale, () => Promise<{ messages: Messages }>> = {
     en: () => import("@cookmate/i18n/locales/en/messages"),
@@ -201,7 +188,7 @@ export default async function LocaleLayout({
     offers: {
       "@type": "Offer",
       price: "0",
-      priceCurrency: locale === "fr" ? "EUR" : "USD",
+      priceCurrency: validLocale === "fr" ? "EUR" : "USD",
       availability: "https://schema.org/InStock",
     },
     aggregateRating: {
@@ -211,15 +198,15 @@ export default async function LocaleLayout({
       bestRating: "5",
       worstRating: "1",
     },
-    description: structuredDataDescriptions[locale],
-    featureList: structuredDataFeatures[locale],
-    keywords: structuredDataKeywords[locale],
+    description: structuredDataDescriptions[validLocale],
+    featureList: structuredDataFeatures[validLocale],
+    keywords: structuredDataKeywords[validLocale],
     applicationSubCategory: "Recipe Management",
     screenshot: `${process.env.NEXT_PUBLIC_SITE_URL || "https://cookmate.app"}/og-image.jpg`,
   };
 
   return (
-    <html lang={locale}>
+    <html lang={validLocale}>
       <body
         className={`${barlow.variable} ${barlowSemiCondensed.variable} font-sans antialiased`}
       >
@@ -229,7 +216,7 @@ export default async function LocaleLayout({
             __html: JSON.stringify(structuredData).replace(/</g, "\\u003c"),
           }}
         />
-        <ClientI18nProvider locale={validLocale} messages={messages}>
+        <ClientI18nProvider key={validLocale} locale={validLocale} messages={messages}>
           {children}
         </ClientI18nProvider>
         <Analytics />
