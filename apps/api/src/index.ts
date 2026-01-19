@@ -1,15 +1,24 @@
 import "dotenv/config";
 import { buildApp } from "@/app";
 import { loadEnv } from "@/config/env";
+import { parsingQueueService } from "@/infra/queue/parsing-queue.service";
+import { parsingOrchestrator } from "@/infra/services/parsing-orchestrator.service";
+import { startParsingWorker } from "@/infra/queue/parsing-worker";
 
 async function main() {
   const env = loadEnv();
+
+  await parsingQueueService.initialize(env.DATABASE_URL);
+
+  const boss = parsingQueueService.getBoss();
+  startParsingWorker(boss, parsingQueueService.getQueueName(), parsingOrchestrator);
+
   const app = buildApp(env);
 
-  // Graceful shutdown handlers
   const shutdown = async (signal: string) => {
     app.log.info({ signal }, "Received shutdown signal, closing server...");
     await app.close();
+    await parsingQueueService.stop();
     process.exit(0);
   };
 

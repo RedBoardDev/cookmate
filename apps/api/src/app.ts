@@ -12,6 +12,7 @@ import {
   registerRateLimit,
   registerSwagger,
   registerAuth,
+  registerWebSocket,
 } from "@/interfaces/http/plugins/index";
 import { registerRoutes } from "@/interfaces/http/routes/index";
 import { closePrisma } from "@/infra/db/prisma";
@@ -38,6 +39,9 @@ export function buildApp(env: AppEnv) {
   void app.register(registerAuth, { auth });
 
   void app.register(registerSwagger, { enabled: env.SWAGGER_ENABLED });
+
+  // WebSocket
+  void app.register(registerWebSocket);
 
   void app.register(registerRoutes);
 

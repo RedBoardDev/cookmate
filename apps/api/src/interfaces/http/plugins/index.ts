@@ -4,3 +4,4 @@ export { registerCors } from "./cors";
 export { registerRateLimit } from "./rate-limit";
 export { registerSwagger } from "./openapi";
 export { registerAuth } from "./auth";
+export { registerWebSocket } from "./websocket";

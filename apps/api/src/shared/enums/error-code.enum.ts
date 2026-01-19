@@ -1,3 +1,5 @@
+// Please update file packages/i18n/src/errors/api-error-descriptors.ts too
+
 export enum ErrorCode {
   // ============================================
   // Generic HTTP Errors
@@ -54,4 +56,12 @@ export enum ErrorCode {
   // ============================================
   EXTERNAL_SERVICE_ERROR = "EXTERNAL_SERVICE_ERROR",
   EXTERNAL_SERVICE_TIMEOUT = "EXTERNAL_SERVICE_TIMEOUT",
+
+  // ============================================
+  // Recipe Parsing
+  // ============================================
+  PARSING_FAILED = "PARSING_FAILED",
+  INVALID_INPUT = "INVALID_INPUT",
+  PARSING_TIMEOUT = "PARSING_TIMEOUT",
+  PARSING_JOB_NOT_FOUND = "PARSING_JOB_NOT_FOUND",
 }
