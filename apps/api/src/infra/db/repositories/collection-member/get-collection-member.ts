@@ -1,7 +1,7 @@
+import { MemberNotFoundError } from "@cookmate/domain/collection";
 import type { Prisma } from "@/generated/prisma/client";
 import { getPrisma } from "@/infra/db/prisma";
 import { handleError } from "@/shared/utils/handle-error";
-import { MemberNotFoundError } from "@cookmate/domain/collection";
 import type { CollectionMemberSelectResult } from "./types";
 
 /**
@@ -9,7 +9,7 @@ import type { CollectionMemberSelectResult } from "./types";
  */
 const getCollectionMemberSelectFn = async <TSelect extends Prisma.CollectionMemberSelect>(
   where: Prisma.CollectionMemberWhereUniqueInput,
-  select: TSelect
+  select: TSelect,
 ): Promise<CollectionMemberSelectResult<TSelect>> => {
   const collectionMember = await getPrisma().collectionMember.findUnique({ where, select });
   if (!collectionMember) throw new MemberNotFoundError();
@@ -23,7 +23,7 @@ export const getCollectionMemberSelect = handleError(getCollectionMemberSelectFn
  */
 const findFirstCollectionMemberFn = async <TSelect extends Prisma.CollectionMemberSelect>(
   where: Prisma.CollectionMemberWhereInput,
-  select: TSelect
+  select: TSelect,
 ): Promise<CollectionMemberSelectResult<TSelect> | null> => {
   return getPrisma().collectionMember.findFirst({ where, select });
 };

@@ -1,6 +1,6 @@
+import type { ParsedRecipe } from "@cookmate/domain/recipe-parsing";
 import { parsingEventsGateway } from "@/infra/services/parser/parsing-events-gateway.service";
 import { parsingProgressReporter } from "@/infra/services/parser/parsing-progress-reporter.service";
-import type { ParsedRecipe } from "@cookmate/domain/recipe-parsing";
 
 export abstract class BaseRecipeParser {
   /**

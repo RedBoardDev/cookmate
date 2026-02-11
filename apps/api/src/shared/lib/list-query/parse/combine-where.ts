@@ -1,9 +1,6 @@
-export const combineWhere = <
-  TWhere extends Record<string, unknown>,
-  TBase extends TWhere
->(
+export const combineWhere = <TWhere extends Record<string, unknown>, TBase extends TWhere>(
   base: TBase,
-  filters?: TWhere
+  filters?: TWhere,
 ): TWhere => {
   if (!filters) return base;
 

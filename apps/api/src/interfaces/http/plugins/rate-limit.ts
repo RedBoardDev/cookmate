@@ -1,6 +1,6 @@
 import rateLimit from "@fastify/rate-limit";
-import fp from "fastify-plugin";
 import type { FastifyPluginAsync } from "fastify";
+import fp from "fastify-plugin";
 
 export interface RateLimitOptions {
   max?: number;

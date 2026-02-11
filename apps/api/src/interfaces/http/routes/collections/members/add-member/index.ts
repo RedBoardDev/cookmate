@@ -8,8 +8,7 @@ export const addMemberRoute = route()
   .meta({
     tags: ["Collection Members"],
     summary: "Add a member to collection",
-    description:
-      "Add a user to the collection by email. Only the owner can add members.",
+    description: "Add a user to the collection by email. Only the owner can add members.",
   })
   .schemas(schemas)
   .handle(addMemberHandler);

@@ -1,5 +1,5 @@
-import { PgBoss } from "pg-boss";
 import type { ParsingTypeValue } from "@cookmate/domain/shared";
+import { PgBoss } from "pg-boss";
 
 export interface ParsingJobPayload {
   jobId: string;

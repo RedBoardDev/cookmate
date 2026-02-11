@@ -1,7 +1,7 @@
 import { getPrisma } from "@/infra/db/prisma";
-import { handleError } from "@/shared/utils/handle-error";
-import { arraysEqual } from "@/shared/utils/array-utils";
 import { getRecipeSelect } from "@/infra/db/repositories/recipe/get-recipe";
+import { arraysEqual } from "@/shared/utils/array-utils";
+import { handleError } from "@/shared/utils/handle-error";
 
 interface UpdateRecipeCollectionsInput {
   recipeId: string;
@@ -15,7 +15,7 @@ const getCurrentCollectionIds = async (recipeId: string): Promise<string[]> => {
       collections: {
         select: { id: true },
       },
-    }
+    },
   );
   return recipe.collections.map((c) => c.id);
 };
@@ -23,15 +23,11 @@ const getCurrentCollectionIds = async (recipeId: string): Promise<string[]> => {
 const syncRecipeCollections = async (
   recipeId: string,
   targetCollectionIds: string[],
-  currentCollectionIds: string[]
+  currentCollectionIds: string[],
 ): Promise<void> => {
-  const toDisconnect = currentCollectionIds
-    .filter((id) => !targetCollectionIds.includes(id))
-    .map((id) => ({ id }));
+  const toDisconnect = currentCollectionIds.filter((id) => !targetCollectionIds.includes(id)).map((id) => ({ id }));
 
-  const toConnect = targetCollectionIds
-    .filter((id) => !currentCollectionIds.includes(id))
-    .map((id) => ({ id }));
+  const toConnect = targetCollectionIds.filter((id) => !currentCollectionIds.includes(id)).map((id) => ({ id }));
 
   await getPrisma().recipe.update({
     where: { id: recipeId },
@@ -44,9 +40,7 @@ const syncRecipeCollections = async (
   });
 };
 
-const updateRecipeCollectionsFn = async (
-  input: UpdateRecipeCollectionsInput
-) => {
+const updateRecipeCollectionsFn = async (input: UpdateRecipeCollectionsInput) => {
   const currentCollectionIds = await getCurrentCollectionIds(input.recipeId);
 
   // * Check if update is needed by comparing arrays
@@ -54,11 +48,7 @@ const updateRecipeCollectionsFn = async (
     return { success: true };
   }
 
-  await syncRecipeCollections(
-    input.recipeId,
-    input.collectionIds,
-    currentCollectionIds
-  );
+  await syncRecipeCollections(input.recipeId, input.collectionIds, currentCollectionIds);
 
   return { success: true };
 };

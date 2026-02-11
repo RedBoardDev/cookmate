@@ -1,8 +1,8 @@
-import { BaseRecipeParser } from "./base/base-parser.abstract";
 import type { ParsedRecipe } from "@cookmate/domain/recipe-parsing";
 import { InvalidInputError } from "@cookmate/domain/recipe-parsing";
-import type { ScraperService } from "@/infra/external-services/scraper.service";
 import type { OpenAIService } from "@/infra/external-services/openai.service";
+import type { ScraperService } from "@/infra/external-services/scraper.service";
+import { BaseRecipeParser } from "./base/base-parser.abstract";
 
 interface UrlParserInput {
   url: string;
@@ -11,7 +11,7 @@ interface UrlParserInput {
 export class UrlParser extends BaseRecipeParser {
   constructor(
     private readonly scraperService: ScraperService,
-    private readonly openaiService: OpenAIService
+    private readonly openaiService: OpenAIService,
   ) {
     super();
   }

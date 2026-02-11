@@ -1,4 +1,4 @@
-import type { FastifyRequest, FastifyReply } from "fastify";
+import type { FastifyReply, FastifyRequest } from "fastify";
 import { formatSuccess } from "@/interfaces/http/helpers/reply";
 import { HttpStatus } from "@/shared/enums/http-status.enum";
 import { pingDatabase } from "./db-access";
@@ -17,22 +17,17 @@ async function checkDatabase(): Promise<CheckResult> {
   }
 }
 
-export async function healthCheckHandler(
-  _request: FastifyRequest,
-  reply: FastifyReply
-) {
+export async function healthCheckHandler(_request: FastifyRequest, reply: FastifyReply) {
   const database = await checkDatabase();
 
   const checks = { database };
   const isHealthy = Object.values(checks).every((c) => c.status === "up");
 
-  return reply
-    .status(isHealthy ? HttpStatus.OK : HttpStatus.ServiceUnavailable)
-    .send(
-      formatSuccess({
-        status: isHealthy ? "healthy" : "unhealthy",
-        uptime: process.uptime(),
-        checks,
-      })
-    );
+  return reply.status(isHealthy ? HttpStatus.OK : HttpStatus.ServiceUnavailable).send(
+    formatSuccess({
+      status: isHealthy ? "healthy" : "unhealthy",
+      uptime: process.uptime(),
+      checks,
+    }),
+  );
 }

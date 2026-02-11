@@ -1,7 +1,7 @@
 import type { Prisma } from "@/generated/prisma/client";
 import { getPrisma } from "@/infra/db/prisma";
+import { type Pagination, paginationForComplexQuery } from "@/shared/lib/pagination";
 import { handleError } from "@/shared/utils/handle-error";
-import { paginationForComplexQuery, type Pagination } from "@/shared/lib/pagination";
 import type { RecipeImageSelectResult } from "./types";
 
 /**
@@ -10,13 +10,11 @@ import type { RecipeImageSelectResult } from "./types";
 const listRecipeImagesSelectFn = async <TSelect extends Prisma.RecipeImageSelect>(
   where: Prisma.RecipeImageWhereInput,
   select: TSelect,
-  orderBy?:
-    | Prisma.RecipeImageOrderByWithRelationInput
-    | Prisma.RecipeImageOrderByWithRelationInput[],
-  pagination?: Pagination
+  orderBy?: Prisma.RecipeImageOrderByWithRelationInput | Prisma.RecipeImageOrderByWithRelationInput[],
+  pagination?: Pagination,
 ): Promise<RecipeImageSelectResult<TSelect>[]> => {
   const paginationQuery = await paginationForComplexQuery(pagination, () =>
-    countRecipeImagesAboveId(pagination?.findId, where)
+    countRecipeImagesAboveId(pagination?.findId, where),
   );
 
   return getPrisma().recipeImage.findMany({
@@ -34,7 +32,7 @@ export const listRecipeImagesSelect = handleError(listRecipeImagesSelectFn);
  */
 const countRecipeImagesAboveId = async (
   id: string | undefined,
-  where?: Prisma.RecipeImageWhereInput
+  where?: Prisma.RecipeImageWhereInput,
 ): Promise<number | undefined> => {
   if (!id) return undefined;
   return getPrisma().recipeImage.count({

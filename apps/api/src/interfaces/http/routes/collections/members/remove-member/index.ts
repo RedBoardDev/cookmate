@@ -8,8 +8,7 @@ export const removeMemberRoute = route()
   .meta({
     tags: ["Collection Members"],
     summary: "Remove a member from collection",
-    description:
-      "Remove a user from the collection. Only the owner can remove members.",
+    description: "Remove a user from the collection. Only the owner can remove members.",
   })
   .schemas(schemas)
   .handle(removeMemberHandler);

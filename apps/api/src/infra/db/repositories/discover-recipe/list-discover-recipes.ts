@@ -1,7 +1,7 @@
 import type { Prisma } from "@/generated/prisma/client";
 import { getPrisma } from "@/infra/db/prisma";
+import { type Pagination, paginationForComplexQuery } from "@/shared/lib/pagination";
 import { handleError } from "@/shared/utils/handle-error";
-import { paginationForComplexQuery, type Pagination } from "@/shared/lib/pagination";
 import type { DiscoverRecipeSelectResult } from "./types";
 
 /**
@@ -11,10 +11,10 @@ const listDiscoverRecipesSelectFn = async <TSelect extends Prisma.DiscoverRecipe
   where: Prisma.DiscoverRecipeWhereInput,
   select: TSelect,
   orderBy?: Prisma.DiscoverRecipeOrderByWithRelationInput | Prisma.DiscoverRecipeOrderByWithRelationInput[],
-  pagination?: Pagination
+  pagination?: Pagination,
 ): Promise<DiscoverRecipeSelectResult<TSelect>[]> => {
   const paginationQuery = await paginationForComplexQuery(pagination, () =>
-    countDiscoverRecipesAboveId(pagination?.findId, where)
+    countDiscoverRecipesAboveId(pagination?.findId, where),
   );
 
   return getPrisma().discoverRecipe.findMany({
@@ -32,7 +32,7 @@ export const listDiscoverRecipesSelect = handleError(listDiscoverRecipesSelectFn
  */
 const countDiscoverRecipesAboveId = async (
   id: string | undefined,
-  where?: Prisma.DiscoverRecipeWhereInput
+  where?: Prisma.DiscoverRecipeWhereInput,
 ): Promise<number | undefined> => {
   if (!id) return undefined;
   return getPrisma().discoverRecipe.count({

@@ -1,7 +1,7 @@
 import type { Prisma } from "@/generated/prisma/client";
 import { getPrisma } from "@/infra/db/prisma";
+import { type Pagination, paginationForComplexQuery } from "@/shared/lib/pagination";
 import { handleError } from "@/shared/utils/handle-error";
-import { paginationForComplexQuery, type Pagination } from "@/shared/lib/pagination";
 import type { InstructionSelectResult } from "./types";
 
 /**
@@ -10,13 +10,11 @@ import type { InstructionSelectResult } from "./types";
 const listInstructionsSelectFn = async <TSelect extends Prisma.InstructionSelect>(
   where: Prisma.InstructionWhereInput,
   select: TSelect,
-  orderBy?:
-    | Prisma.InstructionOrderByWithRelationInput
-    | Prisma.InstructionOrderByWithRelationInput[],
-  pagination?: Pagination
+  orderBy?: Prisma.InstructionOrderByWithRelationInput | Prisma.InstructionOrderByWithRelationInput[],
+  pagination?: Pagination,
 ): Promise<InstructionSelectResult<TSelect>[]> => {
   const paginationQuery = await paginationForComplexQuery(pagination, () =>
-    countInstructionsAboveId(pagination?.findId, where)
+    countInstructionsAboveId(pagination?.findId, where),
   );
 
   return getPrisma().instruction.findMany({
@@ -34,7 +32,7 @@ export const listInstructionsSelect = handleError(listInstructionsSelectFn);
  */
 const countInstructionsAboveId = async (
   id: string | undefined,
-  where?: Prisma.InstructionWhereInput
+  where?: Prisma.InstructionWhereInput,
 ): Promise<number | undefined> => {
   if (!id) return undefined;
   return getPrisma().instruction.count({

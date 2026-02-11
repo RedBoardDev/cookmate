@@ -4,8 +4,7 @@ import { findFirstCollection } from "@/infra/db/repositories/collection/get-coll
 
 const SHORT_URL_BYTES = 8;
 
-const generateShortUrl = () =>
-  randomBytes(SHORT_URL_BYTES).toString("base64url");
+const generateShortUrl = () => randomBytes(SHORT_URL_BYTES).toString("base64url");
 
 export const generateUniqueCollectionShortUrl = async (maxAttempts = 5): Promise<string> => {
   for (let attempt = 0; attempt < maxAttempts; attempt++) {

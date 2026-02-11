@@ -1,6 +1,6 @@
 import { z } from "zod";
-import { arrayParamSchema } from "../utils/array-param-schema";
 import type { SortConfig, WhereConfigs } from "../types";
+import { arrayParamSchema } from "../utils/array-param-schema";
 
 type ListQuerySchemaOptions<TWhere, TOrderBy, TContext> = {
   where?: WhereConfigs<TWhere, TContext>;
@@ -8,7 +8,7 @@ type ListQuerySchemaOptions<TWhere, TOrderBy, TContext> = {
 };
 
 export const defineListQuerySchema = <TWhere, TOrderBy, TContext>(
-  options: ListQuerySchemaOptions<TWhere, TOrderBy, TContext>
+  options: ListQuerySchemaOptions<TWhere, TOrderBy, TContext>,
 ) => {
   const shape: Record<string, z.ZodTypeAny> = {
     page: z.coerce.number().int().min(1).optional().describe("Page number (1-based)"),
@@ -19,8 +19,7 @@ export const defineListQuerySchema = <TWhere, TOrderBy, TContext>(
   if (options.sort) {
     const sortFields = Object.keys(options.sort.fields);
     const fieldList = sortFields.length > 0 ? ` Fields: ${sortFields.join(", ")}.` : "";
-    const baseDescription =
-      options.sort.description ?? "Sort results (field:asc|desc).";
+    const baseDescription = options.sort.description ?? "Sort results (field:asc|desc).";
 
     shape.sort = arrayParamSchema(z.string())
       .optional()

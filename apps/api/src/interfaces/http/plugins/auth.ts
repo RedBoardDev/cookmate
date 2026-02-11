@@ -1,13 +1,8 @@
-import type { FastifyInstance, FastifyRequest, FastifyReply } from "fastify";
-import type { preHandlerHookHandler } from "fastify";
+import type { FastifyInstance, FastifyReply, FastifyRequest, preHandlerHookHandler } from "fastify";
 import fp from "fastify-plugin";
-import type {
-  AuthService,
-  AuthUser,
-  AuthSessionData,
-} from "@/infra/services/auth-service";
-import { toWebHeaders } from "@/shared/lib/headers";
+import type { AuthService, AuthSessionData, AuthUser } from "@/infra/services/auth-service";
 import { ApiError } from "@/interfaces/http/errors/api.error";
+import { toWebHeaders } from "@/shared/lib/headers";
 
 declare module "fastify" {
   interface FastifyInstance {
@@ -33,13 +28,8 @@ function getRequestBaseUrl(request: FastifyRequest): string {
   const forwardedProto = request.headers["x-forwarded-proto"];
   const forwardedHost = request.headers["x-forwarded-host"];
 
-  const protocol =
-    (Array.isArray(forwardedProto) ? forwardedProto[0] : forwardedProto) ||
-    "http";
-  const host =
-    (Array.isArray(forwardedHost) ? forwardedHost[0] : forwardedHost) ||
-    request.headers.host ||
-    "localhost";
+  const protocol = (Array.isArray(forwardedProto) ? forwardedProto[0] : forwardedProto) || "http";
+  const host = (Array.isArray(forwardedHost) ? forwardedHost[0] : forwardedHost) || request.headers.host || "localhost";
 
   return `${protocol}://${host}`;
 }
@@ -83,10 +73,7 @@ async function authPlugin(app: FastifyInstance, opts: AuthPluginOptions) {
     const fetchRequest = new Request(url.toString(), {
       method: request.method,
       headers,
-      body:
-        request.method !== "GET" && request.method !== "HEAD"
-          ? JSON.stringify(request.body)
-          : undefined,
+      body: request.method !== "GET" && request.method !== "HEAD" ? JSON.stringify(request.body) : undefined,
     });
 
     try {

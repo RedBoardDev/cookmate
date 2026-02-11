@@ -1,12 +1,12 @@
-import type { Prisma } from "@/generated/prisma/client";
 import {
-  recipeSnapshotSchema,
-  recipeIngredientSnapshotSchema,
+  equipmentSnapshotSchema,
   instructionSnapshotSchema,
   recipeImageSnapshotSchema,
-  equipmentSnapshotSchema,
+  recipeIngredientSnapshotSchema,
+  recipeSnapshotSchema,
 } from "@cookmate/domain";
 import { z } from "zod";
+import type { Prisma } from "@/generated/prisma/client";
 
 const select = {
   id: true,
@@ -116,7 +116,7 @@ export const responseSchema = recipeSnapshotSchema.extend({
           abbreviation: z.string().nullable(),
         })
         .nullable(),
-    })
+    }),
   ),
   instructions: z.array(instructionSnapshotSchema),
   images: z.array(recipeImageSnapshotSchema),
@@ -126,7 +126,7 @@ export const responseSchema = recipeSnapshotSchema.extend({
       id: z.string(),
       name: z.string(),
       emoji: z.string(),
-    })
+    }),
   ),
 });
 

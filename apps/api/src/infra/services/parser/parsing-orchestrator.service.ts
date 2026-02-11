@@ -1,17 +1,14 @@
+import type { ParsingTypeValue } from "@cookmate/domain/shared";
 import { getParsingJobSelect } from "@/infra/db/repositories/parsing/get-parsing-job";
 import { updateParsingJob } from "@/infra/db/repositories/parsing/update-parsing-job";
 import { parserFactory } from "./parser-factory.service";
 import { parsingEventsGateway } from "./parsing-events-gateway.service";
-import type { ParsingTypeValue } from "@cookmate/domain/shared";
 
 class ParsingOrchestrator {
   async process(jobId: string, type: ParsingTypeValue, input: unknown): Promise<void> {
     try {
       // 1. Fetch job (verify it exists)
-      const job = await getParsingJobSelect(
-        { id: jobId },
-        { id: true, status: true }
-      );
+      const job = await getParsingJobSelect({ id: jobId }, { id: true, status: true });
 
       if (job.status !== "QUEUED") {
         throw new Error(`Job ${jobId} is not in QUEUED status (current: ${job.status})`);
@@ -24,7 +21,7 @@ class ParsingOrchestrator {
           status: "PROCESSING",
           startedAt: new Date(),
         },
-        { id: true }
+        { id: true },
       );
 
       // 3. Get parser from factory
@@ -41,7 +38,7 @@ class ParsingOrchestrator {
           result: result,
           completedAt: new Date(),
         },
-        { id: true }
+        { id: true },
       );
 
       // 6. Emit completed event (best effort - may not have WS connection)
@@ -60,7 +57,7 @@ class ParsingOrchestrator {
           },
           failedAt: new Date(),
         },
-        { id: true }
+        { id: true },
       );
 
       // 8. Emit error event (best effort)

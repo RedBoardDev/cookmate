@@ -1,23 +1,19 @@
 import Fastify from "fastify";
-import {
-  serializerCompiler,
-  validatorCompiler,
-  type ZodTypeProvider,
-} from "fastify-type-provider-zod";
+import { serializerCompiler, validatorCompiler, type ZodTypeProvider } from "fastify-type-provider-zod";
 import type { AppEnv } from "@/config/env";
+import { closePrisma } from "@/infra/db/prisma";
+import { createAuthService } from "@/infra/services/auth-service";
+import { errorHandler } from "@/interfaces/http/errors/error-handler";
 import {
   buildLogger,
-  registerHelmet,
+  registerAuth,
   registerCors,
+  registerHelmet,
   registerRateLimit,
   registerSwagger,
-  registerAuth,
   registerWebSocket,
 } from "@/interfaces/http/plugins/index";
 import { registerRoutes } from "@/interfaces/http/routes/index";
-import { closePrisma } from "@/infra/db/prisma";
-import { errorHandler } from "@/interfaces/http/errors/error-handler";
-import { createAuthService } from "@/infra/services/auth-service";
 
 export function buildApp(env: AppEnv) {
   const app = Fastify({

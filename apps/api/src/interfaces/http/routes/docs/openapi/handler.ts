@@ -1,8 +1,5 @@
 import type { FastifyRequest } from "fastify";
-import {
-  mergeOpenAPISchemas,
-  type OpenAPISchema,
-} from "@/interfaces/http/plugins/openapi";
+import { mergeOpenAPISchemas, type OpenAPISchema } from "@/interfaces/http/plugins/openapi";
 
 const normalizeNullableTypes = (schema: unknown): void => {
   if (!schema || typeof schema !== "object") {
@@ -34,10 +31,7 @@ export async function openapiHandler(request: FastifyRequest) {
 
   try {
     const authSchema = await app.auth.api.generateOpenAPISchema();
-    const merged = mergeOpenAPISchemas(
-      baseSchema,
-      authSchema as unknown as OpenAPISchema
-    );
+    const merged = mergeOpenAPISchemas(baseSchema, authSchema as unknown as OpenAPISchema);
     // Normalize nullable unions for Kubb compatibility.
     normalizeNullableTypes(merged);
     return merged;

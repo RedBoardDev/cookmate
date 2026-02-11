@@ -10,7 +10,7 @@ type WhereStringOptions<TWhere> = {
 
 export const whereString = <TWhere, TContext = unknown>(
   param: string,
-  options: WhereStringOptions<TWhere>
+  options: WhereStringOptions<TWhere>,
 ): WhereConfig<TWhere, TContext, z.ZodString> => {
   const schema = z.string().min(1).describe(options.description);
 

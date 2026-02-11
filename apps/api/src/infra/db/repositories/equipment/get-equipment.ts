@@ -1,7 +1,7 @@
+import { EquipmentNotFoundError } from "@cookmate/domain/equipment";
 import type { Prisma } from "@/generated/prisma/client";
 import { getPrisma } from "@/infra/db/prisma";
 import { handleError } from "@/shared/utils/handle-error";
-import { EquipmentNotFoundError } from "@cookmate/domain/equipment";
 import type { EquipmentSelectResult } from "./types";
 
 /**
@@ -9,7 +9,7 @@ import type { EquipmentSelectResult } from "./types";
  */
 const getEquipmentSelectFn = async <TSelect extends Prisma.EquipmentSelect>(
   where: Prisma.EquipmentWhereUniqueInput,
-  select: TSelect
+  select: TSelect,
 ): Promise<EquipmentSelectResult<TSelect>> => {
   const equipment = await getPrisma().equipment.findUnique({ where, select });
   if (!equipment) throw new EquipmentNotFoundError(where.id);
@@ -23,7 +23,7 @@ export const getEquipmentSelect = handleError(getEquipmentSelectFn);
  */
 const findFirstEquipmentFn = async <TSelect extends Prisma.EquipmentSelect>(
   where: Prisma.EquipmentWhereInput,
-  select: TSelect
+  select: TSelect,
 ): Promise<EquipmentSelectResult<TSelect> | null> => {
   return getPrisma().equipment.findFirst({ where, select });
 };

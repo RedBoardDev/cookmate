@@ -9,7 +9,7 @@ type WhereEnumValueOptions<TWhere, TEnum extends z.ZodTypeAny> = {
 
 export const whereEnumValue = <TWhere, TEnum extends z.ZodTypeAny, TContext = unknown>(
   param: string,
-  options: WhereEnumValueOptions<TWhere, TEnum>
+  options: WhereEnumValueOptions<TWhere, TEnum>,
 ): WhereConfig<TWhere, TContext, TEnum> => ({
   param,
   description: options.description,

@@ -18,10 +18,7 @@ export const paginationForQuery = (pagination: Pagination): PaginationQuery => (
   take: pagination.pageSize,
 });
 
-export const buildPagination = (
-  params: PaginationParams,
-  defaultPageSize = 25,
-): Pagination => ({
+export const buildPagination = (params: PaginationParams, defaultPageSize = 25): Pagination => ({
   page: params.page ?? 1,
   pageSize: params.pageSize ?? defaultPageSize,
   findId: params.findId,
@@ -32,7 +29,7 @@ export const buildPagination = (
  */
 export const paginationForComplexQuery = async (
   pagination: Pagination | undefined,
-  countAboveFn: () => Promise<number | undefined>
+  countAboveFn: () => Promise<number | undefined>,
 ): Promise<PaginationQuery | undefined> => {
   if (!pagination) return undefined;
 

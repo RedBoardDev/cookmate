@@ -8,7 +8,7 @@ type WhereBooleanOptions<TWhere> = {
 
 export const whereBoolean = <TWhere, TContext = unknown>(
   param: string,
-  options: WhereBooleanOptions<TWhere>
+  options: WhereBooleanOptions<TWhere>,
 ): WhereConfig<TWhere, TContext, z.ZodType<boolean>> => {
   const schema = z
     .enum(["true", "false"])

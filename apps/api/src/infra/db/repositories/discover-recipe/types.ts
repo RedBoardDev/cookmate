@@ -4,9 +4,10 @@ export type DiscoverRecipeSelectResult<TSelect extends Prisma.DiscoverRecipeSele
   select: TSelect;
 }>;
 
-export type DiscoverRecipeIncludeResult<TSelect extends Prisma.DiscoverRecipeInclude> = Prisma.DiscoverRecipeGetPayload<{
-  include: TSelect;
-}>;
+export type DiscoverRecipeIncludeResult<TSelect extends Prisma.DiscoverRecipeInclude> =
+  Prisma.DiscoverRecipeGetPayload<{
+    include: TSelect;
+  }>;
 
 export type ListCommentsSelectQueryType = DiscoverRecipeSelectResult<Prisma.DiscoverRecipeSelect>[];
 

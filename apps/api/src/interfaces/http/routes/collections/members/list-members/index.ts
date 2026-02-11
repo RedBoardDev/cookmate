@@ -8,8 +8,7 @@ export const listMembersRoute = route()
   .meta({
     tags: ["Collection Members"],
     summary: "List collection members",
-    description:
-      "Get all members of a collection. Requires being owner or member.",
+    description: "Get all members of a collection. Requires being owner or member.",
   })
   .schemas(schemas)
   .handle(listMembersHandler);

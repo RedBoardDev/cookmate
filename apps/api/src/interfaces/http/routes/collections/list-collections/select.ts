@@ -1,7 +1,7 @@
-import type { Prisma } from "@/generated/prisma/client";
-import type { SelectConfig } from "@/shared/types/select-config";
 import { collectionSnapshotSchema } from "@cookmate/domain";
 import { z } from "zod";
+import type { Prisma } from "@/generated/prisma/client";
+import type { SelectConfig } from "@/shared/types/select-config";
 
 const select = {
   id: true,
@@ -25,7 +25,7 @@ type SelectResult = Prisma.CollectionGetPayload<{ select: typeof select }>[];
 const responseSchema = z.array(
   collectionSnapshotSchema.extend({
     recipeCount: z.number(),
-  })
+  }),
 );
 
 type ResponseDto = z.infer<typeof responseSchema>;

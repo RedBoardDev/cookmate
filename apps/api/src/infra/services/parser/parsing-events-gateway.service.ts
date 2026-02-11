@@ -1,5 +1,5 @@
+import type { ParsedRecipe, ParsingProgress } from "@cookmate/domain/recipe-parsing";
 import type { WebSocket } from "@fastify/websocket";
-import type { ParsingProgress, ParsedRecipe } from "@cookmate/domain/recipe-parsing";
 
 interface WebSocketMessage {
   type: "progress" | "completed" | "failed";

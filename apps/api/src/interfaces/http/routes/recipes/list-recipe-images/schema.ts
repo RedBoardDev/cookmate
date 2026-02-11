@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { defineListQuerySchema } from "@/shared/lib/list-query";
-import { selectConfig } from "./select";
 import { listRecipeImagesSortConfig } from "./order-by";
+import { selectConfig } from "./select";
 import { listRecipeImagesWhereConfigs } from "./where";
 
 export const params = z.object({

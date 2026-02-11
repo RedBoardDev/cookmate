@@ -1,9 +1,6 @@
-import type { Prisma } from "@/generated/prisma/client";
-import {
-  collectionSnapshotSchema,
-  collectionMemberSnapshotSchema,
-} from "@cookmate/domain";
+import { collectionMemberSnapshotSchema, collectionSnapshotSchema } from "@cookmate/domain";
 import { z } from "zod";
+import type { Prisma } from "@/generated/prisma/client";
 
 const select = {
   id: true,
@@ -30,7 +27,6 @@ const select = {
 } satisfies Prisma.CollectionSelect;
 
 export type SelectResult = Prisma.CollectionGetPayload<{ select: typeof select }>;
-
 
 export const responseSchema = collectionSnapshotSchema.extend({
   members: z.array(collectionMemberSnapshotSchema).nullable(),

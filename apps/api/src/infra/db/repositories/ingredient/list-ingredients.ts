@@ -1,7 +1,7 @@
 import type { Prisma } from "@/generated/prisma/client";
 import { getPrisma } from "@/infra/db/prisma";
+import { type Pagination, paginationForComplexQuery } from "@/shared/lib/pagination";
 import { handleError } from "@/shared/utils/handle-error";
-import { paginationForComplexQuery, type Pagination } from "@/shared/lib/pagination";
 import type { IngredientSelectResult } from "./types";
 
 /**
@@ -11,10 +11,10 @@ const listIngredientsSelectFn = async <TSelect extends Prisma.IngredientSelect>(
   where: Prisma.IngredientWhereInput,
   select: TSelect,
   orderBy?: Prisma.IngredientOrderByWithRelationInput | Prisma.IngredientOrderByWithRelationInput[],
-  pagination?: Pagination
+  pagination?: Pagination,
 ): Promise<IngredientSelectResult<TSelect>[]> => {
   const paginationQuery = await paginationForComplexQuery(pagination, () =>
-    countIngredientsAboveId(pagination?.findId, where)
+    countIngredientsAboveId(pagination?.findId, where),
   );
 
   return getPrisma().ingredient.findMany({
@@ -32,7 +32,7 @@ export const listIngredientsSelect = handleError(listIngredientsSelectFn);
  */
 const countIngredientsAboveId = async (
   id: string | undefined,
-  where?: Prisma.IngredientWhereInput
+  where?: Prisma.IngredientWhereInput,
 ): Promise<number | undefined> => {
   if (!id) return undefined;
   return getPrisma().ingredient.count({

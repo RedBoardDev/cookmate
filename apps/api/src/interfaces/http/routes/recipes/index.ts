@@ -1,9 +1,9 @@
 import type { FastifyInstance } from "fastify";
-import { listRecipesRoute } from "./list-recipes";
-import { getRecipeIdByShortUrlRoute } from "./get-recipe-id-by-short-url";
 import { getRecipeRoute } from "./get-recipe";
-import { listRecipeImagesRoute } from "./list-recipe-images";
+import { getRecipeIdByShortUrlRoute } from "./get-recipe-id-by-short-url";
 import { getRecipeImageRoute } from "./get-recipe-image";
+import { listRecipeImagesRoute } from "./list-recipe-images";
+import { listRecipesRoute } from "./list-recipes";
 import { updateRecipeCollectionsRoute } from "./update-recipe-collections";
 
 export async function recipesRoutes(app: FastifyInstance) {

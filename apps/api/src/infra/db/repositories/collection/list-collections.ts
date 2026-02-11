@@ -1,7 +1,7 @@
 import type { Prisma } from "@/generated/prisma/client";
 import { getPrisma } from "@/infra/db/prisma";
+import { type Pagination, paginationForComplexQuery } from "@/shared/lib/pagination";
 import { handleError } from "@/shared/utils/handle-error";
-import { paginationForComplexQuery, type Pagination } from "@/shared/lib/pagination";
 import type { CollectionSelectResult } from "./types";
 
 /**
@@ -11,10 +11,10 @@ const listCollectionsSelectFn = async <TSelect extends Prisma.CollectionSelect>(
   where: Prisma.CollectionWhereInput,
   select: TSelect,
   orderBy?: Prisma.CollectionOrderByWithRelationInput | Prisma.CollectionOrderByWithRelationInput[],
-  pagination?: Pagination
+  pagination?: Pagination,
 ): Promise<CollectionSelectResult<TSelect>[]> => {
   const paginationQuery = await paginationForComplexQuery(pagination, () =>
-    countCollectionsAboveId(pagination?.findId, where)
+    countCollectionsAboveId(pagination?.findId, where),
   );
 
   return getPrisma().collection.findMany({
@@ -32,7 +32,7 @@ export const listCollectionsSelect = handleError(listCollectionsSelectFn);
  */
 const countCollectionsAboveId = async (
   id: string | undefined,
-  where?: Prisma.CollectionWhereInput
+  where?: Prisma.CollectionWhereInput,
 ): Promise<number | undefined> => {
   if (!id) return undefined;
   return getPrisma().collection.count({

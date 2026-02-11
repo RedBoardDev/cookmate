@@ -1,13 +1,11 @@
 import { getCollectionSelect } from "@/infra/db/repositories/collection/get-collection";
 import { HttpStatus } from "@/shared/enums/http-status.enum";
 import type { RouteHandler } from "@/shared/lib/route";
-import { schemas } from "./schema";
-import { selectConfig } from "./select";
 import { getCollectionErrors } from "./errors";
+import type { schemas } from "./schema";
+import { selectConfig } from "./select";
 
-export const getCollectionHandler: RouteHandler<typeof schemas> = async (
-  ctx
-) => {
+export const getCollectionHandler: RouteHandler<typeof schemas> = async (ctx) => {
   const { collectionId } = ctx.params;
   const { id: userId } = ctx.user;
 

@@ -1,8 +1,8 @@
 import type { FastifyInstance } from "fastify";
 import { createCollectionRoute } from "./create-collection";
-import { listCollectionsRoute } from "./list-collections";
-import { getCollectionRoute } from "./get-collection";
 import { deleteCollectionRoute } from "./delete-collection";
+import { getCollectionRoute } from "./get-collection";
+import { listCollectionsRoute } from "./list-collections";
 import { membersRoutes } from "./members";
 
 export async function collectionsRoutes(app: FastifyInstance) {

@@ -1,13 +1,13 @@
-import { UrlParser } from "@/infra/parsers/url-parser.service";
-import { scraperService } from "@/infra/external-services/scraper.service";
-import { openaiService } from "@/infra/external-services/openai.service";
 import type { ParsingTypeValue } from "@cookmate/domain/shared";
+import { openaiService } from "@/infra/external-services/openai.service";
+import { scraperService } from "@/infra/external-services/scraper.service";
 import type { BaseRecipeParser } from "@/infra/parsers/base/base-parser.abstract";
+import { UrlParser } from "@/infra/parsers/url-parser.service";
 
 class ParserFactory {
   constructor(
     private readonly _scraperService: typeof scraperService,
-    private readonly _openaiService: typeof openaiService
+    private readonly _openaiService: typeof openaiService,
   ) {}
 
   getParser(type: ParsingTypeValue): BaseRecipeParser {

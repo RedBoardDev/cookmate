@@ -1,8 +1,8 @@
-import type { RouteHandler } from "@/shared/lib/route";
 import { HttpStatus } from "@/shared/enums/http-status.enum";
+import type { RouteHandler } from "@/shared/lib/route";
 import { deleteCollectionMember } from "./db-access";
-import { schemas } from "./schema";
 import { leaveMemberErrors } from "./errors";
+import type { schemas } from "./schema";
 
 export const leaveMemberHandler: RouteHandler<typeof schemas> = async (ctx) => {
   const { collectionId } = ctx.params;

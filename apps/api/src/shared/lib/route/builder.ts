@@ -1,16 +1,16 @@
 import type { FastifyInstance, FastifyPluginAsync } from "fastify";
-import type {
-  RouteMeta,
-  RouteSchemas,
-  RouteHandler,
-  InitialRouteBuilder,
-  RouteBuilderWithMethod,
-  RouteBuilderWithMeta,
-  RouteBuilderComplete,
-} from "./types";
-import { wrapResponseSchemas } from "./helpers";
 import { formatSuccess } from "@/interfaces/http/helpers/reply";
 import { HttpStatus } from "@/shared/enums/http-status.enum";
+import { wrapResponseSchemas } from "./helpers";
+import type {
+  InitialRouteBuilder,
+  RouteBuilderComplete,
+  RouteBuilderWithMeta,
+  RouteBuilderWithMethod,
+  RouteHandler,
+  RouteMeta,
+  RouteSchemas,
+} from "./types";
 
 type HttpMethod = "get" | "post" | "put" | "patch" | "delete";
 

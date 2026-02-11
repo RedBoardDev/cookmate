@@ -1,7 +1,7 @@
+import { ParsingJobNotFoundError } from "@cookmate/domain/recipe-parsing";
 import type { Prisma } from "@/generated/prisma/client";
 import { getPrisma } from "@/infra/db/prisma";
 import { handleError } from "@/shared/utils/handle-error";
-import { ParsingJobNotFoundError } from "@cookmate/domain/recipe-parsing";
 import type { ParsingJobSelectResult } from "./types";
 
 /**
@@ -10,7 +10,7 @@ import type { ParsingJobSelectResult } from "./types";
 const updateParsingJobFn = async <TSelect extends Prisma.ParsingJobSelect>(
   where: Prisma.ParsingJobWhereUniqueInput,
   data: Prisma.ParsingJobUpdateInput,
-  select: TSelect
+  select: TSelect,
 ): Promise<ParsingJobSelectResult<TSelect>> => {
   const existing = await getPrisma().parsingJob.findUnique({
     where,

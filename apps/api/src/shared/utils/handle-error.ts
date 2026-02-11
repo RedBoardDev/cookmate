@@ -1,6 +1,6 @@
+import { DomainError } from "@cookmate/domain/errors";
 import { Prisma } from "@/generated/prisma/client";
 import { ApiError } from "@/interfaces/http/errors/api.error";
-import { DomainError } from "@cookmate/domain/errors";
 
 /**
  * Maps Prisma error codes to ApiError instances.
@@ -13,9 +13,7 @@ function mapPrismaErrorCode(code: string, meta?: Record<string, unknown>): ApiEr
     // Unique constraint violation
     case "P2002": {
       // Put field names in details (safe for API response)
-      const details = meta?.target
-        ? { fields: (meta.target as string[]).join(", ") }
-        : undefined;
+      const details = meta?.target ? { fields: (meta.target as string[]).join(", ") } : undefined;
       return ApiError.resourceAlreadyExists(undefined, details);
     }
 
@@ -98,7 +96,7 @@ function mapPrismaErrorCode(code: string, meta?: Record<string, unknown>): ApiEr
  * export const getRecipeSelect = handleError(getRecipeSelectFn);
  */
 export function handleError<TArgs extends unknown[], TReturn>(
-  fn: (...args: TArgs) => Promise<TReturn>
+  fn: (...args: TArgs) => Promise<TReturn>,
 ): (...args: TArgs) => Promise<TReturn> {
   return async (...args: TArgs): Promise<TReturn> => {
     try {

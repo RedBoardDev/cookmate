@@ -4,7 +4,8 @@ import { getPrisma } from "@/infra/db/prisma";
 /**
  * COUNT
  */
-const countCollectionsQuery = (where: Prisma.CollectionWhereInput) => getPrisma().collection.count({ where: { ...where } });
+const countCollectionsQuery = (where: Prisma.CollectionWhereInput) =>
+  getPrisma().collection.count({ where: { ...where } });
 
 export type countCollectionsQueryType = Awaited<ReturnType<typeof countCollectionsQuery>>;
 

@@ -1,24 +1,17 @@
 import type { OpenAPIPaths, OpenAPISchema } from "./types";
 
-export function transformAuthPaths(
-  paths: OpenAPIPaths,
-  prefix: string
-): OpenAPIPaths {
+export function transformAuthPaths(paths: OpenAPIPaths, prefix: string): OpenAPIPaths {
   const transformed: OpenAPIPaths = {};
 
   for (const [path, methods] of Object.entries(paths)) {
     const transformedMethods: Record<string, unknown> = {};
 
-    for (const [method, operation] of Object.entries(
-      methods as Record<string, unknown>
-    )) {
+    for (const [method, operation] of Object.entries(methods as Record<string, unknown>)) {
       if (typeof operation === "object" && operation !== null) {
         const op = operation as Record<string, unknown>;
         // Replace "Default" tag with "Auth"
         if (Array.isArray(op.tags)) {
-          op.tags = op.tags.map((tag: string) =>
-            tag === "Default" ? "Auth" : tag
-          );
+          op.tags = op.tags.map((tag: string) => (tag === "Default" ? "Auth" : tag));
         }
         transformedMethods[method] = op;
       } else {
@@ -35,10 +28,7 @@ export function transformAuthPaths(
 /**
  * Merge Better Auth OpenAPI schema into the main schema.
  */
-export function mergeOpenAPISchemas(
-  base: OpenAPISchema,
-  auth: OpenAPISchema
-): OpenAPISchema {
+export function mergeOpenAPISchemas(base: OpenAPISchema, auth: OpenAPISchema): OpenAPISchema {
   const merged = { ...base };
 
   // Merge paths with /api/auth prefix and transform tags

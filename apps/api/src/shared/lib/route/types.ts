@@ -1,9 +1,5 @@
+import type { FastifyPluginAsync, FastifyReply, FastifyRequest } from "fastify";
 import type { z } from "zod";
-import type {
-  FastifyRequest,
-  FastifyReply,
-  FastifyPluginAsync,
-} from "fastify";
 
 type Prettify<T> = { [K in keyof T]: T[K] } & {};
 
@@ -43,9 +39,7 @@ export interface RouteResult {
   };
 }
 
-export type RouteHandler<T extends RouteSchemas> = (
-  ctx: RouteContext<T>
-) => Promise<RouteResult>;
+export type RouteHandler<T extends RouteSchemas> = (ctx: RouteContext<T>) => Promise<RouteResult>;
 
 export interface InitialRouteBuilder {
   get(path?: string): RouteBuilderWithMethod;

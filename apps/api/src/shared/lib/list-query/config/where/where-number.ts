@@ -11,7 +11,7 @@ type WhereNumberOptions<TWhere> = {
 
 export const whereNumber = <TWhere, TContext = unknown>(
   param: string,
-  options: WhereNumberOptions<TWhere>
+  options: WhereNumberOptions<TWhere>,
 ): WhereConfig<TWhere, TContext, z.ZodType<number>> => {
   let schema = z.coerce.number();
 

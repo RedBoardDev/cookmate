@@ -1,6 +1,6 @@
 import cors from "@fastify/cors";
-import fp from "fastify-plugin";
 import type { FastifyPluginAsync } from "fastify";
+import fp from "fastify-plugin";
 
 export interface CorsOptions {
   origins?: string[];

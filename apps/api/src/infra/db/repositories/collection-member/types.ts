@@ -10,8 +10,6 @@ export type CollectionMemberIncludeResult<TSelect extends Prisma.CollectionMembe
     include: TSelect;
   }>;
 
-export type ListCollectionMembersSelectQueryType =
-  CollectionMemberSelectResult<Prisma.CollectionMemberSelect>[];
+export type ListCollectionMembersSelectQueryType = CollectionMemberSelectResult<Prisma.CollectionMemberSelect>[];
 
-export type GetCollectionMemberSelectQueryType =
-  CollectionMemberSelectResult<Prisma.CollectionMemberSelect>;
+export type GetCollectionMemberSelectQueryType = CollectionMemberSelectResult<Prisma.CollectionMemberSelect>;

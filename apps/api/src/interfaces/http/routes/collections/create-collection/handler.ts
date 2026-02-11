@@ -1,8 +1,8 @@
-import type { RouteHandler } from "@/shared/lib/route";
 import { HttpStatus } from "@/shared/enums/http-status.enum";
+import type { RouteHandler } from "@/shared/lib/route";
 import { createCollection } from "./db-access";
 import { createCollectionErrors } from "./errors";
-import { schemas } from "./schema";
+import type { schemas } from "./schema";
 
 export const createCollectionHandler: RouteHandler<typeof schemas> = async (ctx) => {
   const { id: userId } = ctx.user;

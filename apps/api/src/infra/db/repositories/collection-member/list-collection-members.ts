@@ -1,7 +1,7 @@
 import type { Prisma } from "@/generated/prisma/client";
 import { getPrisma } from "@/infra/db/prisma";
+import { type Pagination, paginationForComplexQuery } from "@/shared/lib/pagination";
 import { handleError } from "@/shared/utils/handle-error";
-import { paginationForComplexQuery, type Pagination } from "@/shared/lib/pagination";
 import type { CollectionMemberSelectResult } from "./types";
 
 /**
@@ -10,13 +10,11 @@ import type { CollectionMemberSelectResult } from "./types";
 const listCollectionMembersSelectFn = async <TSelect extends Prisma.CollectionMemberSelect>(
   where: Prisma.CollectionMemberWhereInput,
   select: TSelect,
-  orderBy?:
-    | Prisma.CollectionMemberOrderByWithRelationInput
-    | Prisma.CollectionMemberOrderByWithRelationInput[],
-  pagination?: Pagination
+  orderBy?: Prisma.CollectionMemberOrderByWithRelationInput | Prisma.CollectionMemberOrderByWithRelationInput[],
+  pagination?: Pagination,
 ): Promise<CollectionMemberSelectResult<TSelect>[]> => {
   const paginationQuery = await paginationForComplexQuery(pagination, () =>
-    countCollectionMembersAboveId(pagination?.findId, where)
+    countCollectionMembersAboveId(pagination?.findId, where),
   );
 
   return getPrisma().collectionMember.findMany({
@@ -34,7 +32,7 @@ export const listCollectionMembersSelect = handleError(listCollectionMembersSele
  */
 const countCollectionMembersAboveId = async (
   id: string | undefined,
-  where?: Prisma.CollectionMemberWhereInput
+  where?: Prisma.CollectionMemberWhereInput,
 ): Promise<number | undefined> => {
   if (!id) return undefined;
   return getPrisma().collectionMember.count({

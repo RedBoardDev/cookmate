@@ -1,7 +1,7 @@
 import type { Prisma } from "@/generated/prisma/client";
 import { getPrisma } from "@/infra/db/prisma";
+import { type Pagination, paginationForComplexQuery } from "@/shared/lib/pagination";
 import { handleError } from "@/shared/utils/handle-error";
-import { paginationForComplexQuery, type Pagination } from "@/shared/lib/pagination";
 import type { RecipeIngredientSelectResult } from "./types";
 
 /**
@@ -10,13 +10,11 @@ import type { RecipeIngredientSelectResult } from "./types";
 const listRecipeIngredientsSelectFn = async <TSelect extends Prisma.RecipeIngredientSelect>(
   where: Prisma.RecipeIngredientWhereInput,
   select: TSelect,
-  orderBy?:
-    | Prisma.RecipeIngredientOrderByWithRelationInput
-    | Prisma.RecipeIngredientOrderByWithRelationInput[],
-  pagination?: Pagination
+  orderBy?: Prisma.RecipeIngredientOrderByWithRelationInput | Prisma.RecipeIngredientOrderByWithRelationInput[],
+  pagination?: Pagination,
 ): Promise<RecipeIngredientSelectResult<TSelect>[]> => {
   const paginationQuery = await paginationForComplexQuery(pagination, () =>
-    countRecipeIngredientsAboveId(pagination?.findId, where)
+    countRecipeIngredientsAboveId(pagination?.findId, where),
   );
 
   return getPrisma().recipeIngredient.findMany({
@@ -34,7 +32,7 @@ export const listRecipeIngredientsSelect = handleError(listRecipeIngredientsSele
  */
 const countRecipeIngredientsAboveId = async (
   id: string | undefined,
-  where?: Prisma.RecipeIngredientWhereInput
+  where?: Prisma.RecipeIngredientWhereInput,
 ): Promise<number | undefined> => {
   if (!id) return undefined;
   return getPrisma().recipeIngredient.count({

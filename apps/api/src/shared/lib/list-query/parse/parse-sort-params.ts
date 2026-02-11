@@ -1,12 +1,9 @@
 import { ApiError } from "@/interfaces/http/errors/api.error";
-import { normalizeArrayParam } from "../utils/normalize-array-param";
 import type { SortConfig } from "../types";
+import { normalizeArrayParam } from "../utils/normalize-array-param";
 import { parseSortItem } from "./parse-sort-item";
 
-export const parseSortParams = <TOrderBy>(
-  query: Record<string, unknown>,
-  config: SortConfig<TOrderBy>
-): TOrderBy[] => {
+export const parseSortParams = <TOrderBy>(query: Record<string, unknown>, config: SortConfig<TOrderBy>): TOrderBy[] => {
   const raw = query.sort;
   if (raw === undefined) return config.default;
 

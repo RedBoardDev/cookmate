@@ -1,7 +1,7 @@
+import { MemberNotFoundError } from "@cookmate/domain/collection";
 import { getPrisma } from "@/infra/db/prisma";
 import { findFirstCollectionMember } from "@/infra/db/repositories/collection-member/get-collection-member";
 import { handleError } from "@/shared/utils/handle-error";
-import { MemberNotFoundError } from "@cookmate/domain/collection";
 
 interface DeleteMemberInput {
   collectionId: string;
@@ -11,7 +11,7 @@ interface DeleteMemberInput {
 const deleteCollectionMemberFn = async (input: DeleteMemberInput) => {
   const member = await findFirstCollectionMember(
     { collectionId: input.collectionId, userId: input.userId },
-    { id: true }
+    { id: true },
   );
 
   if (!member) throw new MemberNotFoundError();

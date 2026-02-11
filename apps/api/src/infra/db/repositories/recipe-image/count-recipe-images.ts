@@ -4,7 +4,8 @@ import { getPrisma } from "@/infra/db/prisma";
 /**
  * COUNT
  */
-const countRecipeImagesQuery = (where: Prisma.RecipeImageWhereInput) => getPrisma().recipeImage.count({ where: { ...where } });
+const countRecipeImagesQuery = (where: Prisma.RecipeImageWhereInput) =>
+  getPrisma().recipeImage.count({ where: { ...where } });
 
 export type countRecipeImagesQueryType = Awaited<ReturnType<typeof countRecipeImagesQuery>>;
 

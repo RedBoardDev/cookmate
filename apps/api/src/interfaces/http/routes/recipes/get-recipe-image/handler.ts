@@ -1,9 +1,9 @@
 import { getRecipeImageSelect } from "@/infra/db/repositories/recipe-image/get-recipe-image";
 import { HttpStatus } from "@/shared/enums/http-status.enum";
 import type { RouteHandler } from "@/shared/lib/route";
-import { schemas } from "./schema";
-import { selectConfig } from "./select";
 import { getRecipeImageErrors } from "./errors";
+import type { schemas } from "./schema";
+import { selectConfig } from "./select";
 
 export const getRecipeImageHandler: RouteHandler<typeof schemas> = async (ctx) => {
   const { imageId } = ctx.params;

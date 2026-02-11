@@ -1,2 +1,2 @@
 export { route } from "./builder";
-export type { RouteHandler, RouteSchemas, RouteMeta } from "./types";
+export type { RouteHandler, RouteMeta, RouteSchemas } from "./types";

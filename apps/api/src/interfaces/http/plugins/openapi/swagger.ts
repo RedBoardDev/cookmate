@@ -1,6 +1,6 @@
 import swagger from "@fastify/swagger";
-import fp from "fastify-plugin";
 import type { FastifyPluginAsync } from "fastify";
+import fp from "fastify-plugin";
 import { jsonSchemaTransform } from "fastify-type-provider-zod";
 
 export interface SwaggerOptions {
@@ -23,7 +23,7 @@ const swaggerPlugin: FastifyPluginAsync<SwaggerOptions> = async (app, opts) => {
           url: "http://localhost:3001",
           description: "Development server",
         },
-      ]
+      ],
     },
     transform: jsonSchemaTransform,
   });

@@ -1,5 +1,5 @@
-import type { Prisma } from "@/generated/prisma/client";
 import { collectionVisibilitySchema } from "@cookmate/domain/collection";
+import type { Prisma } from "@/generated/prisma/client";
 import {
   defineWhereConfigs,
   whereDateRange,

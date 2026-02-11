@@ -8,7 +8,7 @@ type WhereDateRangeOptions<TWhere> = {
 
 export const whereDateRange = <TWhere, TContext = unknown>(
   paramBase: string,
-  options: WhereDateRangeOptions<TWhere>
+  options: WhereDateRangeOptions<TWhere>,
 ): WhereConfig<TWhere, TContext, z.ZodType<Date>>[] => {
   const gteParam = `${paramBase}Gte`;
   const lteParam = `${paramBase}Lte`;

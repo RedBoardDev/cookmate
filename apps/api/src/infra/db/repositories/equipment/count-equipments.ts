@@ -4,7 +4,8 @@ import { getPrisma } from "@/infra/db/prisma";
 /**
  * COUNT
  */
-const countEquipmentsQuery = (where: Prisma.EquipmentWhereInput) => getPrisma().equipment.count({ where: { ...where } });
+const countEquipmentsQuery = (where: Prisma.EquipmentWhereInput) =>
+  getPrisma().equipment.count({ where: { ...where } });
 
 export type countEquipmentsQueryType = Awaited<ReturnType<typeof countEquipmentsQuery>>;
 

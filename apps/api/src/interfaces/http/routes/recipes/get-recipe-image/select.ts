@@ -1,6 +1,6 @@
-import type { Prisma } from "@/generated/prisma/client";
 import { recipeImageSnapshotSchema } from "@cookmate/domain";
-import { z } from "zod";
+import type { z } from "zod";
+import type { Prisma } from "@/generated/prisma/client";
 
 const select = {
   id: true,

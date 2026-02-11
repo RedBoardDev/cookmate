@@ -4,7 +4,7 @@ import type { WhereConfigs } from "../types";
 export const parseWhereParams = <TWhere, TContext>(
   query: Record<string, unknown>,
   configs: WhereConfigs<TWhere, TContext>,
-  context?: TContext
+  context?: TContext,
 ): TWhere | undefined => {
   const filters: TWhere[] = [];
 

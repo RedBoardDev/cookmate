@@ -1,7 +1,7 @@
 import type { WhereConfig, WhereConfigs } from "../../types";
 
 export const defineWhereConfigs = <TWhere, TContext = unknown>(
-  configs: Array<WhereConfig<TWhere, TContext> | WhereConfig<TWhere, TContext>[]>
+  configs: Array<WhereConfig<TWhere, TContext> | WhereConfig<TWhere, TContext>[]>,
 ): WhereConfigs<TWhere, TContext> => {
   const flattened: WhereConfig<TWhere, TContext>[] = [];
 

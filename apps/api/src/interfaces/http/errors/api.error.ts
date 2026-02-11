@@ -1,6 +1,6 @@
-import { HttpStatus } from "@/shared/enums/http-status.enum";
-import { ErrorCode } from "@/shared/enums/error-code.enum";
 import type { ApiErrorArgs } from "@/interfaces/http/helpers/reply";
+import { ErrorCode } from "@/shared/enums/error-code.enum";
+import { HttpStatus } from "@/shared/enums/http-status.enum";
 
 export class ApiError extends Error {
   readonly type = "ApiError";
@@ -10,7 +10,7 @@ export class ApiError extends Error {
     public readonly code: ErrorCode,
     message?: string,
     public readonly details?: unknown,
-    public readonly args?: ApiErrorArgs
+    public readonly args?: ApiErrorArgs,
   ) {
     super(message ?? code);
     this.name = "ApiError";

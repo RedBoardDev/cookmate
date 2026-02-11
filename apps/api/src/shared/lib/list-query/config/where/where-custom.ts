@@ -7,13 +7,9 @@ type WhereCustomOptions<TWhere, TContext, TSchema extends z.ZodTypeAny> = {
   toWhere: (value: z.infer<TSchema>, context: TContext) => TWhere | TWhere[] | undefined;
 };
 
-export const whereCustom = <
-  TWhere,
-  TContext = unknown,
-  TSchema extends z.ZodTypeAny = z.ZodTypeAny
->(
+export const whereCustom = <TWhere, TContext = unknown, TSchema extends z.ZodTypeAny = z.ZodTypeAny>(
   param: string,
-  options: WhereCustomOptions<TWhere, TContext, TSchema>
+  options: WhereCustomOptions<TWhere, TContext, TSchema>,
 ): WhereConfig<TWhere, TContext, TSchema> => ({
   param,
   description: options.description,

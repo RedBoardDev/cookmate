@@ -1,7 +1,7 @@
+import { IngredientNotFoundError } from "@cookmate/domain/ingredient";
 import type { Prisma } from "@/generated/prisma/client";
 import { getPrisma } from "@/infra/db/prisma";
 import { handleError } from "@/shared/utils/handle-error";
-import { IngredientNotFoundError } from "@cookmate/domain/ingredient";
 import type { IngredientSelectResult } from "./types";
 
 /**
@@ -9,7 +9,7 @@ import type { IngredientSelectResult } from "./types";
  */
 const getIngredientSelectFn = async <TSelect extends Prisma.IngredientSelect>(
   where: Prisma.IngredientWhereUniqueInput,
-  select: TSelect
+  select: TSelect,
 ): Promise<IngredientSelectResult<TSelect>> => {
   const ingredient = await getPrisma().ingredient.findUnique({ where, select });
   if (!ingredient) throw new IngredientNotFoundError(where.id);
@@ -23,7 +23,7 @@ export const getIngredientSelect = handleError(getIngredientSelectFn);
  */
 const findFirstIngredientFn = async <TSelect extends Prisma.IngredientSelect>(
   where: Prisma.IngredientWhereInput,
-  select: TSelect
+  select: TSelect,
 ): Promise<IngredientSelectResult<TSelect> | null> => {
   return getPrisma().ingredient.findFirst({ where, select });
 };

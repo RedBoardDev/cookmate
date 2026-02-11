@@ -1,6 +1,6 @@
 import { defineListQuerySchema } from "@/shared/lib/list-query";
-import { selectConfig } from "./select";
 import { listRecipesSortConfig } from "./order-by";
+import { selectConfig } from "./select";
 import { listRecipesWhereConfigs } from "./where";
 
 export const query = defineListQuerySchema({

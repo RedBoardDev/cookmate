@@ -1,12 +1,10 @@
-import type { RouteHandler } from "@/shared/lib/route";
 import { HttpStatus } from "@/shared/enums/http-status.enum";
+import type { RouteHandler } from "@/shared/lib/route";
 import { updateRecipeCollections } from "./db-access";
-import { schemas } from "./schema";
 import { updateRecipeCollectionsErrors } from "./errors";
+import type { schemas } from "./schema";
 
-export const updateRecipeCollectionsHandler: RouteHandler<
-  typeof schemas
-> = async (ctx) => {
+export const updateRecipeCollectionsHandler: RouteHandler<typeof schemas> = async (ctx) => {
   const { recipeId } = ctx.params;
   const { collectionIds } = ctx.body;
   const { id: userId } = ctx.user;

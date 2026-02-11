@@ -1,7 +1,7 @@
 import type { Prisma } from "@/generated/prisma/client";
 import { getPrisma } from "@/infra/db/prisma";
+import { type Pagination, paginationForComplexQuery } from "@/shared/lib/pagination";
 import { handleError } from "@/shared/utils/handle-error";
-import { paginationForComplexQuery, type Pagination } from "@/shared/lib/pagination";
 import type { UnitSelectResult } from "./types";
 
 /**
@@ -11,10 +11,10 @@ const listUnitsSelectFn = async <TSelect extends Prisma.UnitSelect>(
   where: Prisma.UnitWhereInput,
   select: TSelect,
   orderBy?: Prisma.UnitOrderByWithRelationInput | Prisma.UnitOrderByWithRelationInput[],
-  pagination?: Pagination
+  pagination?: Pagination,
 ): Promise<UnitSelectResult<TSelect>[]> => {
   const paginationQuery = await paginationForComplexQuery(pagination, () =>
-    countUnitsAboveId(pagination?.findId, where)
+    countUnitsAboveId(pagination?.findId, where),
   );
 
   return getPrisma().unit.findMany({
@@ -32,7 +32,7 @@ export const listUnitsSelect = handleError(listUnitsSelectFn);
  */
 const countUnitsAboveId = async (
   id: string | undefined,
-  where?: Prisma.UnitWhereInput
+  where?: Prisma.UnitWhereInput,
 ): Promise<number | undefined> => {
   if (!id) return undefined;
   return getPrisma().unit.count({

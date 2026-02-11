@@ -1,6 +1,6 @@
 import { z } from "zod";
-import { arrayParamSchema } from "../../utils/array-param-schema";
 import type { WhereConfig, WhereField } from "../../types";
+import { arrayParamSchema } from "../../utils/array-param-schema";
 
 type WhereNumberArrayOptions<TWhere> = {
   field: WhereField<TWhere>;
@@ -13,7 +13,7 @@ type WhereNumberArrayOptions<TWhere> = {
 
 export const whereNumberArray = <TWhere, TContext = unknown>(
   param: string,
-  options: WhereNumberArrayOptions<TWhere>
+  options: WhereNumberArrayOptions<TWhere>,
 ): WhereConfig<TWhere, TContext, z.ZodType<number[]>> => {
   let itemSchema = z.coerce.number();
 

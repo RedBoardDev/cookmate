@@ -1,18 +1,13 @@
-import type { RouteHandler } from "@/shared/lib/route";
-import { HttpStatus } from "@/shared/enums/http-status.enum";
-import { listCollectionMembersSelect } from "@/infra/db/repositories/collection-member/list-collection-members";
-import {
-  combineWhere,
-  parsePagination,
-  parseSortParams,
-  parseWhereParams,
-} from "@/shared/lib/list-query";
-import { schemas } from "./schema";
-import { selectConfig } from "./select";
-import { listMembersErrors } from "./errors";
-import { listMembersWhereConfigs } from "./where";
-import { listMembersSortConfig } from "./order-by";
 import { countCollectionMembers } from "@/infra/db/repositories/collection-member/count-collection-members";
+import { listCollectionMembersSelect } from "@/infra/db/repositories/collection-member/list-collection-members";
+import { HttpStatus } from "@/shared/enums/http-status.enum";
+import { combineWhere, parsePagination, parseSortParams, parseWhereParams } from "@/shared/lib/list-query";
+import type { RouteHandler } from "@/shared/lib/route";
+import { listMembersErrors } from "./errors";
+import { listMembersSortConfig } from "./order-by";
+import type { schemas } from "./schema";
+import { selectConfig } from "./select";
+import { listMembersWhereConfigs } from "./where";
 
 export const listMembersHandler: RouteHandler<typeof schemas> = async (ctx) => {
   const { collectionId } = ctx.params;
@@ -25,13 +20,8 @@ export const listMembersHandler: RouteHandler<typeof schemas> = async (ctx) => {
   await listMembersErrors(collectionId, userId);
 
   const [members, total] = await Promise.all([
-    listCollectionMembersSelect(
-    where,
-    selectConfig.select,
-    orderBy,
-    pagination
-  ),
-  countCollectionMembers(where)
+    listCollectionMembersSelect(where, selectConfig.select, orderBy, pagination),
+    countCollectionMembers(where),
   ]);
 
   return {

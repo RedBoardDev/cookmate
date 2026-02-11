@@ -1,8 +1,8 @@
-import type { RouteHandler } from "@/shared/lib/route";
-import { HttpStatus } from "@/shared/enums/http-status.enum";
-import { createParsingJob } from "./db-access";
 import { parsingQueueService } from "@/infra/queue/parsing-queue.service";
-import { schemas } from "./schema";
+import { HttpStatus } from "@/shared/enums/http-status.enum";
+import type { RouteHandler } from "@/shared/lib/route";
+import { createParsingJob } from "./db-access";
+import type { schemas } from "./schema";
 
 export const createJobFromUrlHandler: RouteHandler<typeof schemas> = async (ctx) => {
   const { url } = ctx.body;

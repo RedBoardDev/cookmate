@@ -2,8 +2,8 @@ import "dotenv/config";
 import { buildApp } from "@/app";
 import { loadEnv } from "@/config/env";
 import { parsingQueueService } from "@/infra/queue/parsing-queue.service";
-import { parsingOrchestrator } from "@/infra/services/parser/parsing-orchestrator.service";
 import { startParsingWorker } from "@/infra/queue/parsing-worker";
+import { parsingOrchestrator } from "@/infra/services/parser/parsing-orchestrator.service";
 
 async function main() {
   const env = loadEnv();

@@ -1,6 +1,6 @@
 import { z } from "zod";
-import { whereEnumArray } from "./where-enum-array";
 import type { WhereConfig, WhereField } from "../../types";
+import { whereEnumArray } from "./where-enum-array";
 
 type WhereUuidArrayOptions<TWhere> = {
   field: WhereField<TWhere>;
@@ -10,7 +10,7 @@ type WhereUuidArrayOptions<TWhere> = {
 
 export const whereUuidArray = <TWhere, TContext = unknown>(
   param: string,
-  options: WhereUuidArrayOptions<TWhere>
+  options: WhereUuidArrayOptions<TWhere>,
 ): WhereConfig<TWhere, TContext, z.ZodType<string[]>> =>
   whereEnumArray(param, {
     field: options.field,

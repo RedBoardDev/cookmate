@@ -1,7 +1,7 @@
-import type { FastifyInstance } from "fastify";
-import { parsingEventsGateway } from "@/infra/services/parser/parsing-events-gateway.service";
-import { getParsingJobSelect } from "@/infra/db/repositories/parsing/get-parsing-job";
 import type { ParsedRecipe } from "@cookmate/domain/recipe-parsing";
+import type { FastifyInstance } from "fastify";
+import { getParsingJobSelect } from "@/infra/db/repositories/parsing/get-parsing-job";
+import { parsingEventsGateway } from "@/infra/services/parser/parsing-events-gateway.service";
 
 interface ParsingStreamParams {
   jobId: string;
@@ -29,7 +29,7 @@ export async function parsingStreamRoute(app: FastifyInstance): Promise<void> {
             status: true,
             result: true,
             error: true,
-          }
+          },
         );
 
         // Check ownership
@@ -47,7 +47,7 @@ export async function parsingStreamRoute(app: FastifyInstance): Promise<void> {
             JSON.stringify({
               type: "completed",
               result: job.result as ParsedRecipe,
-            })
+            }),
           );
           socket.close(1000, "Job already completed");
           return;
@@ -59,7 +59,7 @@ export async function parsingStreamRoute(app: FastifyInstance): Promise<void> {
             JSON.stringify({
               type: "failed",
               error: job.error,
-            })
+            }),
           );
           socket.close(1000, "Job already failed");
           return;
@@ -75,6 +75,6 @@ export async function parsingStreamRoute(app: FastifyInstance): Promise<void> {
       } catch {
         socket.close(4404, "Job not found");
       }
-    }
+    },
   );
 }
