@@ -1,10 +1,10 @@
-import type React from "react";
+import { defaultLocale, isValidLocale, type Locale, locales } from "@cookmate/i18n";
+import { type Messages, setupI18n } from "@lingui/core";
+import { setI18n } from "@lingui/react/server";
+import { Analytics } from "@vercel/analytics/next";
 import type { Metadata, Viewport } from "next";
 import { Barlow, Barlow_Semi_Condensed } from "next/font/google";
-import { Analytics } from "@vercel/analytics/next";
-import { setI18n } from "@lingui/react/server";
-import { setupI18n, type Messages } from "@lingui/core";
-import { locales, defaultLocale, type Locale, isValidLocale } from "@cookmate/i18n";
+import type React from "react";
 import { ClientI18nProvider } from "./i18n";
 import "../globals.css";
 
@@ -32,11 +32,7 @@ export function generateStaticParams() {
 }
 
 // Localized metadata
-export async function generateMetadata({
-  params,
-}: {
-  params: Promise<{ locale: Locale }>;
-}): Promise<Metadata> {
+export async function generateMetadata({ params }: { params: Promise<{ locale: Locale }> }): Promise<Metadata> {
   const { locale } = await params;
 
   const titles: Record<Locale, string> = {
@@ -207,9 +203,7 @@ export default async function LocaleLayout({
 
   return (
     <html lang={validLocale}>
-      <body
-        className={`${barlow.variable} ${barlowSemiCondensed.variable} font-sans antialiased`}
-      >
+      <body className={`${barlow.variable} ${barlowSemiCondensed.variable} font-sans antialiased`}>
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{

@@ -1,8 +1,8 @@
 "use client";
 
+import type { ReactNode } from "react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { type ReactNode } from "react";
 
 interface NavButtonProps {
   href: string;
@@ -22,7 +22,7 @@ export function NavButton({ href, active, children }: NavButtonProps) {
         "focus-visible:ring-offset-2 focus-visible:ring-offset-background",
         active
           ? "bg-accent text-accent-foreground shadow-sm"
-          : "text-muted-foreground hover:bg-accent/20 hover:text-foreground"
+          : "text-muted-foreground hover:bg-accent/20 hover:text-foreground",
       )}
     >
       <a href={href}>{children}</a>

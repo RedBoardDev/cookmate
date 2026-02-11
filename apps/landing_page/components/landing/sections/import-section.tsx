@@ -1,19 +1,19 @@
-"use client"
+"use client";
 
-import { useLingui } from "@lingui/react/macro"
-import { Instagram, Video, Link2, Camera, FileText } from "lucide-react"
-import { SectionContainer } from "../layout/section-container"
-import { SectionHeader } from "../ui/section-header"
-import { ImportDemo } from "../import/import-demo"
+import { useLingui } from "@lingui/react/macro";
+import { Camera, FileText, Instagram, Link2, Video } from "lucide-react";
+import { ImportDemo } from "../import/import-demo";
+import { SectionContainer } from "../layout/section-container";
+import { SectionHeader } from "../ui/section-header";
 
 interface ImportSectionProps {
-  urlInput: string
-  setUrlInput: (value: string) => void
-  isProcessing: boolean
-  recipeImported: boolean
-  onImport: () => void
-  onReset: () => void
-  onSignup: () => void
+  urlInput: string;
+  setUrlInput: (value: string) => void;
+  isProcessing: boolean;
+  recipeImported: boolean;
+  onImport: () => void;
+  onReset: () => void;
+  onSignup: () => void;
 }
 
 export function ImportSection({
@@ -25,7 +25,7 @@ export function ImportSection({
   onReset,
   onSignup,
 }: ImportSectionProps) {
-  const { t } = useLingui()
+  const { t } = useLingui();
 
   return (
     <section id="import-section" className="py-16 md:py-24 relative overflow-hidden">
@@ -89,5 +89,5 @@ export function ImportSection({
         />
       </SectionContainer>
     </section>
-  )
+  );
 }

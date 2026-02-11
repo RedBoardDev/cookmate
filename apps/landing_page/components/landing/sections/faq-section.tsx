@@ -1,14 +1,14 @@
-"use client"
+"use client";
 
-import { useState, useMemo } from "react"
-import { useLingui, Trans } from "@lingui/react/macro"
-import { ChevronDown } from "lucide-react"
-import { SectionContainer } from "../layout/section-container"
-import { SectionHeader } from "../ui/section-header"
+import { useLingui } from "@lingui/react/macro";
+import { ChevronDown } from "lucide-react";
+import { useMemo, useState } from "react";
+import { SectionContainer } from "../layout/section-container";
+import { SectionHeader } from "../ui/section-header";
 
 export function FaqSection() {
-  const { t } = useLingui()
-  const [openFaq, setOpenFaq] = useState<number | null>(null)
+  const { t } = useLingui();
+  const [openFaq, setOpenFaq] = useState<number | null>(null);
 
   const faqs = useMemo(
     () => [
@@ -34,7 +34,7 @@ export function FaqSection() {
       },
     ],
     [t],
-  )
+  );
 
   return (
     <section id="faq" className="py-20 md:py-28 relative overflow-hidden" aria-labelledby="faq-heading">
@@ -114,5 +114,5 @@ export function FaqSection() {
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#FDFBF8]/50 to-[#FDFBF8]" />
       </div>
     </section>
-  )
+  );
 }

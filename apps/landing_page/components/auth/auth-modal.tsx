@@ -1,49 +1,48 @@
-"use client"
+"use client";
 
-import type React from "react"
-
-import { useState } from "react"
-import { X, Eye, EyeOff, Loader2, Mail, Lock, User } from "lucide-react"
-import { useAuth } from "@/lib/auth-context"
+import { Eye, EyeOff, Loader2, Lock, Mail, User, X } from "lucide-react";
+import type React from "react";
+import { useState } from "react";
+import { useAuth } from "@/lib/auth-context";
 
 interface AuthModalProps {
-  isOpen: boolean
-  onClose: () => void
-  defaultTab?: "login" | "signup"
+  isOpen: boolean;
+  onClose: () => void;
+  defaultTab?: "login" | "signup";
 }
 
 export function AuthModal({ isOpen, onClose, defaultTab = "login" }: AuthModalProps) {
-  const [activeTab, setActiveTab] = useState<"login" | "signup">(defaultTab)
-  const [showPassword, setShowPassword] = useState(false)
-  const [isLoading, setIsLoading] = useState(false)
-  const [error, setError] = useState("")
+  const [activeTab, setActiveTab] = useState<"login" | "signup">(defaultTab);
+  const [showPassword, setShowPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
 
-  const [email, setEmail] = useState("")
-  const [password, setPassword] = useState("")
-  const [name, setName] = useState("")
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [name, setName] = useState("");
 
-  const { login, signup } = useAuth()
+  const { login, signup } = useAuth();
 
-  if (!isOpen) return null
+  if (!isOpen) return null;
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setError("")
-    setIsLoading(true)
+    e.preventDefault();
+    setError("");
+    setIsLoading(true);
 
     try {
       if (activeTab === "login") {
-        await login(email, password)
+        await login(email, password);
       } else {
-        await signup(email, password, name)
+        await signup(email, password, name);
       }
-      onClose()
-    } catch (err) {
-      setError("Une erreur est survenue. Veuillez réessayer.")
+      onClose();
+    } catch (_err) {
+      setError("Une erreur est survenue. Veuillez réessayer.");
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
-  }
+  };
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
@@ -220,5 +219,5 @@ export function AuthModal({ isOpen, onClose, defaultTab = "login" }: AuthModalPr
         </form>
       </div>
     </div>
-  )
+  );
 }

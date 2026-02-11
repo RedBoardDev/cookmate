@@ -1,7 +1,7 @@
 "use client";
 
-import { type LucideIcon } from "lucide-react";
 import { Trans } from "@lingui/react/macro";
+import type { LucideIcon } from "lucide-react";
 
 interface TrustSignalProps {
   icon: LucideIcon;

@@ -15,7 +15,10 @@ export function useActiveSection(): ActiveSection {
       const featuresElement = document.getElementById("features");
       const faqElement = document.getElementById("faq");
 
-      if (window.scrollY < 200 || (featuresElement && featuresElement.getBoundingClientRect().top > window.innerHeight * 0.3)) {
+      if (
+        window.scrollY < 200 ||
+        (featuresElement && featuresElement.getBoundingClientRect().top > window.innerHeight * 0.3)
+      ) {
         setActiveSection("home");
         return;
       }
@@ -48,11 +51,7 @@ export function useActiveSection(): ActiveSection {
         const elementTop = rect.top + window.scrollY;
         const distance = Math.abs(scrollPosition - elementTop);
 
-        if (
-          rect.top <= window.innerHeight * 0.5 &&
-          rect.bottom >= 0 &&
-          distance < closestDistance
-        ) {
+        if (rect.top <= window.innerHeight * 0.5 && rect.bottom >= 0 && distance < closestDistance) {
           closestDistance = distance;
           closestSection = sectionId;
         }

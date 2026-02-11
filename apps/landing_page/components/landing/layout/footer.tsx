@@ -1,7 +1,7 @@
-"use client"
+"use client";
 
-import { Trans } from "@lingui/react/macro"
-import { Twitter, Instagram, Mail } from "lucide-react"
+import { Trans } from "@lingui/react/macro";
+import { Instagram, Mail, Twitter } from "lucide-react";
 
 export function Footer() {
   return (
@@ -124,5 +124,5 @@ export function Footer() {
         </div>
       </div>
     </footer>
-  )
+  );
 }

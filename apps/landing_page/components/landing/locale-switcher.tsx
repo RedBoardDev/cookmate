@@ -1,5 +1,7 @@
 "use client";
 
+import { type Locale, localeNames, locales } from "@cookmate/i18n";
+import { Globe } from "lucide-react";
 import { useParams, usePathname, useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import {
@@ -9,8 +11,6 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { cn } from "@/lib/utils";
-import { Globe } from "lucide-react";
-import { locales, localeNames, type Locale } from "@cookmate/i18n";
 
 export function LocaleSwitcher() {
   const router = useRouter();
@@ -35,7 +35,7 @@ export function LocaleSwitcher() {
             "rounded-full px-3 text-sm font-medium transition-all",
             "text-muted-foreground hover:bg-accent/20 hover:text-foreground",
             "focus-visible:ring-2 focus-visible:ring-accent/40",
-            "focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+            "focus-visible:ring-offset-2 focus-visible:ring-offset-background",
           )}
           aria-label="Change language"
         >
@@ -48,10 +48,7 @@ export function LocaleSwitcher() {
           <DropdownMenuItem
             key={locale}
             onClick={() => switchLocale(locale)}
-            className={cn(
-              "cursor-pointer",
-              currentLocale === locale && "bg-accent text-accent-foreground"
-            )}
+            className={cn("cursor-pointer", currentLocale === locale && "bg-accent text-accent-foreground")}
           >
             <span className="font-medium">{localeNames[locale]}</span>
             <span className="ml-auto text-xs text-muted-foreground">{locale.toUpperCase()}</span>

@@ -1,14 +1,14 @@
-"use client"
+"use client";
 
-import { ArrowRight, ChevronDown, Users, Sparkles, CheckCircle2 } from "lucide-react"
-import { Trans } from "@lingui/react/macro"
-import { SectionContainer } from "../layout/section-container"
-import { PrimaryButton } from "../ui/primary-button"
-import { TrustSignal } from "../ui/trust-signal"
+import { Trans } from "@lingui/react/macro";
+import { ArrowRight, CheckCircle2, ChevronDown, Sparkles, Users } from "lucide-react";
+import { SectionContainer } from "../layout/section-container";
+import { PrimaryButton } from "../ui/primary-button";
+import { TrustSignal } from "../ui/trust-signal";
 
 interface HeroSectionProps {
-  onSignup: () => void
-  onScrollToImport: () => void
+  onSignup: () => void;
+  onScrollToImport: () => void;
 }
 
 export function HeroSection({ onSignup, onScrollToImport }: HeroSectionProps) {
@@ -54,17 +54,25 @@ export function HeroSection({ onSignup, onScrollToImport }: HeroSectionProps) {
         </div>
 
         <div className="flex flex-wrap items-center justify-center gap-6 text-xs text-[#6E6258]/70">
-          <TrustSignal icon={CheckCircle2} iconColor="#5F7A57" className="transition-opacity duration-300 hover:opacity-100">
+          <TrustSignal
+            icon={CheckCircle2}
+            iconColor="#5F7A57"
+            className="transition-opacity duration-300 hover:opacity-100"
+          >
             Free up to 15 recipes
           </TrustSignal>
           <TrustSignal icon={Users} iconColor="#5F7A57" className="transition-opacity duration-300 hover:opacity-100">
             1,247 users
           </TrustSignal>
-          <TrustSignal icon={Sparkles} iconColor="#F0B04C" className="transition-opacity duration-300 hover:opacity-100">
+          <TrustSignal
+            icon={Sparkles}
+            iconColor="#F0B04C"
+            className="transition-opacity duration-300 hover:opacity-100"
+          >
             Rated 4.8/5
           </TrustSignal>
         </div>
       </SectionContainer>
     </section>
-  )
+  );
 }
