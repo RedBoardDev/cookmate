@@ -1,5 +1,5 @@
-import { defaultLocale, isValidLocale, type Locale, locales } from "@cookmate/i18n";
-import { type Messages, setupI18n } from "@lingui/core";
+import { defaultLocale, isValidLocale, loadCatalogMessages, type Locale, locales } from "@cookmate/i18n";
+import { setupI18n } from "@lingui/core";
 import { setI18n } from "@lingui/react/server";
 import { Analytics } from "@vercel/analytics/next";
 import type { Metadata, Viewport } from "next";
@@ -133,13 +133,7 @@ export default async function LocaleLayout({
 }>) {
   const { locale: localeParam } = await params;
   const validLocale = isValidLocale(localeParam) ? localeParam : defaultLocale;
-
-  const messageLoaders: Record<Locale, () => Promise<{ messages: Messages }>> = {
-    en: () => import("@cookmate/i18n/locales/en/messages"),
-    fr: () => import("@cookmate/i18n/locales/fr/messages"),
-  };
-  const loadMessages = messageLoaders[validLocale] ?? messageLoaders[defaultLocale];
-  const { messages } = await loadMessages();
+  const messages = await loadCatalogMessages(validLocale);
 
   // Setup i18n for server components
   const i18n = setupI18n({ locale: validLocale, messages: { [validLocale]: messages } });

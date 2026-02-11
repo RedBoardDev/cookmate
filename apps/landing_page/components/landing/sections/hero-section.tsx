@@ -22,35 +22,38 @@ export function HeroSection({ onSignup, onScrollToImport }: HeroSectionProps) {
           </span>
         </div>
 
-        <h1
-          id="hero-heading"
-          className="font-display text-4xl sm:text-5xl md:text-6xl lg:text-7xl text-[#221B16] tracking-tight leading-[1.1] mb-4 sm:mb-6 text-balance"
-        >
-          <Trans>
-            Where did that <br className="hidden sm:block" />
-            <span className="text-[#C6502B]">recipe go?</span>
-          </Trans>
-        </h1>
-
-        <p className="text-base sm:text-lg md:text-xl text-[#6E6258] max-w-2xl mx-auto leading-relaxed mb-8 sm:mb-10 px-4 sm:px-0">
-          <Trans>
-            You know, the one you saw on Instagram three weeks ago. Or in that book. Or on that blog.
-            <span className="text-[#221B16] font-medium"> Centralize everything. Find everything.</span>
-          </Trans>
-        </p>
-
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-8">
-          <PrimaryButton onClick={onSignup} className="w-full sm:w-auto shadow-xl shadow-[#C6502B]/25">
-            <Trans>Start for free</Trans>
-            <ArrowRight className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-0.5" />
-          </PrimaryButton>
-          <button
-            onClick={onScrollToImport}
-            className="group w-full sm:w-auto px-8 py-4 bg-white/80 backdrop-blur-sm text-[#221B16] font-medium rounded-full border border-[#E6D7C7] hover:bg-white hover:border-[#C6502B]/20 transition-all duration-300 flex items-center justify-center gap-2 shadow-sm hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C6502B]/40 focus-visible:ring-offset-2 focus-visible:ring-offset-background active:scale-[0.98]"
+        <div className="mx-auto w-full max-w-[34rem] px-4 sm:px-0">
+          <h1
+            id="hero-heading"
+            className="font-display text-[2.7rem] sm:text-[3.6rem] md:text-[4.5rem] lg:text-[5.4rem] text-[#221B16] tracking-tight leading-[1.1] mb-4 sm:mb-6 text-balance"
           >
-            <Trans>See how it works</Trans>
-            <ChevronDown className="w-5 h-5 transition-transform duration-300 group-hover:translate-y-0.5" />
-          </button>
+            <Trans>
+              Where did that <br className="hidden sm:block" />
+              <span className="text-[#C6502B]">recipe go?</span>
+            </Trans>
+          </h1>
+
+          <p className="mx-auto max-w-[33rem] text-base sm:text-lg md:text-xl text-[#6E6258] leading-relaxed mb-8 sm:mb-10">
+            <Trans>
+              You know, the one you saw on Instagram three weeks ago. Or in that book. Or on that blog.
+              <br />
+              <span className="text-[#221B16] font-medium">Centralize everything. Find everything.</span>
+            </Trans>
+          </p>
+
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-8">
+            <PrimaryButton onClick={onSignup} className="w-full sm:w-auto shadow-xl shadow-[#C6502B]/25">
+              <Trans>Start for free</Trans>
+              <ArrowRight className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-0.5" />
+            </PrimaryButton>
+            <button
+              onClick={onScrollToImport}
+              className="group w-full sm:w-auto px-8 py-4 bg-white/80 backdrop-blur-sm text-[#221B16] font-medium rounded-full border border-[#E6D7C7] hover:bg-white hover:border-[#C6502B]/20 transition-all duration-300 flex items-center justify-center gap-2 shadow-sm hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C6502B]/40 focus-visible:ring-offset-2 focus-visible:ring-offset-background active:scale-[0.98]"
+            >
+              <Trans>See how it works</Trans>
+              <ChevronDown className="w-5 h-5 transition-transform duration-300 group-hover:translate-y-0.5" />
+            </button>
+          </div>
         </div>
 
         <div className="flex flex-wrap items-center justify-center gap-6 text-xs text-[#6E6258]/70">
