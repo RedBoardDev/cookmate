@@ -1,7 +1,7 @@
 import { Entity, UniqueEntityID } from "@cookmate/core";
+import { InvalidRecipeIngredientDataError, RecipeIngredientNotBelongsToRecipeError } from "./errors";
 import type { RecipeIngredientProps, RecipeIngredientSnapshot } from "./recipe-ingredient.schema";
 import { recipeIngredientPropsSchema } from "./recipe-ingredient.schema";
-import { InvalidRecipeIngredientDataError, RecipeIngredientNotBelongsToRecipeError } from "./errors";
 
 export class RecipeIngredientEntity extends Entity<RecipeIngredientProps> {
   private constructor(props: RecipeIngredientProps, id?: UniqueEntityID) {

@@ -9,19 +9,13 @@ export type CollectionVisibility = z.infer<typeof collectionVisibilitySchema>;
 export const collectionField = {
   name: z.string().min(1).max(COLLECTION_NAME_MAX_LENGTH),
   emoji: z.emoji(),
-  description: z
-    .string()
-    .min(1)
-    .max(COLLECTION_DESCRIPTION_MAX_LENGTH)
-    .nullable(),
+  description: z.string().min(1).max(COLLECTION_DESCRIPTION_MAX_LENGTH).nullable(),
 };
 
 export const collectionSystemField = {
   ownerId: z.string().min(1),
   visibility: collectionVisibilitySchema,
-  shortUrl: z
-    .string()
-    .nullable(),
+  shortUrl: z.string().nullable(),
   createdAt: z.date(),
   updatedAt: z.date(),
 };

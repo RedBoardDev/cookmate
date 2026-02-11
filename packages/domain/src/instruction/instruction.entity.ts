@@ -1,7 +1,7 @@
 import { Entity, UniqueEntityID } from "@cookmate/core";
+import { InstructionNotBelongsToRecipeError, InvalidInstructionDataError } from "./errors";
 import type { InstructionProps, InstructionSnapshot } from "./instruction.schema";
 import { instructionPropsSchema } from "./instruction.schema";
-import { InvalidInstructionDataError, InstructionNotBelongsToRecipeError } from "./errors";
 
 export class InstructionEntity extends Entity<InstructionProps> {
   private constructor(props: InstructionProps, id?: UniqueEntityID) {

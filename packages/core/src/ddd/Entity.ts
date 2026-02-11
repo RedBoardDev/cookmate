@@ -1,5 +1,5 @@
-import type { Identifier } from './Identifier';
-import { UniqueEntityID } from './UniqueEntityId';
+import type { Identifier } from "./Identifier";
+import { UniqueEntityID } from "./UniqueEntityId";
 
 const isEntity = (v: any): v is Entity<any> => {
   return v instanceof Entity;

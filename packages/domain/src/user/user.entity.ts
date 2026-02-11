@@ -1,8 +1,8 @@
 import { Entity, UniqueEntityID } from "@cookmate/core";
-import type { UserProps, UserSnapshot } from "./user.schema";
-import { userPropsSchema } from "./user.schema";
 import { InvalidUserDataError } from "./errors";
 import { UserPolicies } from "./user.policies";
+import type { UserProps, UserSnapshot } from "./user.schema";
+import { userPropsSchema } from "./user.schema";
 
 export class UserEntity extends Entity<UserProps> {
   private constructor(props: UserProps, id?: UniqueEntityID) {

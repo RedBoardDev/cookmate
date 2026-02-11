@@ -22,18 +22,14 @@ export const UserPolicies = {
   /**
    * Check if user can own more collections based on their current count
    */
-  canOwnMoreCollections(
-    currentOwnedCount: number,
-  ): boolean {
+  canOwnMoreCollections(currentOwnedCount: number): boolean {
     return currentOwnedCount < DEFAULT_MAX_OWNED_COLLECTIONS;
   },
 
   /**
    * Assert user can own more collections, throws MaxCollectionsReachedError if limit reached
    */
-  assertReachMaxCollections(
-    currentOwnedCount: number,
-  ): void {
+  assertReachMaxCollections(currentOwnedCount: number): void {
     if (!this.canOwnMoreCollections(currentOwnedCount)) {
       throw new MaxCollectionsReachedError();
     }

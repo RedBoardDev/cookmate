@@ -1,8 +1,8 @@
 import { Entity, UniqueEntityID } from "@cookmate/core";
-import type { CollectionProps, CollectionSnapshot } from "../schemas/collection.schema";
-import { collectionPropsSchema } from "../schemas/collection.schema";
 import { CollectionPolicies } from "../collection.policies";
 import { InvalidCollectionDataError } from "../errors";
+import type { CollectionProps, CollectionSnapshot } from "../schemas/collection.schema";
+import { collectionPropsSchema } from "../schemas/collection.schema";
 
 export class CollectionEntity extends Entity<CollectionProps> {
   private constructor(props: CollectionProps, id?: UniqueEntityID) {

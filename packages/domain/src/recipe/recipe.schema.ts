@@ -1,15 +1,15 @@
 import { z } from "zod";
+import { collectionSnapshotSchema } from "../collection/schemas/collection.schema";
 import {
-  DIFFICULTIES,
   BUDGETS,
-  SOURCES,
-  TAGS,
-  type DifficultyValue,
   type BudgetValue,
+  DIFFICULTIES,
+  type DifficultyValue,
+  SOURCES,
   type SourceValue,
+  TAGS,
   type TagValue,
 } from "../shared/value-objects";
-import { collectionSnapshotSchema } from "../collection/schemas/collection.schema";
 
 export const recipeDifficultySchema = z.enum(DIFFICULTIES);
 export const recipeBudgetSchema = z.enum(BUDGETS);
@@ -73,9 +73,7 @@ export type RecipeProps = z.infer<typeof recipePropsSchema>;
 
 export const recipeSnapshotSchema = recipePropsSchema.extend({
   id: z.uuid(),
-  collections: z
-    .array(collectionSnapshotSchema.pick({ id: true, name: true, emoji: true }))
-    .optional(),
+  collections: z.array(collectionSnapshotSchema.pick({ id: true, name: true, emoji: true })).optional(),
 });
 
 export type RecipeSnapshot = z.infer<typeof recipeSnapshotSchema>;

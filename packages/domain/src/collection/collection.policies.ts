@@ -1,8 +1,8 @@
 import {
-  NotCollectionOwnerError,
-  NotCollectionMemberError,
-  CannotRemoveOwnerError,
   CannotAddMemberError,
+  CannotRemoveOwnerError,
+  NotCollectionMemberError,
+  NotCollectionOwnerError,
 } from "./errors";
 
 export const CollectionPolicies = {

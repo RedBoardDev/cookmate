@@ -1,7 +1,7 @@
 import { Entity, UniqueEntityID } from "@cookmate/core";
+import { InvalidRecipeImageDataError } from "./errors";
 import type { RecipeImageProps, RecipeImageSnapshot } from "./recipe-image.schema";
 import { recipeImagePropsSchema } from "./recipe-image.schema";
-import { InvalidRecipeImageDataError } from "./errors";
 
 export class RecipeImageEntity extends Entity<RecipeImageProps> {
   private constructor(props: RecipeImageProps, id?: UniqueEntityID) {

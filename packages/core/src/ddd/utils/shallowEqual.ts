@@ -1,4 +1,4 @@
-import dayjs from 'dayjs';
+import dayjs from "dayjs";
 
 /**
  * Performs a shallow equality comparison between two objects.

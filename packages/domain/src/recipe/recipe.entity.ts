@@ -1,15 +1,15 @@
 import { Entity, UniqueEntityID } from "@cookmate/core";
+import { InvalidRecipeDataError } from "./errors";
+import { RecipePolicies } from "./recipe.policies";
 import type {
+  RecipeBudget,
+  RecipeDifficulty,
   RecipeProps,
   RecipeSnapshot,
-  RecipeDifficulty,
-  RecipeBudget,
   RecipeSource,
   RecipeTag,
 } from "./recipe.schema";
 import { recipePropsSchema } from "./recipe.schema";
-import { InvalidRecipeDataError } from "./errors";
-import { RecipePolicies } from "./recipe.policies";
 
 export class RecipeEntity extends Entity<RecipeProps> {
   private constructor(props: RecipeProps, id?: UniqueEntityID) {

@@ -1,5 +1,5 @@
 import { CollectionEntity } from "./entities/collection.entity";
-import { CollectionMemberEntity } from "./entities/collection-member.entity";
+import type { CollectionMemberEntity } from "./entities/collection-member.entity";
 import type { CollectionProps, CollectionSnapshot } from "./schemas/collection.schema";
 import type { CollectionMemberSnapshot } from "./schemas/collection-member.schema";
 

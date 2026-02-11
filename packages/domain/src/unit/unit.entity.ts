@@ -1,7 +1,7 @@
 import { Entity, UniqueEntityID } from "@cookmate/core";
+import { InvalidUnitDataError } from "./errors";
 import type { UnitProps, UnitSnapshot } from "./unit.schema";
 import { unitPropsSchema } from "./unit.schema";
-import { InvalidUnitDataError } from "./errors";
 
 export class UnitEntity extends Entity<UnitProps> {
   private constructor(props: UnitProps, id?: UniqueEntityID) {

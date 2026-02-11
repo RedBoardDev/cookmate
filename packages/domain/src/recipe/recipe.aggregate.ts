@@ -1,13 +1,13 @@
-import { RecipeEntity } from "./recipe.entity";
-import type { RecipeProps, RecipeSnapshot } from "./recipe.schema";
-import type { InstructionEntity } from "../instruction/instruction.entity";
-import type { InstructionSnapshot } from "../instruction/instruction.schema";
-import type { RecipeIngredientEntity } from "../recipe-ingredient/recipe-ingredient.entity";
-import type { RecipeIngredientSnapshot } from "../recipe-ingredient/recipe-ingredient.schema";
 import type { EquipmentEntity } from "../equipment/equipment.entity";
 import type { EquipmentSnapshot } from "../equipment/equipment.schema";
+import type { InstructionEntity } from "../instruction/instruction.entity";
+import type { InstructionSnapshot } from "../instruction/instruction.schema";
 import type { RecipeImageEntity } from "../recipe-image/recipe-image.entity";
 import type { RecipeImageSnapshot } from "../recipe-image/recipe-image.schema";
+import type { RecipeIngredientEntity } from "../recipe-ingredient/recipe-ingredient.entity";
+import type { RecipeIngredientSnapshot } from "../recipe-ingredient/recipe-ingredient.schema";
+import { RecipeEntity } from "./recipe.entity";
+import type { RecipeProps, RecipeSnapshot } from "./recipe.schema";
 
 export interface RecipeAggregateProps {
   recipe: RecipeEntity;
@@ -44,10 +44,7 @@ export class RecipeAggregate {
     return new RecipeAggregate(props);
   }
 
-  static createNew(
-    recipeProps: RecipeProps,
-    recipeId?: string
-  ): RecipeAggregate {
+  static createNew(recipeProps: RecipeProps, recipeId?: string): RecipeAggregate {
     const recipe = RecipeEntity.create(recipeProps, recipeId);
     return new RecipeAggregate({
       recipe,
