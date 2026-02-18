@@ -1,10 +1,5 @@
 import { faker } from "@faker-js/faker";
-import type {
-  Collection,
-  Prisma,
-  PrismaClient,
-  Recipe,
-} from "../../../src/generated/prisma/client";
+import type { Collection, Prisma, PrismaClient, Recipe } from "../../../src/generated/prisma/client";
 import type { SeedConfig } from "../config";
 import { buildCollectionSeed } from "../factories/collection.factory";
 import { logger } from "../lib/logger";
@@ -14,8 +9,7 @@ export type CollectionSeedResult = {
   collections: Collection[];
 };
 
-const pickCount = (min: number, max: number): number =>
-  faker.number.int({ min, max });
+const pickCount = (min: number, max: number): number => faker.number.int({ min, max });
 
 const pickRecipes = (recipes: Recipe[], max: number): Recipe[] => {
   if (recipes.length === 0) {
@@ -25,11 +19,7 @@ const pickRecipes = (recipes: Recipe[], max: number): Recipe[] => {
   return faker.helpers.arrayElements(recipes, count);
 };
 
-const ensureUniqueName = (
-  name: string,
-  used: Set<string>,
-  index: number
-): string => {
+const ensureUniqueName = (name: string, used: Set<string>, index: number): string => {
   if (!used.has(name)) {
     return name;
   }
@@ -46,7 +36,7 @@ export const seedCollections = async (
   prisma: PrismaClient,
   users: SeededUser[],
   recipesByUser: Map<string, Recipe[]>,
-  config: SeedConfig
+  config: SeedConfig,
 ): Promise<CollectionSeedResult> => {
   logger.info("Seeding collections...");
 
@@ -55,10 +45,7 @@ export const seedCollections = async (
 
   for (const user of users) {
     const userRecipes = recipesByUser.get(user.id) ?? [];
-    const collectionCount = pickCount(
-      config.collectionsPerUser.min,
-      config.collectionsPerUser.max
-    );
+    const collectionCount = pickCount(config.collectionsPerUser.min, config.collectionsPerUser.max);
     const usedNames = new Set<string>();
     const assignedRecipeIds = new Set<string>();
     const userCollections: Collection[] = [];
@@ -68,11 +55,10 @@ export const seedCollections = async (
       const name = ensureUniqueName(seed.name, usedNames, i + 1);
       usedNames.add(name);
 
-      const selectedRecipes = pickRecipes(
-        userRecipes,
-        Math.min(userRecipes.length, 6)
-      );
-      selectedRecipes.forEach((recipe) => assignedRecipeIds.add(recipe.id));
+      const selectedRecipes = pickRecipes(userRecipes, Math.min(userRecipes.length, 6));
+      for (const recipe of selectedRecipes) {
+        assignedRecipeIds.add(recipe.id);
+      }
 
       const collection = await prisma.collection.create({
         data: {
@@ -99,14 +85,8 @@ export const seedCollections = async (
         continue;
       }
 
-      const memberCount = Math.min(
-        otherUsers.length,
-        faker.number.int({ min: 0, max: 2 })
-      );
-      const selectedMembers = faker.helpers.arrayElements(
-        otherUsers,
-        memberCount
-      );
+      const memberCount = Math.min(otherUsers.length, faker.number.int({ min: 0, max: 2 }));
+      const selectedMembers = faker.helpers.arrayElements(otherUsers, memberCount);
 
       for (const member of selectedMembers) {
         members.push({
@@ -117,9 +97,7 @@ export const seedCollections = async (
     }
 
     if (userRecipes.length > 0 && userCollections.length > 0) {
-      const unassigned = userRecipes.filter(
-        (recipe) => !assignedRecipeIds.has(recipe.id)
-      );
+      const unassigned = userRecipes.filter((recipe) => !assignedRecipeIds.has(recipe.id));
 
       if (unassigned.length > 0) {
         const fallback = faker.helpers.arrayElement(userCollections);
@@ -142,10 +120,7 @@ export const seedCollections = async (
     });
   }
 
-  logger.success(
-    `Collections seeded (${collections.length} collections, ` +
-      `${members.length} members)`
-  );
+  logger.success(`Collections seeded (${collections.length} collections, ` + `${members.length} members)`);
 
   return { collections };
 };

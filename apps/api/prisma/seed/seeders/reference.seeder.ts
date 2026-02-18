@@ -1,9 +1,4 @@
-import type {
-  Equipment,
-  Ingredient,
-  PrismaClient,
-  Unit,
-} from "../../../src/generated/prisma/client";
+import type { Equipment, Ingredient, PrismaClient, Unit } from "../../../src/generated/prisma/client";
 import { EQUIPMENTS } from "../data/equipments";
 import { INGREDIENTS } from "../data/ingredients";
 import { UNITS } from "../data/units";
@@ -15,9 +10,7 @@ export type ReferenceSeedResult = {
   units: Unit[];
 };
 
-export const seedReferenceData = async (
-  prisma: PrismaClient
-): Promise<ReferenceSeedResult> => {
+export const seedReferenceData = async (prisma: PrismaClient): Promise<ReferenceSeedResult> => {
   logger.info("Seeding reference data...");
 
   await prisma.ingredient.createMany({
@@ -43,7 +36,7 @@ export const seedReferenceData = async (
 
   logger.success(
     `Reference data seeded (${ingredients.length} ingredients, ${units.length} units, ` +
-      `${equipments.length} equipments)`
+      `${equipments.length} equipments)`,
   );
 
   return { ingredients, units, equipments };

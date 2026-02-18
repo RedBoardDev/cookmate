@@ -62,8 +62,6 @@ export const buildCollectionSeed = (): CollectionSeed => ({
   name: buildCollectionName(),
   description: faker.lorem.sentence(),
   emoji: faker.helpers.arrayElement(EMOJIS),
-  visibility: maybe(0.2)
-    ? CollectionVisibility.PUBLIC
-    : CollectionVisibility.PRIVATE,
+  visibility: maybe(0.2) ? CollectionVisibility.PUBLIC : CollectionVisibility.PRIVATE,
   shortUrl: createShortUrl(),
 });

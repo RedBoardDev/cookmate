@@ -1,11 +1,7 @@
 import type { PrismaClient } from "../../../src/generated/prisma/client";
 import type { AuthService } from "../../../src/infra/services/auth-service";
 import type { SeedConfig } from "../config";
-import {
-  buildFixedUserSeed,
-  buildUserSeed,
-  type UserSeed,
-} from "../factories/user.factory";
+import { buildFixedUserSeed, buildUserSeed, type UserSeed } from "../factories/user.factory";
 import { logger } from "../lib/logger";
 
 export type SeededUser = {
@@ -16,11 +12,7 @@ export type SeededUser = {
   isFixed?: boolean;
 };
 
-const createUser = async (
-  prisma: PrismaClient,
-  auth: AuthService,
-  seed: UserSeed
-): Promise<SeededUser> => {
+const createUser = async (prisma: PrismaClient, auth: AuthService, seed: UserSeed): Promise<SeededUser> => {
   const existing = await prisma.user.findUnique({
     where: { email: seed.email },
   });
@@ -53,11 +45,7 @@ const createUser = async (
   };
 };
 
-export const seedUsers = async (
-  prisma: PrismaClient,
-  auth: AuthService,
-  config: SeedConfig
-): Promise<SeededUser[]> => {
+export const seedUsers = async (prisma: PrismaClient, auth: AuthService, config: SeedConfig): Promise<SeededUser[]> => {
   logger.info("Seeding users...");
 
   const totalCount = Math.max(config.users.count, 1);

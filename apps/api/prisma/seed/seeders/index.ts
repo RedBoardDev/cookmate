@@ -27,7 +27,7 @@ export const seedDatabase = async ({ prisma, auth, config }: SeedContext) => {
     users,
     references.ingredients,
     references.equipments,
-    config
+    config,
   );
 
   logger.phase(4, "Recipe content");

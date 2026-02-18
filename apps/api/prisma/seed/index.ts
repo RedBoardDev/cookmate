@@ -1,6 +1,6 @@
 import "dotenv/config";
 import { loadEnv } from "../../src/config/env";
-import { getPrisma, closePrisma } from "../../src/infra/db/prisma";
+import { closePrisma, getPrisma } from "../../src/infra/db/prisma";
 import { createAuthService } from "../../src/infra/services/auth-service";
 import { getSeedHelp, parseSeedConfig } from "./config";
 import { cleanDatabase } from "./lib/cleaner";
@@ -31,8 +31,6 @@ async function main() {
 }
 
 main().catch((error) => {
-  logger.error(
-    `Seed failed: ${error instanceof Error ? error.message : error}`
-  );
+  logger.error(`Seed failed: ${error instanceof Error ? error.message : error}`);
   process.exit(1);
 });

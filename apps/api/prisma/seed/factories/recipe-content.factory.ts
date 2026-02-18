@@ -1,5 +1,5 @@
-import { faker } from "@faker-js/faker";
 import { randomUUID } from "node:crypto";
+import { faker } from "@faker-js/faker";
 
 export type RecipeImageSeed = {
   s3Url: string;
@@ -24,27 +24,9 @@ export type InstructionSeed = {
   order: number;
 };
 
-const PREPARATIONS = [
-  "emince",
-  "hache",
-  "rondelles",
-  "cubes",
-  "rape",
-  "ecrase",
-  "melange",
-  "reserve",
-];
+const PREPARATIONS = ["emince", "hache", "rondelles", "cubes", "rape", "ecrase", "melange", "reserve"];
 
-const ACTIONS = [
-  "Couper",
-  "Melanger",
-  "Ajouter",
-  "Cuire",
-  "Laisser mijoter",
-  "Remuer",
-  "Assaisonner",
-  "Incorporer",
-];
+const ACTIONS = ["Couper", "Melanger", "Ajouter", "Cuire", "Laisser mijoter", "Remuer", "Assaisonner", "Incorporer"];
 
 const maybe = (chance: number): boolean => Math.random() < chance;
 
@@ -60,22 +42,18 @@ export const buildRecipeImages = (count: number): RecipeImageSeed[] =>
 export const buildRecipeIngredients = (
   ingredientIds: string[],
   unitIds: string[],
-  count: number
+  count: number,
 ): RecipeIngredientSeed[] => {
   const selected = faker.helpers.arrayElements(ingredientIds, count);
 
   return selected.map((ingredientId, index) => {
     const unitId = maybe(0.75) ? faker.helpers.arrayElement(unitIds) : null;
-    const quantity = unitId
-      ? Number((faker.number.int({ min: 1, max: 500 }) / 10).toFixed(1))
-      : null;
+    const quantity = unitId ? Number((faker.number.int({ min: 1, max: 500 }) / 10).toFixed(1)) : null;
     return {
       ingredientId,
       unitId,
       quantity,
-      preparation: maybe(0.35)
-        ? faker.helpers.arrayElement(PREPARATIONS)
-        : null,
+      preparation: maybe(0.35) ? faker.helpers.arrayElement(PREPARATIONS) : null,
       optional: maybe(0.1),
       order: index + 1,
     };
@@ -85,15 +63,11 @@ export const buildRecipeIngredients = (
 export const buildInstructions = (count: number): InstructionSeed[] =>
   Array.from({ length: count }, (_, index) => {
     const action = faker.helpers.arrayElement(ACTIONS);
-    const text = `${action} ${faker.lorem.words(
-      faker.number.int({ min: 4, max: 8 })
-    )}.`;
+    const text = `${action} ${faker.lorem.words(faker.number.int({ min: 4, max: 8 }))}.`;
 
     return {
       text,
-      durationMin: maybe(0.5)
-        ? faker.number.int({ min: 2, max: 20 })
-        : null,
+      durationMin: maybe(0.5) ? faker.number.int({ min: 2, max: 20 }) : null,
       order: index + 1,
     };
   });

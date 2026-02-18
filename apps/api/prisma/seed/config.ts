@@ -68,10 +68,7 @@ export type SeedConfigResult = {
 
 type ArgMap = Record<string, string | boolean>;
 
-const toNumber = (
-  value: string | boolean | undefined,
-  fallback: number
-): number => {
+const toNumber = (value: string | boolean | undefined, fallback: number): number => {
   if (typeof value !== "string") {
     return fallback;
   }
@@ -146,10 +143,7 @@ export const parseSeedConfig = (argv: string[]): SeedConfigResult => {
   }
 
   const usersCount = toNumber(args.users, DEFAULT_SEED_CONFIG.users.count);
-  const discoverCount = toNumber(
-    args.discover ?? args["discover-recipes"],
-    DEFAULT_SEED_CONFIG.discoverRecipes.count
-  );
+  const discoverCount = toNumber(args.discover ?? args["discover-recipes"], DEFAULT_SEED_CONFIG.discoverRecipes.count);
 
   const recipesPerUser = normalizeRange({
     min: toNumber(args["recipes-min"], DEFAULT_SEED_CONFIG.recipesPerUser.min),
@@ -157,14 +151,8 @@ export const parseSeedConfig = (argv: string[]): SeedConfigResult => {
   });
 
   const collectionsPerUser = normalizeRange({
-    min: toNumber(
-      args["collections-min"],
-      DEFAULT_SEED_CONFIG.collectionsPerUser.min
-    ),
-    max: toNumber(
-      args["collections-max"],
-      DEFAULT_SEED_CONFIG.collectionsPerUser.max
-    ),
+    min: toNumber(args["collections-min"], DEFAULT_SEED_CONFIG.collectionsPerUser.min),
+    max: toNumber(args["collections-max"], DEFAULT_SEED_CONFIG.collectionsPerUser.max),
   });
 
   return {

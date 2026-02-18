@@ -2,20 +2,9 @@ import { faker } from "@faker-js/faker";
 import { Budget, Difficulty, Tag } from "../../../src/generated/prisma/client";
 import { createShortUrl } from "../lib/short-url";
 
-const MEAL_TAGS = [
-  Tag.MAIN_COURSE,
-  Tag.APPETIZER,
-  Tag.SIDE_DISH,
-  Tag.DESSERT,
-  Tag.DRINK,
-];
+const MEAL_TAGS = [Tag.MAIN_COURSE, Tag.APPETIZER, Tag.SIDE_DISH, Tag.DESSERT, Tag.DRINK];
 
-const CHARACTERISTIC_TAGS = [
-  Tag.QUICK,
-  Tag.EASY,
-  Tag.HEALTHY,
-  Tag.VEGETARIAN,
-];
+const CHARACTERISTIC_TAGS = [Tag.QUICK, Tag.EASY, Tag.HEALTHY, Tag.VEGETARIAN];
 
 const TITLE_PREFIXES = [
   "Gratin de",
@@ -30,24 +19,14 @@ const TITLE_PREFIXES = [
   "Quiche aux",
 ];
 
-const TITLE_SUFFIXES = [
-  "express",
-  "maison",
-  "rustique",
-  "gourmande",
-  "legere",
-  "cremeuse",
-  "epicee",
-  "croustillante",
-];
+const TITLE_SUFFIXES = ["express", "maison", "rustique", "gourmande", "legere", "cremeuse", "epicee", "croustillante"];
 
 const maybe = (chance: number): boolean => Math.random() < chance;
 
 const pickOne = <T>(values: T[]): T => faker.helpers.arrayElement(values);
 
 const buildTitle = (ingredientNames: string[]): string => {
-  const ingredient =
-    ingredientNames.length > 0 ? pickOne(ingredientNames) : "Legumes";
+  const ingredient = ingredientNames.length > 0 ? pickOne(ingredientNames) : "Legumes";
   const prefix = pickOne(TITLE_PREFIXES);
   if (maybe(0.5)) {
     return `${prefix} ${ingredient}`;
@@ -72,17 +51,13 @@ const buildTimes = () => {
   const prepTimeMin = maybe(0.85) ? faker.number.int({ min: 5, max: 30 }) : null;
   const cookTimeMin = maybe(0.9) ? faker.number.int({ min: 10, max: 90 }) : null;
   const restTimeMin = maybe(0.3) ? faker.number.int({ min: 5, max: 30 }) : null;
-  const totalTimeMin =
-    (prepTimeMin ?? 0) + (cookTimeMin ?? 0) + (restTimeMin ?? 0);
+  const totalTimeMin = (prepTimeMin ?? 0) + (cookTimeMin ?? 0) + (restTimeMin ?? 0);
 
   return {
     prepTimeMin,
     cookTimeMin,
     restTimeMin,
-    totalTimeMin:
-      totalTimeMin > 0
-        ? totalTimeMin
-        : faker.number.int({ min: 10, max: 60 }),
+    totalTimeMin: totalTimeMin > 0 ? totalTimeMin : faker.number.int({ min: 10, max: 60 }),
   };
 };
 
@@ -102,9 +77,7 @@ export type RecipeBaseSeed = {
 
 export const buildRecipeBase = (ingredientNames: string[]): RecipeBaseSeed => {
   const times = buildTimes();
-  const description = faker.lorem.sentences(
-    faker.number.int({ min: 1, max: 2 })
-  );
+  const description = faker.lorem.sentences(faker.number.int({ min: 1, max: 2 }));
 
   return {
     title: buildTitle(ingredientNames),

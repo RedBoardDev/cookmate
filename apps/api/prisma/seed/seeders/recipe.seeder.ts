@@ -1,15 +1,6 @@
 import { faker } from "@faker-js/faker";
-import type {
-  DiscoverRecipe,
-  Equipment,
-  Ingredient,
-  PrismaClient,
-  Recipe,
-} from "../../../src/generated/prisma/client";
-import {
-  DiscoverRecipeSource,
-  RecipeSource,
-} from "../../../src/generated/prisma/client";
+import type { DiscoverRecipe, Equipment, Ingredient, PrismaClient, Recipe } from "../../../src/generated/prisma/client";
+import { DiscoverRecipeSource, RecipeSource } from "../../../src/generated/prisma/client";
 import type { SeedConfig } from "../config";
 import { buildRecipeBase } from "../factories/recipe.factory";
 import { logger } from "../lib/logger";
@@ -21,17 +12,14 @@ export type RecipeSeedResult = {
   recipesByUser: Map<string, Recipe[]>;
 };
 
-const pickCount = (min: number, max: number): number =>
-  faker.number.int({ min, max });
+const pickCount = (min: number, max: number): number => faker.number.int({ min, max });
 
 const pickEquipments = (equipmentIds: string[], min: number, max: number) => {
   if (equipmentIds.length === 0) {
     return [];
   }
   const count = Math.min(pickCount(min, max), equipmentIds.length);
-  return faker.helpers
-    .arrayElements(equipmentIds, count)
-    .map((id) => ({ id }));
+  return faker.helpers.arrayElements(equipmentIds, count).map((id) => ({ id }));
 };
 
 const pickDiscoverSource = (): DiscoverRecipeSource =>
@@ -46,7 +34,7 @@ export const seedRecipes = async (
   users: SeededUser[],
   ingredients: Ingredient[],
   equipments: Equipment[],
-  config: SeedConfig
+  config: SeedConfig,
 ): Promise<RecipeSeedResult> => {
   logger.info("Seeding recipes...");
 
@@ -67,7 +55,7 @@ export const seedRecipes = async (
           connect: pickEquipments(
             equipmentIds,
             config.content.equipmentsPerRecipe.min,
-            config.content.equipmentsPerRecipe.max
+            config.content.equipmentsPerRecipe.max,
           ),
         },
       },
@@ -79,20 +67,13 @@ export const seedRecipes = async (
   const recipesByUser = new Map<string, Recipe[]>();
 
   for (const user of users) {
-    const count = pickCount(
-      config.recipesPerUser.min,
-      config.recipesPerUser.max
-    );
+    const count = pickCount(config.recipesPerUser.min, config.recipesPerUser.max);
     const userRecipes: Recipe[] = [];
 
     for (let i = 0; i < count; i += 1) {
       const base = buildRecipeBase(ingredientNames);
-      const shouldFork =
-        discoverRecipes.length > 0 &&
-        Math.random() < config.forkedRecipeRatio;
-      const forked = shouldFork
-        ? faker.helpers.arrayElement(discoverRecipes)
-        : null;
+      const shouldFork = discoverRecipes.length > 0 && Math.random() < config.forkedRecipeRatio;
+      const forked = shouldFork ? faker.helpers.arrayElement(discoverRecipes) : null;
 
       const created = await prisma.recipe.create({
         data: {
@@ -104,7 +85,7 @@ export const seedRecipes = async (
             connect: pickEquipments(
               equipmentIds,
               config.content.equipmentsPerRecipe.min,
-              config.content.equipmentsPerRecipe.max
+              config.content.equipmentsPerRecipe.max,
             ),
           },
         },
@@ -117,10 +98,7 @@ export const seedRecipes = async (
     recipesByUser.set(user.id, userRecipes);
   }
 
-  logger.success(
-    `Recipes seeded (${recipes.length} user recipes, ` +
-      `${discoverRecipes.length} discover recipes)`
-  );
+  logger.success(`Recipes seeded (${recipes.length} user recipes, ` + `${discoverRecipes.length} discover recipes)`);
 
   return {
     recipes,
