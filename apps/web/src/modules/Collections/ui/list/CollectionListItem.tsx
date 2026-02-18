@@ -1,26 +1,24 @@
 "use client";
 
+import { Trans, useLingui } from "@lingui/react/macro";
 import { Trash2 } from "lucide-react";
-import { Button } from "@/shared/ui/primitives/button";
-import { PopConfirm } from "@/shared/ui/primitives/popconfirm";
-import { Badge } from "@/shared/ui/primitives/badge";
-import { Card } from "@/shared/ui/primitives/card";
+import type { CollectionEntity } from "@/modules/Collections/domain/entity/collection.entity";
 import { cn } from "@/shared/lib/utils";
-import type { CollectionEntity } from "@cookmate/domain/collection";
+import { Badge } from "@/shared/ui/primitives/badge";
+import { Button } from "@/shared/ui/primitives/button";
+import { Card } from "@/shared/ui/primitives/card";
+import { PopConfirm } from "@/shared/ui/primitives/popconfirm";
 
 interface CollectionListItemProps {
   collection: CollectionEntity;
-  recipeCount?: number;
-  onDelete?: (collection: CollectionEntity) => void;
+  recipeCount: number;
+  onDelete?: (collectionId: string) => void;
   isDeleting?: boolean;
 }
 
-export function CollectionListItem({
-  collection,
-  recipeCount = 0,
-  onDelete,
-  isDeleting
-}: CollectionListItemProps) {
+export function CollectionListItem({ collection, recipeCount, onDelete, isDeleting }: CollectionListItemProps) {
+  const { t } = useLingui();
+
   return (
     <Card
       variant="solid"
@@ -29,11 +27,7 @@ export function CollectionListItem({
       radius="xl"
       padding="sm"
       interactive="border"
-      className={cn(
-        "group flex items-center gap-4",
-        "bg-card/95 transition-colors",
-        "hover:border-primary/20"
-      )}
+      className={cn("group flex items-center gap-4", "bg-card/95 transition-colors", "hover:border-primary/20")}
     >
       <div className="flex flex-1 items-center gap-3 min-w-0">
         <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-muted/60 text-2xl">
@@ -42,38 +36,31 @@ export function CollectionListItem({
 
         <div className="flex min-w-0 flex-1 flex-col gap-1">
           <div className="flex items-center gap-2">
-            <h3 className="truncate text-base font-semibold text-foreground">
-              {collection.name}
-            </h3>
-            {collection.visibility === "PUBLIC" && (
-              <Badge
-                variant="outline"
-                className="shrink-0 text-xs"
-              >
-                Public
+            <h3 className="truncate text-base font-semibold text-foreground">{collection.name}</h3>
+            {collection.isPublic && (
+              <Badge variant="outline" className="shrink-0 text-xs">
+                <Trans>Public</Trans>
               </Badge>
             )}
           </div>
 
-          {collection.description && (
-            <p className="truncate text-sm text-muted-foreground">
-              {collection.description}
-            </p>
-          )}
+          {collection.description && <p className="truncate text-sm text-muted-foreground">{collection.description}</p>}
 
           <div className="flex items-center gap-4 text-xs text-muted-foreground">
-            <span>{recipeCount} recipes</span>
+            <span>
+              <Trans>{recipeCount} recipes</Trans>
+            </span>
           </div>
         </div>
       </div>
 
       {onDelete && (
         <PopConfirm
-          title={`Delete "${collection.name}"?`}
-          description="This action cannot be undone. All recipes in this collection will be removed."
-          onConfirm={() => onDelete(collection)}
+          title={t`Delete "${collection.name}"?`}
+          description={t`This action cannot be undone. All recipes in this collection will be removed.`}
+          onConfirm={() => onDelete(collection.id)}
           variant="destructive"
-          confirmLabel="Delete"
+          confirmLabel={t`Delete`}
           disabled={isDeleting}
         >
           <Button
@@ -83,7 +70,9 @@ export function CollectionListItem({
             disabled={isDeleting}
           >
             <Trash2 className="h-4 w-4" />
-            <span className="sr-only">Delete collection</span>
+            <span className="sr-only">
+              <Trans>Delete collection</Trans>
+            </span>
           </Button>
         </PopConfirm>
       )}

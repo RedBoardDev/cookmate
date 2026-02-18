@@ -1,32 +1,33 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { msg } from "@lingui/core/macro";
+import { useLingui } from "@lingui/react/macro";
+import { useState } from "react";
+import { toast } from "sonner";
 import { useCollections } from "@/modules/Collections/api/useCollections";
 import { useDeleteCollection } from "@/modules/Collections/api/useDeleteCollection";
+import { getUserFacingErrorMessage } from "@/shared/lib/api-error";
 import { useDevSkeleton } from "@/shared/ui/hooks/useDevSkeleton";
-import { useSession } from "@/modules/Auth/api/useSession";
 
 export type Screen = "list" | "create";
 
 export function useCollectionsManageModal() {
   const forceLoading = useDevSkeleton();
-  const { user } = useSession();
+  const { t } = useLingui();
   const [screen, setScreen] = useState<Screen>("list");
 
-  const { collections, isLoading } = useCollections();
-  const deleteCollection = useDeleteCollection();
+  const { collections, isLoading } = useCollections({ whereRole: "OWNER" });
+  const deleteCollection = useDeleteCollection({
+    onSuccess: () => {
+      toast.success(t(msg`Collection deleted`));
+    },
+    onError: (error) => {
+      toast.error(getUserFacingErrorMessage(t, error));
+    },
+  });
 
-  const ownedCollections = useMemo(() => {
-    const userId = user?.id;
-    if (!userId) {
-      return [];
-    }
-
-    return collections.filter((collection) => collection.isOwner(userId));
-  }, [collections, user?.id]);
-
-  const handleDelete = (collection: { id: string }) => {
-    deleteCollection.mutate(collection.id);
+  const handleDelete = (collectionId: string) => {
+    deleteCollection.mutate(collectionId);
   };
 
   const handleBack = () => {
@@ -37,20 +38,13 @@ export function useCollectionsManageModal() {
     setScreen("create");
   };
 
-  const handleClose = (open: boolean) => {
-    if (!open) {
-      setScreen("list");
-    }
-  };
-
   return {
     screen,
-    collections: ownedCollections,
+    collections,
     isLoading: isLoading || forceLoading,
     handleDelete,
     isDeleting: deleteCollection.isPending,
     handleBack,
     handleCreate,
-    handleClose
   };
 }

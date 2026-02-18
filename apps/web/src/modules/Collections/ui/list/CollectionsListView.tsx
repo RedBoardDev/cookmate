@@ -1,39 +1,39 @@
 "use client";
 
+import { Trans } from "@lingui/react/macro";
 import { Plus } from "lucide-react";
 import Skeleton from "react-loading-skeleton";
-import { Button } from "@/shared/ui/primitives/button";
-import {
-  DialogHeader,
-  DialogTitle,
-  DialogDescription
-} from "@/shared/ui/primitives/dialog";
-import { Card } from "@/shared/ui/primitives/card";
+import type { CollectionEntity } from "@/modules/Collections/domain/entity/collection.entity";
 import { CollectionListItem } from "@/modules/Collections/ui/list/CollectionListItem";
-import type { CollectionEntity } from "@cookmate/domain/collection";
+import { Button } from "@/shared/ui/primitives/button";
+import { Card } from "@/shared/ui/primitives/card";
+import { DialogDescription, DialogHeader, DialogTitle } from "@/shared/ui/primitives/dialog";
 
-interface CollectionsListScreenProps {
+interface CollectionsListViewProps {
   collections: CollectionEntity[];
   isLoading: boolean;
   onCreate: () => void;
-  onDelete: (collection: CollectionEntity) => void;
+  onDelete: (collectionId: string) => void;
   isDeleting?: boolean;
 }
 
-export function CollectionsListScreen({
+export function CollectionsListView({
   collections,
   isLoading,
   onCreate,
   onDelete,
-  isDeleting
-}: CollectionsListScreenProps) {
-  const skeletonTitleWidths = [180, 160, 200, 140];
-  const skeletonDescriptionWidths = [240, 220, 260, 200];
-  const skeletonMetaWidths = [72, 64, 88, 56];
+  isDeleting,
+}: CollectionsListViewProps) {
+  const skeletonWidths = [
+    { title: 180, description: 240, meta: 72 },
+    { title: 160, description: 220, meta: 64 },
+    { title: 200, description: 260, meta: 88 },
+    { title: 140, description: 200, meta: 56 },
+  ];
 
-  const renderSkeletonItems = (actionCount: 1 | 2) => (
+  const renderSkeletonItems = () => (
     <div className="space-y-3">
-      {skeletonTitleWidths.map((titleWidth, index) => (
+      {skeletonWidths.map((widths, index) => (
         <Card
           key={`collection-skeleton-${index}`}
           variant="solid"
@@ -47,25 +47,15 @@ export function CollectionsListScreen({
             <Skeleton width={48} height={48} borderRadius={12} />
             <div className="flex min-w-0 flex-1 flex-col gap-2">
               <div className="flex items-center gap-2">
-                <Skeleton width={titleWidth} height={16} />
+                <Skeleton width={widths.title} height={16} />
                 <Skeleton width={48} height={16} borderRadius={999} />
               </div>
-              <Skeleton
-                width={skeletonDescriptionWidths[index]}
-                height={14}
-              />
-              <Skeleton width={skeletonMetaWidths[index]} height={12} />
+              <Skeleton width={widths.description} height={14} />
+              <Skeleton width={widths.meta} height={12} />
             </div>
           </div>
           <div className="flex items-center gap-2">
-            {Array.from({ length: actionCount }).map((_, actionIndex) => (
-              <Skeleton
-                key={`collection-skeleton-action-${index}-${actionIndex}`}
-                circle
-                width={32}
-                height={32}
-              />
-            ))}
+            <Skeleton circle width={32} height={32} />
           </div>
         </Card>
       ))}
@@ -76,50 +66,39 @@ export function CollectionsListScreen({
     <div className="flex flex-1 flex-col gap-4 overflow-hidden p-6">
       <DialogHeader className="text-left">
         <DialogTitle className="text-2xl font-display tracking-tight">
-          Manage Collections
+          <Trans>Manage Collections</Trans>
         </DialogTitle>
         <DialogDescription>
-          Organize your recipes into collections.
+          <Trans>Organize your recipes into collections.</Trans>
         </DialogDescription>
       </DialogHeader>
 
       <div className="flex flex-1 flex-col gap-4 overflow-hidden">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2 text-sm font-semibold text-foreground">
-            <span>My Collections</span>
+            <span>
+              <Trans>My Collections</Trans>
+            </span>
             {isLoading ? (
               <Skeleton width={24} height={12} />
             ) : (
-              <span className="text-muted-foreground">
-                ({collections.length})
-              </span>
+              <span className="text-muted-foreground">({collections.length})</span>
             )}
           </div>
 
-          <Button
-            size="sm"
-            onClick={onCreate}
-            className="gap-2 rounded-full"
-          >
+          <Button size="sm" onClick={onCreate} className="gap-2 rounded-full">
             <Plus className="h-4 w-4" />
-            Create
+            <Trans>Create</Trans>
           </Button>
         </div>
 
         <div className="flex-1 overflow-y-auto pb-2">
           {isLoading ? (
-            renderSkeletonItems(1)
+            renderSkeletonItems()
           ) : collections.length === 0 ? (
-            <Card
-              variant="subtle"
-              border="dashed"
-              shadow="flat"
-              radius="2xl"
-              padding="md"
-              className="text-center"
-            >
+            <Card variant="subtle" border="dashed" shadow="flat" radius="2xl" padding="md" className="text-center">
               <p className="text-sm text-muted-foreground">
-                You don&apos;t have any collections yet. Create one to get started!
+                <Trans>You don&apos;t have any collections yet. Create one to get started!</Trans>
               </p>
             </Card>
           ) : (
@@ -128,6 +107,7 @@ export function CollectionsListScreen({
                 <CollectionListItem
                   key={collection.id}
                   collection={collection}
+                  recipeCount={collection.recipeCount}
                   onDelete={onDelete}
                   isDeleting={isDeleting}
                 />

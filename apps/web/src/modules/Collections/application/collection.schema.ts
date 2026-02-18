@@ -8,13 +8,3 @@ export const createCollectionSchema = z.object({
 });
 
 export type CreateCollectionInput = z.infer<typeof createCollectionSchema>;
-
-export const createCollectionDefaultValues: CreateCollectionInput = {
-  name: "",
-  emoji: "",
-  description: null
-};
-
-export const updateCollectionSchema = createCollectionSchema.partial();
-
-export type UpdateCollectionInput = z.infer<typeof updateCollectionSchema>;

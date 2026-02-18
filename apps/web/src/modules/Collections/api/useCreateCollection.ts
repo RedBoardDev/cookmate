@@ -3,13 +3,13 @@
 import { useQueryClient } from "@tanstack/react-query";
 import { usePostCollections } from "@/generated/hooks";
 import { getCollectionsQueryKey } from "@/generated/hooks/CollectionsHooks/useGetCollections";
-import type { ResponseErrorConfig } from "@/shared/lib/httpClient";
-import type { CreateCollectionInput } from "@/modules/Collections/application/collection.schema";
 import type { PostCollectionsMutationResponse } from "@/generated/types";
+import type { CreateCollectionInput } from "@/modules/Collections/application/collection.schema";
+import type { ApiError } from "@/shared/lib/api-error";
 
 type UseCreateCollectionOptions = {
   onSuccess?: (data: PostCollectionsMutationResponse) => void;
-  onError?: (error: ResponseErrorConfig<any>) => void;
+  onError?: (error: ApiError) => void;
 };
 
 export function useCreateCollection(options: UseCreateCollectionOptions = {}) {
@@ -19,14 +19,14 @@ export function useCreateCollection(options: UseCreateCollectionOptions = {}) {
     mutation: {
       onSuccess: async (data) => {
         await queryClient.invalidateQueries({
-          queryKey: getCollectionsQueryKey()
+          queryKey: getCollectionsQueryKey(),
         });
         options.onSuccess?.(data);
       },
       onError: (error) => {
         options.onError?.(error);
-      }
-    }
+      },
+    },
   });
 
   type MutateOptions = Parameters<typeof createCollection.mutate>[1];
@@ -39,11 +39,11 @@ export function useCreateCollection(options: UseCreateCollectionOptions = {}) {
           data: {
             name: input.name,
             emoji: input.emoji,
-            description: input.description ?? null
-          }
+            description: input.description,
+          },
         },
-        mutateOptions
+        mutateOptions,
       );
-    }
+    },
   };
 }
