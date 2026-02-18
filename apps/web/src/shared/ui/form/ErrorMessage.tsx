@@ -1,8 +1,10 @@
+"use client";
+
 import type { ResponseErrorConfig } from "@/shared/lib/httpClient";
-import { useUserFacingErrorMessage } from "@/shared/lib/api-error";
+import { useUserFacingErrorMessage } from "@/shared/lib/use-api-error";
 
 type ErrorMessageProps = {
-  error: ResponseErrorConfig<any> | null;
+  error: ResponseErrorConfig<unknown> | null;
 };
 
 /**
@@ -27,18 +29,13 @@ type ErrorMessageProps = {
  * ```
  */
 export function ErrorMessage({ error }: ErrorMessageProps) {
-  if (!error) return null;
-
   const message = useUserFacingErrorMessage(error);
 
+  if (!message) return null;
+
   return (
-    <div
-      className="rounded-md bg-destructive/10 p-3 border border-destructive/20"
-      role="alert"
-    >
-      <p className="text-sm font-medium text-destructive">
-        {message}
-      </p>
+    <div className="rounded-md bg-destructive/10 p-3 border border-destructive/20" role="alert">
+      <p className="text-sm font-medium text-destructive">{message}</p>
     </div>
   );
 }

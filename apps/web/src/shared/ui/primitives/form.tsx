@@ -1,11 +1,10 @@
 "use client";
 
-import * as React from "react";
-import type { FormApi } from "@tanstack/react-form";
+import type * as React from "react";
 import { cn } from "@/shared/lib/utils";
 
 interface FormProps {
-  form: FormApi<any, any>;
+  form: { handleSubmit: () => void };
   children: React.ReactNode;
   className?: string;
   onSubmit?: (e: React.FormEvent<HTMLFormElement>) => void;

@@ -2,12 +2,12 @@
 
 import type { ReactNode } from "react";
 import { createContext, useContext, useMemo } from "react";
-import { useSession } from "@/modules/Auth/api/useSession";
-import type { AuthUser } from "@/modules/Auth/application/auth.mapper";
 import type { Session } from "@/generated/types";
+import { useSession } from "@/modules/Auth/api/useSession";
+import type { AuthUserEntity } from "@/modules/Auth/domain/entity/authUser.entity";
 
 type AuthContextValue = {
-  user: AuthUser | null;
+  user: AuthUserEntity | null;
   session: Session | null;
   isAuthenticated: boolean;
   isLoading: boolean;
@@ -29,9 +29,9 @@ export function AuthProvider({ children }: AuthProviderProps) {
       session,
       isAuthenticated,
       isLoading,
-      refresh
+      refresh,
     }),
-    [user, session, isAuthenticated, isLoading, refresh]
+    [user, session, isAuthenticated, isLoading, refresh],
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

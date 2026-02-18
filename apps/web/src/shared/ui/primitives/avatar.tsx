@@ -1,7 +1,7 @@
 "use client";
 
-import { useMemo, useState } from "react";
 import Image from "next/image";
+import { useMemo, useState } from "react";
 import { cn } from "@/shared/lib/utils";
 
 interface AvatarProps {
@@ -34,7 +34,7 @@ function getAvatarSrc(avatarUrl: string | null | undefined): string {
 const sizeClasses = {
   sm: "h-8 w-8 text-xs",
   md: "h-10 w-10 text-sm",
-  lg: "h-12 w-12 text-base"
+  lg: "h-12 w-12 text-base",
 };
 
 export function Avatar({ avatar, name, size = "md", className }: AvatarProps) {
@@ -54,13 +54,11 @@ export function Avatar({ avatar, name, size = "md", className }: AvatarProps) {
         "flex shrink-0 items-center justify-center rounded-full",
         "border border-border/60 bg-muted/70 overflow-hidden",
         sizeClass,
-        className
+        className,
       )}
     >
       {avatarError ? (
-        <span className="font-medium text-secondary-foreground">
-          {avatarFallback}
-        </span>
+        <span className="font-medium text-secondary-foreground">{avatarFallback}</span>
       ) : (
         <Image
           src={avatarSrc}

@@ -58,8 +58,14 @@
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
 
-  /* Utility font-display (tu l’utilises dans tes classes) */
+  /* Utility font-display (tu l'utilises dans tes classes) */
   --font-display: var(--font-display);
+
+  /* Centralized z-index scale */
+  --z-bottomnav: 40;
+  --z-topbar: 50;
+  --z-modal: 50;
+  --z-popover: 50;
 }
 
 /* =========
@@ -95,7 +101,7 @@
   ::before,
   ::backdrop,
   ::file-selector-button {
-    border-color: var(--color-gray-200, currentcolor);
+    border-color: var(--color-border, currentcolor);
   }
 
   /*
@@ -255,8 +261,6 @@
     --cm-input: 22 19% 20%;
     --cm-ring: 37 85% 62%;
 
-    --radius: 0.75rem;
-
     --cm-chart-1: 15 69% 57%;
     --cm-chart-2: 37 85% 62%;
     --cm-chart-3: 112 14% 57%;
@@ -397,5 +401,4 @@
   .textarea {
     @apply flex min-h-[60px] w-full rounded-md border border-input bg-white px-3 py-2 text-base shadow-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 md:text-sm;
   }
-
 }

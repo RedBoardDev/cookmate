@@ -1,9 +1,10 @@
 "use client";
 
-import * as React from "react";
+import { useLingui } from "@lingui/react/macro";
 import * as PopoverPrimitive from "@radix-ui/react-popover";
-import { Button } from "@/shared/ui/primitives/button";
+import * as React from "react";
 import { cn } from "@/shared/lib/utils";
+import { Button } from "@/shared/ui/primitives/button";
 
 interface PopConfirmProps {
   title: string;
@@ -45,11 +46,14 @@ export function PopConfirm({
   open,
   onOpenChange,
   disabled = false,
-  confirmLabel = "Confirm",
-  cancelLabel = "Cancel",
+  confirmLabel,
+  cancelLabel,
   variant = "default",
-  children
+  children,
 }: PopConfirmProps) {
+  const { t } = useLingui();
+  const resolvedConfirmLabel = confirmLabel ?? t`Confirm`;
+  const resolvedCancelLabel = cancelLabel ?? t`Cancel`;
   const [internalOpen, setInternalOpen] = React.useState(false);
   const isControlled = open !== undefined;
   const isOpen = isControlled ? open : internalOpen;
@@ -73,13 +77,8 @@ export function PopConfirm({
   };
 
   return (
-    <PopoverPrimitive.Root
-      open={isOpen}
-      onOpenChange={handleOpenChange}
-    >
-      <PopoverPrimitive.Trigger asChild>
-        {children}
-      </PopoverPrimitive.Trigger>
+    <PopoverPrimitive.Root open={isOpen} onOpenChange={handleOpenChange}>
+      <PopoverPrimitive.Trigger asChild>{children}</PopoverPrimitive.Trigger>
       <PopoverPrimitive.Portal>
         <PopoverPrimitive.Content
           align="end"
@@ -90,17 +89,11 @@ export function PopConfirm({
             "data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0",
             "data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95",
             "data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2",
-            "data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2"
+            "data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2",
           )}
         >
-          <p className="text-sm font-medium text-foreground">
-            {title}
-          </p>
-          {description && (
-            <p className="mt-1 text-xs text-muted-foreground">
-              {description}
-            </p>
-          )}
+          <p className="text-sm font-medium text-foreground">{title}</p>
+          {description && <p className="mt-1 text-xs text-muted-foreground">{description}</p>}
           <div className="mt-3 flex gap-2 justify-end">
             <Button
               type="button"
@@ -110,7 +103,7 @@ export function PopConfirm({
               onClick={handleCancel}
               disabled={disabled}
             >
-              {cancelLabel}
+              {resolvedCancelLabel}
             </Button>
             <Button
               type="button"
@@ -120,7 +113,7 @@ export function PopConfirm({
               onClick={handleConfirm}
               disabled={disabled}
             >
-              {confirmLabel}
+              {resolvedConfirmLabel}
             </Button>
           </div>
           <PopoverPrimitive.Arrow className="fill-border/70" />

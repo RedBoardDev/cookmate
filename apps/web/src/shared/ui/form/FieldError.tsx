@@ -1,7 +1,16 @@
-import type { FieldApi } from "@tanstack/react-form";
+"use client";
+
+import type { MessageDescriptor } from "@lingui/core";
+import { Trans, useLingui } from "@lingui/react/macro";
+
+type FieldErrorMeta = {
+  errors: readonly unknown[];
+  isTouched: boolean;
+  isValidating: boolean;
+};
 
 type FieldErrorProps = {
-  field: FieldApi<any, any, any, any>;
+  field: { state: { meta: FieldErrorMeta } };
 };
 
 /**
@@ -26,13 +35,16 @@ type FieldErrorProps = {
  * ```
  */
 export function FieldError({ field }: FieldErrorProps) {
+  const { t } = useLingui();
   const errors = field.state.meta.errors;
   const isTouched = field.state.meta.isTouched;
   const isValidating = field.state.meta.isValidating;
 
   if (isValidating) {
     return (
-      <span className="text-sm text-muted-foreground">Validating...</span>
+      <span className="text-sm text-muted-foreground">
+        <Trans>Validating...</Trans>
+      </span>
     );
   }
 
@@ -40,11 +52,24 @@ export function FieldError({ field }: FieldErrorProps) {
     return null;
   }
 
+  const messages = errors
+    .filter((err): err is NonNullable<typeof err> => err != null)
+    .map((err) => {
+      if (typeof err === "string") return err;
+      if (typeof err === "object" && "message" in err) {
+        return (err as { message: string }).message;
+      }
+      if (typeof err === "object" && "id" in err) {
+        return t(err as MessageDescriptor);
+      }
+      return String(err);
+    });
+
+  if (messages.length === 0) return null;
+
   return (
     <p className="text-sm text-destructive" role="alert">
-      {errors
-        .map((err) => (typeof err === "string" ? err : err.message))
-        .join(", ")}
+      {messages.join(", ")}
     </p>
   );
 }

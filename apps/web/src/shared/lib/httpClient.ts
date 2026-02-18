@@ -1,16 +1,6 @@
 import { env } from "@/shared/lib/env";
 
-export type HttpMethod =
-  | "GET"
-  | "PUT"
-  | "PATCH"
-  | "POST"
-  | "DELETE"
-  | "get"
-  | "put"
-  | "patch"
-  | "post"
-  | "delete";
+export type HttpMethod = "GET" | "PUT" | "PATCH" | "POST" | "DELETE" | "get" | "put" | "patch" | "post" | "delete";
 
 export type RequestConfig<TData = unknown> = {
   url?: string;
@@ -61,10 +51,7 @@ const buildUrl = (url: string | undefined, params?: Record<string, unknown>) => 
   return urlObj;
 };
 
-const parseResponse = async (
-  response: Response,
-  responseType?: RequestConfig["responseType"]
-) => {
+const parseResponse = async (response: Response, responseType?: RequestConfig["responseType"]): Promise<unknown> => {
   if (response.status === 204 || responseType === "stream") {
     return null;
   }
@@ -89,8 +76,22 @@ const parseResponse = async (
   return response.text();
 };
 
+export class ApiRequestError<TError = unknown> extends Error implements ResponseErrorConfig<TError> {
+  readonly error: TError;
+  readonly status: number;
+  readonly statusText: string;
+
+  constructor(error: TError, status: number, statusText: string) {
+    super(`HTTP ${status}: ${statusText}`);
+    this.name = "ApiRequestError";
+    this.error = error;
+    this.status = status;
+    this.statusText = statusText;
+  }
+}
+
 export async function client<TData, TError = unknown, TVariables = unknown>(
-  config: RequestConfig<TVariables>
+  config: RequestConfig<TVariables>,
 ): Promise<ResponseConfig<TData>> {
   const { url, method, params, data, signal, headers = {}, responseType } = config;
   const urlObj = buildUrl(url, params);
@@ -105,23 +106,19 @@ export async function client<TData, TError = unknown, TVariables = unknown>(
     body: data instanceof FormData ? data : data ? JSON.stringify(data) : undefined,
     signal,
     headers: requestHeaders,
-    credentials: "include"
+    credentials: "include",
   });
 
   const responseData = await parseResponse(response, responseType);
 
   if (!response.ok) {
-    throw {
-      error: responseData as TError,
-      status: response.status,
-      statusText: response.statusText
-    } as ResponseErrorConfig<TError>;
+    throw new ApiRequestError<TError>(responseData as TError, response.status, response.statusText);
   }
 
   return {
     data: responseData as TData,
     status: response.status,
-    statusText: response.statusText
+    statusText: response.statusText,
   };
 }
 

@@ -1,7 +1,9 @@
-import type { ResponseErrorConfig } from "@/shared/lib/httpClient";
-import type { MessageDescriptor } from "@lingui/core";
-import { useLingui } from "@lingui/react/macro";
 import { getErrorDescriptor, getFallbackErrorDescriptorFromStatus } from "@cookmate/i18n";
+import type { MessageDescriptor } from "@lingui/core";
+import type { ResponseErrorConfig } from "@/shared/lib/httpClient";
+
+/** Type-safe alias — use instead of `ResponseErrorConfig<any>`. */
+export type ApiError = ResponseErrorConfig<unknown>;
 
 type ApiErrorEnvelope = {
   success: false;
@@ -19,7 +21,7 @@ function isRecord(value: unknown): value is Record<string, unknown> {
 /**
  * Extracts `error.code` from the API error response.
  */
-export function extractApiErrorCode(error: ResponseErrorConfig<any>): string | null {
+export function extractApiErrorCode(error: ResponseErrorConfig<unknown>): string | null {
   const payload = error.error;
   if (!isRecord(payload)) {
     return null;
@@ -42,7 +44,9 @@ export function extractApiErrorCode(error: ResponseErrorConfig<any>): string | n
 /**
  * Extracts `error.args` from the API error response.
  */
-export function extractApiErrorArgs(error: ResponseErrorConfig<any>): Record<string, string | number | boolean> | null {
+export function extractApiErrorArgs(
+  error: ResponseErrorConfig<unknown>,
+): Record<string, string | number | boolean> | null {
   const payload = error.error;
   if (!isRecord(payload)) {
     return null;
@@ -70,7 +74,7 @@ export function extractApiErrorArgs(error: ResponseErrorConfig<any>): Record<str
  */
 export function getUserFacingErrorMessage(
   t: (descriptor: MessageDescriptor) => string,
-  error: ResponseErrorConfig<any>
+  error: ResponseErrorConfig<unknown>,
 ): string {
   const code = extractApiErrorCode(error);
   let descriptor: MessageDescriptor | null = null;
@@ -83,14 +87,5 @@ export function getUserFacingErrorMessage(
     descriptor = getFallbackErrorDescriptorFromStatus(error.status);
   }
 
-  return descriptor ? t(descriptor) : "An unexpected error occurred. Please try again.";
+  return t(descriptor ?? getFallbackErrorDescriptorFromStatus(0));
 }
-
-/**
- * React hook that returns translated error message.
- */
-export function useUserFacingErrorMessage(error: ResponseErrorConfig<any>): string {
-  const { t } = useLingui();
-  return getUserFacingErrorMessage(t, error);
-}
-

@@ -4,5 +4,5 @@ import { useSearchParams } from "next/navigation";
 
 export function useDevSkeleton() {
   const searchParams = useSearchParams();
-  return searchParams.has("skeleton") || searchParams.get("skeleton") === "1";
+  return searchParams.has("skeleton");
 }
