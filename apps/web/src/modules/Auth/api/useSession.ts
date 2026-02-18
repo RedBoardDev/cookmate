@@ -1,13 +1,14 @@
 "use client";
 
 import { useMemo } from "react";
-import { useGetSession, getSessionQueryKey } from "@/generated/hooks";
-import type { Session, GetSessionQueryResponse } from "@/generated/types";
-import { AuthMapper, type AuthUser } from "@/modules/Auth/application/auth.mapper";
+import { getSessionQueryKey, useGetSession } from "@/generated/hooks";
+import type { GetSessionQueryResponse, Session } from "@/generated/types";
+import { AuthMapper } from "@/modules/Auth/application/auth.mapper";
+import type { AuthUserEntity } from "@/modules/Auth/domain/entity/authUser.entity";
 
 export type AuthSession = {
   session: Session | null;
-  user: AuthUser | null;
+  user: AuthUserEntity | null;
   isAuthenticated: boolean;
 };
 
@@ -16,22 +17,22 @@ const mapSession = (data?: GetSessionQueryResponse): AuthSession => {
     return {
       session: null,
       user: null,
-      isAuthenticated: false
+      isAuthenticated: false,
     };
   }
 
   return {
     session: data.session,
-    user: AuthMapper.toAuthUser(data.user),
-    isAuthenticated: true
+    user: AuthMapper.toDomain(data.user),
+    isAuthenticated: true,
   };
 };
 
 export function useSession() {
   const query = useGetSession({
     query: {
-      retry: false
-    }
+      retry: false,
+    },
   });
 
   const session = useMemo(() => mapSession(query.data), [query.data]);
@@ -41,6 +42,6 @@ export function useSession() {
     queryKey: getSessionQueryKey(),
     isLoading: query.isLoading,
     error: query.error,
-    refresh: query.refetch
+    refresh: query.refetch,
   };
 }

@@ -1,18 +1,13 @@
 "use client";
 
-import { useRouter } from "next/navigation";
-import { Loader2 } from "lucide-react";
 import { Button } from "@heroui/react";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/shared/ui/primitives/card";
-import { Form } from "@/shared/ui/primitives/form";
-import { FieldError } from "@/shared/ui/form/FieldError";
+import { Trans, useLingui } from "@lingui/react/macro";
+import { Loader2 } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { ErrorMessage } from "@/shared/ui/form/ErrorMessage";
+import { FieldError } from "@/shared/ui/form/FieldError";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/shared/ui/primitives/card";
+import { Form } from "@/shared/ui/primitives/form";
 import { Input } from "@/shared/ui/primitives/input";
 import { useLoginForm } from "./useLoginForm";
 
@@ -22,6 +17,7 @@ type LoginViewProps = {
 
 export function LoginView({ redirectTo = "/recipes" }: LoginViewProps) {
   const router = useRouter();
+  const { t } = useLingui();
 
   const { form, isSubmitting, error } = useLoginForm({
     onSuccess: () => router.replace(redirectTo),
@@ -31,9 +27,11 @@ export function LoginView({ redirectTo = "/recipes" }: LoginViewProps) {
     <section className="w-full max-w-sm">
       <Card variant="soft" border="soft" shadow="flat" radius="3xl">
         <CardHeader>
-          <CardTitle>Welcome back</CardTitle>
+          <CardTitle>
+            <Trans>Welcome back</Trans>
+          </CardTitle>
           <CardDescription>
-            Sign in to access your recipes and planners.
+            <Trans>Sign in to access your recipes and planners.</Trans>
           </CardDescription>
         </CardHeader>
 
@@ -43,11 +41,8 @@ export function LoginView({ redirectTo = "/recipes" }: LoginViewProps) {
             <form.Field name="email">
               {(field) => (
                 <div className="space-y-2">
-                  <label
-                    className="text-sm font-medium text-foreground"
-                    htmlFor={field.name}
-                  >
-                    Email
+                  <label className="text-sm font-medium text-foreground" htmlFor={field.name}>
+                    <Trans>Email</Trans>
                   </label>
                   <Input
                     id={field.name}
@@ -69,18 +64,15 @@ export function LoginView({ redirectTo = "/recipes" }: LoginViewProps) {
             <form.Field name="password">
               {(field) => (
                 <div className="space-y-2">
-                  <label
-                    className="text-sm font-medium text-foreground"
-                    htmlFor={field.name}
-                  >
-                    Password
+                  <label className="text-sm font-medium text-foreground" htmlFor={field.name}>
+                    <Trans>Password</Trans>
                   </label>
                   <Input
                     id={field.name}
                     name={field.name}
                     type="password"
                     autoComplete="current-password"
-                    placeholder="Your password"
+                    placeholder={t`Your password`}
                     value={field.state.value}
                     onChange={(e) => field.handleChange(e.target.value)}
                     onBlur={field.handleBlur}
@@ -103,25 +95,21 @@ export function LoginView({ redirectTo = "/recipes" }: LoginViewProps) {
                     disabled={isSubmitting}
                     className="h-4 w-4 rounded border border-border/70 text-primary focus:ring-2 focus:ring-primary/40"
                   />
-                  Remember me
+                  <Trans>Remember me</Trans>
                 </label>
               )}
             </form.Field>
 
             <ErrorMessage error={error} />
 
-            <Button
-              className="w-full"
-              type="submit"
-              isDisabled={isSubmitting}
-            >
+            <Button className="w-full" type="submit" isDisabled={isSubmitting}>
               {isSubmitting ? (
                 <>
                   <Loader2 className="h-4 w-4 animate-spin" />
-                  Signing in...
+                  {t`Signing in...`}
                 </>
               ) : (
-                "Sign in"
+                t`Sign in`
               )}
             </Button>
           </Form>

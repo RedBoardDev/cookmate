@@ -1,13 +1,9 @@
 "use client";
 
-import { useSignInEmail as useSignInEmailGenerated } from "@/generated/hooks";
-import { getSessionQueryKey } from "@/generated/hooks";
-import type {
-  SignInEmailMutationResponse,
-  SignInEmailMutationRequest
-} from "@/generated/types";
-import type { ResponseErrorConfig } from "@/shared/lib/httpClient";
 import { useQueryClient } from "@tanstack/react-query";
+import { getSessionQueryKey, useSignInEmail as useSignInEmailGenerated } from "@/generated/hooks";
+import type { SignInEmailMutationRequest, SignInEmailMutationResponse } from "@/generated/types";
+import type { ResponseErrorConfig } from "@/shared/lib/httpClient";
 
 type UseSignInEmailOptions = {
   onSuccess?: (data: SignInEmailMutationResponse) => void;
@@ -25,8 +21,8 @@ export function useSignInEmail(options: UseSignInEmailOptions = {}) {
       },
       onError: (error) => {
         options.onError?.(error);
-      }
-    }
+      },
+    },
   });
 }
 

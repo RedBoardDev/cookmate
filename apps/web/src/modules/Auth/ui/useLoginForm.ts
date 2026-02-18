@@ -1,20 +1,22 @@
 "use client";
 
+import { useLingui } from "@lingui/react";
 import { useForm } from "@tanstack/react-form";
-import type { ResponseErrorConfig } from "@/shared/lib/httpClient";
-import { useSignInEmail } from "../api/useSignInEmail";
+import { useMemo } from "react";
 import type { SignInEmailMutationResponse } from "@/generated/types";
-import {
-  loginSchema,
-  loginDefaultValues,
-} from "../application/auth.schema";
+import type { ApiError } from "@/shared/lib/api-error";
+import { useSignInEmail } from "../api/useSignInEmail";
+import { createLoginSchema, loginDefaultValues } from "../application/auth.schema";
 
 type UseLoginFormOptions = {
   onSuccess?: (data: SignInEmailMutationResponse) => void;
-  onError?: (error: ResponseErrorConfig<any>) => void;
+  onError?: (error: ApiError) => void;
 };
 
 export function useLoginForm(options: UseLoginFormOptions = {}) {
+  const { i18n } = useLingui();
+  const loginSchema = useMemo(() => createLoginSchema(i18n), [i18n]);
+
   const mutation = useSignInEmail({
     onSuccess: options.onSuccess,
     onError: options.onError,
@@ -26,12 +28,10 @@ export function useLoginForm(options: UseLoginFormOptions = {}) {
       onChange: loginSchema,
     },
     onSubmit: ({ value }) => {
-      const validatedData = loginSchema.parse(value);
-
       mutation.mutate({
         data: {
-          email: validatedData.email,
-          password: validatedData.password,
+          email: value.email,
+          password: value.password,
         },
       });
     },
