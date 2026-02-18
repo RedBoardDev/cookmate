@@ -1,1 +1,1 @@
-export { DomainError } from "@cookmate/core";
+export { DomainError } from "./domain.error";

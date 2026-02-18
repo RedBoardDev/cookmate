@@ -1,9 +1,9 @@
-// Entity
+// Constants
 
 // Errors
 export * from "./errors";
-export { UserEntity } from "./user.entity";
+export * from "./user.constants";
 // Policies
-export { UserPolicies } from "./user.policies";
+export * from "./user.policies";
 // Schemas
 export * from "./user.schema";

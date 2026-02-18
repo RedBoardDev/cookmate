@@ -25,8 +25,8 @@ export const unitPropsSchema = z.object({
 
 export type UnitProps = z.infer<typeof unitPropsSchema>;
 
-export const unitSnapshotSchema = unitPropsSchema.extend({
+export const unitSchema = unitPropsSchema.extend({
   id: z.uuid(),
 });
 
-export type UnitSnapshot = z.infer<typeof unitSnapshotSchema>;
+export type Unit = z.infer<typeof unitSchema>;

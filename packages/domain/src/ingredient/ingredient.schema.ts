@@ -22,8 +22,8 @@ export const ingredientPropsSchema = z.object({
 
 export type IngredientProps = z.infer<typeof ingredientPropsSchema>;
 
-export const ingredientSnapshotSchema = ingredientPropsSchema.extend({
+export const ingredientSchema = ingredientPropsSchema.extend({
   id: z.uuid(),
 });
 
-export type IngredientSnapshot = z.infer<typeof ingredientSnapshotSchema>;
+export type Ingredient = z.infer<typeof ingredientSchema>;

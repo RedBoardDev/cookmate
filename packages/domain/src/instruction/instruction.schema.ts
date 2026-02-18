@@ -32,8 +32,8 @@ export const instructionPropsSchema = z.object({
 
 export type InstructionProps = z.infer<typeof instructionPropsSchema>;
 
-export const instructionSnapshotSchema = instructionPropsSchema.extend({
+export const instructionSchema = instructionPropsSchema.extend({
   id: z.uuid(),
 });
 
-export type InstructionSnapshot = z.infer<typeof instructionSnapshotSchema>;
+export type Instruction = z.infer<typeof instructionSchema>;

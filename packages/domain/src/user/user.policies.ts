@@ -1,6 +1,5 @@
 import { EmailNotVerifiedError, MaxCollectionsReachedError } from "./errors";
-
-export const DEFAULT_MAX_OWNED_COLLECTIONS = 15;
+import { DEFAULT_MAX_OWNED_COLLECTIONS } from "./user.constants";
 
 export const UserPolicies = {
   /**

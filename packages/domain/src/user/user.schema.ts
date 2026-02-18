@@ -28,8 +28,8 @@ export const userPropsSchema = z.object({
 
 export type UserProps = z.infer<typeof userPropsSchema>;
 
-export const userSnapshotSchema = userPropsSchema.extend({
+export const userSchema = userPropsSchema.extend({
   id: z.string().min(1),
 });
 
-export type UserSnapshot = z.infer<typeof userSnapshotSchema>;
+export type User = z.infer<typeof userSchema>;

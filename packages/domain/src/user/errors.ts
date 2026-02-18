@@ -1,5 +1,5 @@
 import { DomainError } from "../errors";
-import { DEFAULT_MAX_OWNED_COLLECTIONS } from "./user.policies";
+import { DEFAULT_MAX_OWNED_COLLECTIONS } from "./user.constants";
 
 export class UserNotFoundError extends DomainError {
   readonly code = "USER_NOT_FOUND";

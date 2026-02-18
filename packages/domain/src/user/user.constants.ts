@@ -1,0 +1,1 @@
+export const DEFAULT_MAX_OWNED_COLLECTIONS = 15;

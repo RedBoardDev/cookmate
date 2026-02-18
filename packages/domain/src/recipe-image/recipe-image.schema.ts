@@ -36,8 +36,8 @@ export const recipeImagePropsSchema = z.object({
 
 export type RecipeImageProps = z.infer<typeof recipeImagePropsSchema>;
 
-export const recipeImageSnapshotSchema = recipeImagePropsSchema.extend({
+export const recipeImageSchema = recipeImagePropsSchema.extend({
   id: z.uuid(),
 });
 
-export type RecipeImageSnapshot = z.infer<typeof recipeImageSnapshotSchema>;
+export type RecipeImage = z.infer<typeof recipeImageSchema>;

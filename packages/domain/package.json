@@ -4,7 +4,6 @@
   "private": true,
   "type": "module",
   "dependencies": {
-    "@cookmate/core": "workspace:*",
     "zod": "4.2.1"
   }
 }

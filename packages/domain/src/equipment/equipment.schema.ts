@@ -22,8 +22,8 @@ export const equipmentPropsSchema = z.object({
 
 export type EquipmentProps = z.infer<typeof equipmentPropsSchema>;
 
-export const equipmentSnapshotSchema = equipmentPropsSchema.extend({
+export const equipmentSchema = equipmentPropsSchema.extend({
   id: z.uuid(),
 });
 
-export type EquipmentSnapshot = z.infer<typeof equipmentSnapshotSchema>;
+export type Equipment = z.infer<typeof equipmentSchema>;

@@ -38,8 +38,8 @@ export const collectionPropsSchema = z.object({
 
 export type CollectionProps = z.infer<typeof collectionPropsSchema>;
 
-export const collectionSnapshotSchema = collectionPropsSchema.extend({
+export const collectionSchema = collectionPropsSchema.extend({
   id: z.uuid(),
 });
 
-export type CollectionSnapshot = z.infer<typeof collectionSnapshotSchema>;
+export type Collection = z.infer<typeof collectionSchema>;

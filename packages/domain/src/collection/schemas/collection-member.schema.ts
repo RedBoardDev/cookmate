@@ -22,7 +22,7 @@ export const collectionMemberPropsSchema = z.object({
 
 export type CollectionMemberProps = z.infer<typeof collectionMemberPropsSchema>;
 
-export const collectionMemberSnapshotSchema = z.object({
+export const collectionMemberSchema = z.object({
   id: z.uuid(),
   userId: collectionMemberSystemField.userId,
   email: collectionMemberSystemField.email,
@@ -30,4 +30,4 @@ export const collectionMemberSnapshotSchema = z.object({
   joinedAt: collectionMemberSystemField.joinedAt,
 });
 
-export type CollectionMemberSnapshot = z.infer<typeof collectionMemberSnapshotSchema>;
+export type CollectionMember = z.infer<typeof collectionMemberSchema>;

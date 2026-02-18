@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { collectionSnapshotSchema } from "../collection/schemas/collection.schema";
+import { collectionSchema } from "../collection/schemas/collection.schema";
 import {
   BUDGETS,
   type BudgetValue,
@@ -71,9 +71,9 @@ export const recipePropsSchema = z.object({
 
 export type RecipeProps = z.infer<typeof recipePropsSchema>;
 
-export const recipeSnapshotSchema = recipePropsSchema.extend({
+export const recipeSchema = recipePropsSchema.extend({
   id: z.uuid(),
-  collections: z.array(collectionSnapshotSchema.pick({ id: true, name: true, emoji: true })).optional(),
+  collections: z.array(collectionSchema.pick({ id: true, name: true, emoji: true })).optional(),
 });
 
-export type RecipeSnapshot = z.infer<typeof recipeSnapshotSchema>;
+export type Recipe = z.infer<typeof recipeSchema>;
