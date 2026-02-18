@@ -1,4 +1,4 @@
-import { collectionMemberSnapshotSchema } from "@cookmate/domain";
+import { collectionMemberSchema } from "@cookmate/domain";
 import { z } from "zod";
 import type { Prisma } from "@/generated/prisma/client";
 import type { SelectConfig } from "@/shared/types/select-config";
@@ -17,7 +17,7 @@ const select = {
 
 type SelectResult = Prisma.CollectionMemberGetPayload<{ select: typeof select }>[];
 
-const responseSchema = z.array(collectionMemberSnapshotSchema);
+const responseSchema = z.array(collectionMemberSchema);
 
 type ResponseDto = z.infer<typeof responseSchema>;
 

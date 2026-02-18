@@ -1,9 +1,9 @@
 import {
-  equipmentSnapshotSchema,
-  instructionSnapshotSchema,
-  recipeImageSnapshotSchema,
-  recipeIngredientSnapshotSchema,
-  recipeSnapshotSchema,
+  equipmentSchema,
+  instructionSchema,
+  recipeImageSchema,
+  recipeIngredientSchema,
+  recipeSchema,
 } from "@cookmate/domain";
 import { z } from "zod";
 import type { Prisma } from "@/generated/prisma/client";
@@ -102,9 +102,9 @@ const select = {
 
 export type SelectResult = Prisma.RecipeGetPayload<{ select: typeof select }>;
 
-export const responseSchema = recipeSnapshotSchema.extend({
+export const responseSchema = recipeSchema.extend({
   ingredients: z.array(
-    recipeIngredientSnapshotSchema.extend({
+    recipeIngredientSchema.extend({
       ingredient: z.object({
         id: z.string(),
         name: z.string(),
@@ -118,9 +118,9 @@ export const responseSchema = recipeSnapshotSchema.extend({
         .nullable(),
     }),
   ),
-  instructions: z.array(instructionSnapshotSchema),
-  images: z.array(recipeImageSnapshotSchema),
-  equipments: z.array(equipmentSnapshotSchema),
+  instructions: z.array(instructionSchema),
+  images: z.array(recipeImageSchema),
+  equipments: z.array(equipmentSchema),
   collections: z.array(
     z.object({
       id: z.string(),

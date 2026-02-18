@@ -1,4 +1,4 @@
-import { CollectionPolicies } from "@cookmate/domain";
+import { CollectionPolicies } from "@cookmate/domain/collection";
 import { getCollectionSelect } from "@/infra/db/repositories/collection/get-collection";
 
 export const removeMemberErrors = async (

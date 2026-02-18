@@ -1,4 +1,4 @@
-import { CollectionMemberEntity } from "@cookmate/domain/collection";
+import { collectionMemberPropsSchema, InvalidCollectionMemberDataError } from "@cookmate/domain/collection";
 import { getPrisma } from "@/infra/db/prisma";
 import { handleError } from "@/shared/utils/handle-error";
 
@@ -12,15 +12,17 @@ interface CreateMemberInput {
 const addCollectionMemberFn = async (input: CreateMemberInput) => {
   const joinedAt = new Date();
 
-  const member = CollectionMemberEntity.create({
+  const result = collectionMemberPropsSchema.safeParse({
     collectionId: input.collectionId,
     userId: input.userId,
     email: input.email,
     avatar: input.avatar,
     joinedAt,
   });
+  if (!result.success) throw new InvalidCollectionMemberDataError();
+  const member = result.data;
 
-  const result = await getPrisma().collectionMember.create({
+  const dbResult = await getPrisma().collectionMember.create({
     data: {
       collectionId: member.collectionId,
       userId: member.userId,
@@ -31,7 +33,7 @@ const addCollectionMemberFn = async (input: CreateMemberInput) => {
     },
   });
 
-  return { id: result.id };
+  return { id: dbResult.id };
 };
 
 export const addCollectionMember = handleError(addCollectionMemberFn);

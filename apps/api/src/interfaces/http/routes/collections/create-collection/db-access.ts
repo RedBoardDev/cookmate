@@ -1,4 +1,4 @@
-import { CollectionEntity } from "@cookmate/domain/collection";
+import { collectionPropsSchema, InvalidCollectionDataError } from "@cookmate/domain/collection";
 import type { z } from "zod";
 import { CollectionVisibility } from "@/generated/prisma/enums";
 import { getPrisma } from "@/infra/db/prisma";
@@ -14,7 +14,7 @@ const createCollectionFn = async (input: CreateCollectionInput) => {
   const shortUrl = await generateUniqueCollectionShortUrl();
   const now = new Date();
 
-  const collection = CollectionEntity.create({
+  const result = collectionPropsSchema.safeParse({
     name: input.name,
     emoji: input.emoji,
     description: input.description ?? null,
@@ -24,8 +24,10 @@ const createCollectionFn = async (input: CreateCollectionInput) => {
     createdAt: now,
     updatedAt: now,
   });
+  if (!result.success) throw new InvalidCollectionDataError();
+  const collection = result.data;
 
-  const result = await getPrisma().$transaction(async (tx) => {
+  const dbResult = await getPrisma().$transaction(async (tx) => {
     return await tx.collection.create({
       data: {
         name: collection.name,
@@ -43,7 +45,7 @@ const createCollectionFn = async (input: CreateCollectionInput) => {
     });
   });
 
-  return { id: result.id };
+  return { id: dbResult.id };
 };
 
 export const createCollection = handleError(createCollectionFn);

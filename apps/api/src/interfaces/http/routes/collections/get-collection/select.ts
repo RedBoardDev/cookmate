@@ -1,4 +1,4 @@
-import { collectionMemberSnapshotSchema, collectionSnapshotSchema } from "@cookmate/domain";
+import { collectionMemberSchema, collectionSchema } from "@cookmate/domain";
 import { z } from "zod";
 import type { Prisma } from "@/generated/prisma/client";
 
@@ -15,6 +15,7 @@ const select = {
   members: {
     select: {
       id: true,
+      userId: true,
       joinedAt: true,
       user: {
         select: {
@@ -28,8 +29,8 @@ const select = {
 
 export type SelectResult = Prisma.CollectionGetPayload<{ select: typeof select }>;
 
-export const responseSchema = collectionSnapshotSchema.extend({
-  members: z.array(collectionMemberSnapshotSchema).nullable(),
+export const responseSchema = collectionSchema.extend({
+  members: z.array(collectionMemberSchema).nullable(),
 });
 
 export type ResponseDto = z.infer<typeof responseSchema>;
@@ -46,6 +47,7 @@ const transform = (data: SelectResult, options: TransformOptions): ResponseDto =
     members: options.isOwner
       ? members.map((member) => ({
           id: member.id,
+          userId: member.userId,
           email: member.user.email,
           avatar: member.user.avatar,
           joinedAt: member.joinedAt,

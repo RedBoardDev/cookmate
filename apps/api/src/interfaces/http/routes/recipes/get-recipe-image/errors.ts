@@ -1,4 +1,4 @@
-import { RecipePolicies } from "@cookmate/domain";
+import { RecipePolicies } from "@cookmate/domain/recipe";
 import { RecipeImageNotFoundError } from "@cookmate/domain/recipe-image";
 import { getRecipeSelect } from "@/infra/db/repositories/recipe/get-recipe";
 import type { SelectResult } from "./select";

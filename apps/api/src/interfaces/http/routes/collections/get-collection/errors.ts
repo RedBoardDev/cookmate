@@ -1,4 +1,4 @@
-import { CollectionPolicies } from "@cookmate/domain";
+import { CollectionPolicies } from "@cookmate/domain/collection";
 import { findFirstCollectionMember } from "@/infra/db/repositories/collection-member/get-collection-member";
 import type { SelectResult } from "./select";
 

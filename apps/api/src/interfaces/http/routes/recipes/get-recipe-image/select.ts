@@ -1,4 +1,4 @@
-import { recipeImageSnapshotSchema } from "@cookmate/domain";
+import { recipeImageSchema } from "@cookmate/domain";
 import type { z } from "zod";
 import type { Prisma } from "@/generated/prisma/client";
 
@@ -17,7 +17,7 @@ const select = {
 
 export type SelectResult = Prisma.RecipeImageGetPayload<{ select: typeof select }>;
 
-export const responseSchema = recipeImageSnapshotSchema;
+export const responseSchema = recipeImageSchema;
 
 export type ResponseDto = z.infer<typeof responseSchema>;
 

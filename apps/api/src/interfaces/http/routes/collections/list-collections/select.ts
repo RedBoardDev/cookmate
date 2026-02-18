@@ -1,4 +1,4 @@
-import { collectionSnapshotSchema } from "@cookmate/domain";
+import { collectionSchema } from "@cookmate/domain";
 import { z } from "zod";
 import type { Prisma } from "@/generated/prisma/client";
 import type { SelectConfig } from "@/shared/types/select-config";
@@ -23,7 +23,7 @@ const select = {
 type SelectResult = Prisma.CollectionGetPayload<{ select: typeof select }>[];
 
 const responseSchema = z.array(
-  collectionSnapshotSchema.extend({
+  collectionSchema.extend({
     recipeCount: z.number(),
   }),
 );

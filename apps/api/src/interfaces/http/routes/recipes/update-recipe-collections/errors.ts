@@ -1,4 +1,4 @@
-import { CollectionPolicies } from "@cookmate/domain";
+import { CollectionPolicies } from "@cookmate/domain/collection";
 import type { Prisma } from "@/generated/prisma/client";
 import { getCollectionSelect } from "@/infra/db/repositories/collection/get-collection";
 import { findFirstCollectionMember } from "@/infra/db/repositories/collection-member/get-collection-member";

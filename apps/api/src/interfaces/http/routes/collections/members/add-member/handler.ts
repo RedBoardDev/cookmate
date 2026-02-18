@@ -1,4 +1,4 @@
-import { CollectionPolicies } from "@cookmate/domain";
+import { CollectionPolicies } from "@cookmate/domain/collection";
 import { getCollectionSelect } from "@/infra/db/repositories/collection/get-collection";
 import { getUserSelect } from "@/infra/db/repositories/user/get-user";
 import { HttpStatus } from "@/shared/enums/http-status.enum";
