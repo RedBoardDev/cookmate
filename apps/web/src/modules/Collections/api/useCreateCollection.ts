@@ -5,7 +5,7 @@ import { usePostCollections } from "@/generated/hooks";
 import { getCollectionsQueryKey } from "@/generated/hooks/CollectionsHooks/useGetCollections";
 import type { PostCollectionsMutationResponse } from "@/generated/types";
 import type { CreateCollectionInput } from "@/modules/Collections/application/collection.schema";
-import type { ApiError } from "@/shared/lib/api-error";
+import type { ApiError } from "@/shared/core/network/api-error";
 
 type UseCreateCollectionOptions = {
   onSuccess?: (data: PostCollectionsMutationResponse) => void;

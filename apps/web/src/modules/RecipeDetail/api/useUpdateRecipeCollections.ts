@@ -6,7 +6,7 @@ import {
   getRecipesRecipeidQueryKey,
   usePatchRecipesRecipeidCollections,
 } from "@/generated/hooks";
-import type { ApiError } from "@/shared/lib/api-error";
+import type { ApiError } from "@/shared/core/network/api-error";
 
 type UseUpdateRecipeCollectionsOptions = {
   recipeId: string;

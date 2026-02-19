@@ -5,7 +5,7 @@ import { useLingui } from "@lingui/react/macro";
 import { toast } from "sonner";
 import { CreateCollectionView } from "@/modules/Collections/ui/create/CreateCollectionView";
 import { useCreateCollectionForm } from "@/modules/Collections/ui/hooks/useCreateCollectionForm";
-import { getUserFacingErrorMessage } from "@/shared/lib/api-error";
+import { getUserFacingErrorMessage } from "@/shared/core/network/api-error";
 
 interface CreateCollectionScreenProps {
   onBack: () => void;

@@ -3,7 +3,7 @@
 import { useQueryClient } from "@tanstack/react-query";
 import { useDeleteCollectionsCollectionid } from "@/generated/hooks";
 import { getCollectionsQueryKey } from "@/generated/hooks/CollectionsHooks/useGetCollections";
-import type { ApiError } from "@/shared/lib/api-error";
+import type { ApiError } from "@/shared/core/network/api-error";
 
 type UseDeleteCollectionOptions = {
   onSuccess?: () => void;

@@ -1,4 +1,4 @@
-import { env } from "@/shared/lib/env";
+import { env } from "@/shared/core/config/env";
 
 class RecipeShareService {
   public buildShareUrl(recipeId: string, shortUrl?: string | null): string | null {

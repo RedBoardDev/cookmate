@@ -6,7 +6,7 @@ import {
   type CreateCollectionInput,
   createCollectionSchema,
 } from "@/modules/Collections/application/collection.schema";
-import type { ApiError } from "@/shared/lib/api-error";
+import type { ApiError } from "@/shared/core/network/api-error";
 
 type UseCreateCollectionFormOptions = {
   onSuccess?: () => void;

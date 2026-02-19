@@ -21,11 +21,8 @@ export function useCollections(options: UseCollectionsOptions = {}) {
   });
 
   const collections = useMemo(() => {
-    if (!apiQuery.data?.data) {
-      return [];
-    }
-
-    return apiQuery.data.data.map((data) => CollectionMapper.toDomain(data));
+    const data = apiQuery.data?.data ?? [];
+    return data.map((item) => CollectionMapper.toDomain(item));
   }, [apiQuery.data]);
 
   return {

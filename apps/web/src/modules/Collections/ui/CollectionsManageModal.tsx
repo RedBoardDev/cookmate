@@ -3,7 +3,7 @@
 import { CreateCollectionScreen } from "@/modules/Collections/ui/create/CreateCollectionScreen";
 import { useCollectionsManageModal } from "@/modules/Collections/ui/hooks/useCollectionsManageModal";
 import { CollectionsListView } from "@/modules/Collections/ui/list/CollectionsListView";
-import { cn } from "@/shared/lib/utils";
+import { cn } from "@/shared/core/utils/cn";
 import { Dialog, DialogContent } from "@/shared/ui/primitives/dialog";
 
 interface CollectionsManageModalProps {

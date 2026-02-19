@@ -6,7 +6,7 @@ import { useState } from "react";
 import { toast } from "sonner";
 import { useCollections } from "@/modules/Collections/api/useCollections";
 import { useDeleteCollection } from "@/modules/Collections/api/useDeleteCollection";
-import { getUserFacingErrorMessage } from "@/shared/lib/api-error";
+import { getUserFacingErrorMessage } from "@/shared/core/network/api-error";
 import { useDevSkeleton } from "@/shared/ui/hooks/useDevSkeleton";
 
 export type Screen = "list" | "create";
