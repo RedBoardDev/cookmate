@@ -7,6 +7,9 @@ import { CreditCard, HelpCircle, LogOut, Settings, User } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useMemo, useState } from "react";
+import { cn } from "@/shared/core/utils/cn";
+import { userAvatarService } from "@/shared/modules/user-session/domain/services/userAvatar.service";
+import { useCurrentUser } from "@/shared/modules/user-session/ui/hooks/useCurrentUser";
 import { Button } from "@/shared/ui/primitives/button";
 import {
   DropdownMenu,
@@ -15,9 +18,6 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/shared/ui/primitives/dropdown-menu";
-import { cn } from "@/shared/core/utils/cn";
-import { userAvatarService } from "@/shared/modules/user-session/domain/services/userAvatar.service";
-import { useCurrentUser } from "@/shared/modules/user-session/ui/hooks/useCurrentUser";
 
 const MENU_ITEMS: Array<{ label: MessageDescriptor; href: string; icon: typeof User }> = [
   {

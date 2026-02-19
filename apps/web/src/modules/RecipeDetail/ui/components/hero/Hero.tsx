@@ -28,13 +28,12 @@ export function Hero({
   disableShare = false,
   collectionsModal,
 }: HeroProps) {
-  const source =
-    detail?.sourceUrl
-      ? {
-          type: detail.source,
-          url: detail.sourceUrl,
-        }
-      : null;
+  const source = detail?.sourceUrl
+    ? {
+        type: detail.source,
+        url: detail.sourceUrl,
+      }
+    : null;
 
   return (
     <div className="relative motion-safe:animate-in motion-safe:fade-in-0 motion-safe:slide-in-from-bottom-2">

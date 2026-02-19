@@ -5,7 +5,7 @@ import { useLingui } from "@lingui/react/macro";
 import { Clock, Gauge, Users } from "lucide-react";
 import Skeleton from "react-loading-skeleton";
 import type { RecipeDifficultyType } from "@/modules/RecipeDetail/domain/vo/recipeDifficulty.vo";
-import { cn } from "@/shared/lib/utils";
+import { cn } from "@/shared/core/utils/cn";
 import { Card } from "@/shared/ui/primitives/card";
 
 const DIFFICULTY_LABELS: Record<RecipeDifficultyType, MessageDescriptor> = {

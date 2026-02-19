@@ -4,7 +4,7 @@ import { Trans, useLingui } from "@lingui/react/macro";
 import { Minus, Plus, ShoppingCart } from "lucide-react";
 import Skeleton from "react-loading-skeleton";
 import type { RecipeIngredient } from "@/modules/RecipeDetail/domain/vo/recipeIngredient.vo";
-import { cn } from "@/shared/lib/utils";
+import { cn } from "@/shared/core/utils/cn";
 import { Button } from "@/shared/ui/primitives/button";
 import { Card } from "@/shared/ui/primitives/card";
 

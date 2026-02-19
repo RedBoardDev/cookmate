@@ -5,8 +5,8 @@ import { useCallback, useState } from "react";
 import { toast } from "sonner";
 import { useRecipeDetailCollections } from "@/modules/RecipeDetail/api/useRecipeDetailCollections";
 import { useUpdateRecipeCollections } from "@/modules/RecipeDetail/api/useUpdateRecipeCollections";
-import type { ApiError } from "@/shared/lib/api-error";
-import { getUserFacingErrorMessage } from "@/shared/lib/api-error";
+import type { ApiError } from "@/shared/core/network/api-error";
+import { getUserFacingErrorMessage } from "@/shared/core/network/api-error";
 
 type UseRecipeCollectionsActionsOptions = {
   recipeId: string;

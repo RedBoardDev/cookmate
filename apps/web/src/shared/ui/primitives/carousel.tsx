@@ -4,9 +4,8 @@ import { Trans } from "@lingui/react/macro";
 import useEmblaCarousel, { type UseEmblaCarouselType } from "embla-carousel-react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import * as React from "react";
-
 import { cn } from "@/shared/core/utils/cn";
-import { Button } from "@/shared/core/ui/primitives/button";
+import { Button } from "./button";
 
 type CarouselApi = UseEmblaCarouselType[1];
 type UseCarouselParameters = Parameters<typeof useEmblaCarousel>;

@@ -2,7 +2,7 @@
 
 import { useLingui } from "@lingui/react/macro";
 import type { RecipeSection } from "@/modules/RecipeDetail/ui/hooks/useRecipeSections";
-import { cn } from "@/shared/lib/utils";
+import { cn } from "@/shared/core/utils/cn";
 import { Button } from "@/shared/ui/primitives/button";
 
 interface SectionTabsProps {

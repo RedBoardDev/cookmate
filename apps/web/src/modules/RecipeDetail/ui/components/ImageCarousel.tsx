@@ -3,7 +3,7 @@
 import { useLingui } from "@lingui/react/macro";
 import type { SyntheticEvent } from "react";
 import type { RecipeImageItem } from "@/modules/RecipeDetail/domain/vo/recipeImages.vo";
-import { cn } from "@/shared/lib/utils";
+import { cn } from "@/shared/core/utils/cn";
 import {
   Carousel,
   CarouselContent,

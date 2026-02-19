@@ -3,7 +3,7 @@
 import { Trans, useLingui } from "@lingui/react/macro";
 import Skeleton from "react-loading-skeleton";
 import type { RecipeDetailCollectionEntity } from "@/modules/RecipeDetail/domain/entity/recipeDetailCollection.entity";
-import { cn } from "@/shared/lib/utils";
+import { cn } from "@/shared/core/utils/cn";
 import { Button } from "@/shared/ui/primitives/button";
 import {
   Dialog,

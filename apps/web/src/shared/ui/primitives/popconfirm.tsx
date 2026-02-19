@@ -4,7 +4,7 @@ import { useLingui } from "@lingui/react/macro";
 import * as PopoverPrimitive from "@radix-ui/react-popover";
 import * as React from "react";
 import { cn } from "@/shared/core/utils/cn";
-import { Button } from "@/shared/core/ui/primitives/button";
+import { Button } from "./button";
 
 interface PopConfirmProps {
   title: string;

@@ -7,7 +7,7 @@ import { Trans, useLingui } from "@lingui/react/macro";
 import { ArrowLeft, ExternalLink } from "lucide-react";
 import Link from "next/link";
 import Skeleton from "react-loading-skeleton";
-import { cn } from "@/shared/lib/utils";
+import { cn } from "@/shared/core/utils/cn";
 import { Badge } from "@/shared/ui/primitives/badge";
 import { Button } from "@/shared/ui/primitives/button";
 

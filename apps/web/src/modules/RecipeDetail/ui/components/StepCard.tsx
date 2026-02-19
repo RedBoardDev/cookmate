@@ -4,7 +4,7 @@ import { useLingui } from "@lingui/react/macro";
 import { Lightbulb, Timer } from "lucide-react";
 import Skeleton from "react-loading-skeleton";
 import type { RecipeInstruction } from "@/modules/RecipeDetail/domain/vo/recipeInstruction.vo";
-import { cn } from "@/shared/lib/utils";
+import { cn } from "@/shared/core/utils/cn";
 import { Card } from "@/shared/ui/primitives/card";
 
 interface StepCardProps {

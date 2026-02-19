@@ -9,14 +9,14 @@ import { pluginZod } from "@kubb/plugin-zod";
 export default defineConfig({
   root: ".",
   input: {
-    path: "http://127.0.0.1:3001/docs/openapi"
+    path: "http://127.0.0.1:3001/docs/openapi",
   },
   output: {
     path: "./src/generated",
     clean: true,
     barrelType: "named",
     format: false,
-    lint: false
+    lint: false,
   },
   plugins: [
     pluginOas({ validate: true }),
@@ -24,23 +24,23 @@ export default defineConfig({
       output: { path: "types" },
       enumType: "asConst",
       syntaxType: "type",
-      group: { type: "tag", name: ({ group }) => `${group}Types` }
+      group: { type: "tag", name: ({ group }) => `${group}Types` },
     }),
     pluginZod({
       output: { path: "schemas" },
       typed: true,
       inferred: true,
-      group: { type: "tag", name: ({ group }) => `${group}Schemas` }
+      group: { type: "tag", name: ({ group }) => `${group}Schemas` },
     }),
     pluginClient({
       output: { path: "clients" },
-      importPath: "@/shared/lib/httpClient",
+      importPath: "@/shared/core/network/httpClient",
       dataReturnType: "data",
-      group: { type: "tag", name: ({ group }) => `${group}Client` }
+      group: { type: "tag", name: ({ group }) => `${group}Client` },
     }),
     pluginReactQuery({
       output: { path: "hooks" },
-      client: { importPath: "@/shared/lib/httpClient", dataReturnType: "data" },
+      client: { importPath: "@/shared/core/network/httpClient", dataReturnType: "data" },
       query: { methods: ["get"] },
       mutation: { methods: ["post", "put", "patch", "delete"] },
       suspense: {},
@@ -48,7 +48,7 @@ export default defineConfig({
         const keys = QueryKey.getTransformer(props);
         return ['"cookmate"', ...keys];
       },
-      group: { type: "tag", name: ({ group }) => `${group}Hooks` }
-    })
-  ]
+      group: { type: "tag", name: ({ group }) => `${group}Hooks` },
+    }),
+  ],
 });
