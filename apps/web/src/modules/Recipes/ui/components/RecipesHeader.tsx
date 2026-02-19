@@ -2,8 +2,8 @@
 import { Trans, useLingui } from "@lingui/react/macro";
 import { Search } from "lucide-react";
 import Skeleton from "react-loading-skeleton";
-import { UserMenu } from "@/shared/layouts/app/UserMenu";
-import { cn } from "@/shared/lib/utils";
+import { UserMenu } from "@/shared/modules/user-session/ui/components/UserMenu";
+import { cn } from "@/shared/core/utils/cn";
 import { Input } from "@/shared/ui/primitives/input";
 
 interface RecipesHeaderProps {

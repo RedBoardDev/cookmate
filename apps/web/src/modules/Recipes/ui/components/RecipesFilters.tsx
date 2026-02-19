@@ -4,7 +4,7 @@ import { Trans, useLingui } from "@lingui/react/macro";
 import { SlidersHorizontal } from "lucide-react";
 import Skeleton from "react-loading-skeleton";
 import type { QuickFilterId, QuickFilterOption } from "@/modules/Recipes/domain/vo/recipes.filters";
-import { cn } from "@/shared/lib/utils";
+import { cn } from "@/shared/core/utils/cn";
 import { Button } from "@/shared/ui/primitives/button";
 
 interface RecipesFiltersProps {

@@ -5,7 +5,7 @@ import { BookOpen, Settings2 } from "lucide-react";
 import { useMemo } from "react";
 import Skeleton from "react-loading-skeleton";
 import type { CollectionEntity } from "@/modules/Recipes/domain/entity/collection.entity";
-import { cn } from "@/shared/lib/utils";
+import { cn } from "@/shared/core/utils/cn";
 import { Button } from "@/shared/ui/primitives/button";
 
 interface RecipesCollectionsProps {

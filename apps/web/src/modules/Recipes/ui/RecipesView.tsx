@@ -9,7 +9,7 @@ import { RecipesFilters } from "@/modules/Recipes/ui/components/RecipesFilters";
 import { RecipesGrid } from "@/modules/Recipes/ui/components/RecipesGrid";
 import { RecipesHeader } from "@/modules/Recipes/ui/components/RecipesHeader";
 import { RecipesEmptyState } from "@/modules/Recipes/ui/states/RecipesEmptyState";
-import { cn } from "@/shared/lib/utils";
+import { cn } from "@/shared/core/utils/cn";
 import { Card } from "@/shared/ui/primitives/card";
 
 interface RecipesViewProps {

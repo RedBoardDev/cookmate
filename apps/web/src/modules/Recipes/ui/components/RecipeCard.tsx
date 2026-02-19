@@ -5,7 +5,7 @@ import type { LucideIcon } from "lucide-react";
 import Link from "next/link";
 import type { SyntheticEvent } from "react";
 import Skeleton from "react-loading-skeleton";
-import { cn } from "@/shared/lib/utils";
+import { cn } from "@/shared/core/utils/cn";
 import { Card } from "@/shared/ui/primitives/card";
 
 const FALLBACK_IMAGE_SRC = "/image_not_found.png";

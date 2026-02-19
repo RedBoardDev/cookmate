@@ -1,21 +1,9 @@
-import type { RecipeTag } from "@cookmate/domain/recipe";
+import { TAGS } from "@cookmate/domain/shared/value-objects";
 import { z } from "zod";
 import type { GetRecipesQueryParams } from "@/generated/types";
 
-const RECIPE_TAG_VALUES = [
-  "MAIN_COURSE",
-  "APPETIZER",
-  "SIDE_DISH",
-  "DESSERT",
-  "DRINK",
-  "QUICK",
-  "EASY",
-  "HEALTHY",
-  "VEGETARIAN",
-] as const satisfies readonly RecipeTag[];
-
 const recipesQueryFiltersSchema = z.object({
-  whereTags: z.array(z.enum(RECIPE_TAG_VALUES)).min(1).optional(),
+  whereTags: z.array(z.enum(TAGS)).min(1).optional(),
   whereCollectionIds: z.array(z.string().min(1)).min(1).optional(),
 });
 
