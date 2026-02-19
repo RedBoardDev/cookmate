@@ -4,9 +4,9 @@ import { useLingui } from "@lingui/react";
 import { useForm } from "@tanstack/react-form";
 import { useMemo } from "react";
 import type { SignInEmailMutationResponse } from "@/generated/types";
-import type { ApiError } from "@/shared/lib/api-error";
+import type { ApiError } from "@/shared/core/network/api-error";
 import { useSignInEmail } from "../api/useSignInEmail";
-import { createLoginSchema, loginDefaultValues } from "../application/auth.schema";
+import { createLoginSchema } from "../application/auth.schema";
 
 type UseLoginFormOptions = {
   onSuccess?: (data: SignInEmailMutationResponse) => void;
@@ -23,7 +23,11 @@ export function useLoginForm(options: UseLoginFormOptions = {}) {
   });
 
   const form = useForm({
-    defaultValues: loginDefaultValues,
+    defaultValues: {
+      email: "",
+      password: "",
+      rememberMe: false,
+    },
     validators: {
       onChange: loginSchema,
     },
