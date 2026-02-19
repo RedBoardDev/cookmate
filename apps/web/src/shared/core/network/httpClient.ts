@@ -1,4 +1,4 @@
-import { env } from "@/shared/lib/env";
+import { env } from "@/shared/core/config/env";
 
 export type HttpMethod = "GET" | "PUT" | "PATCH" | "POST" | "DELETE" | "get" | "put" | "patch" | "post" | "delete";
 

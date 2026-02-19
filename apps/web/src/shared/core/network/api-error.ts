@@ -1,6 +1,6 @@
 import { getErrorDescriptor, getFallbackErrorDescriptorFromStatus } from "@cookmate/i18n";
 import type { MessageDescriptor } from "@lingui/core";
-import type { ResponseErrorConfig } from "@/shared/lib/httpClient";
+import type { ResponseErrorConfig } from "@/shared/core/network/httpClient";
 
 /** Type-safe alias — use instead of `ResponseErrorConfig<any>`. */
 export type ApiError = ResponseErrorConfig<unknown>;
