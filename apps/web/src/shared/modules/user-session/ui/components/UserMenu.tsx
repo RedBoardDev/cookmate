@@ -7,14 +7,14 @@ import { CreditCard, HelpCircle, LogOut, Settings, User } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useMemo, useState } from "react";
-import { Button } from "@/shared/core/ui/primitives/button";
+import { Button } from "@/shared/ui/primitives/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/shared/core/ui/primitives/dropdown-menu";
+} from "@/shared/ui/primitives/dropdown-menu";
 import { cn } from "@/shared/core/utils/cn";
 import { userAvatarService } from "@/shared/modules/user-session/domain/services/userAvatar.service";
 import { useCurrentUser } from "@/shared/modules/user-session/ui/hooks/useCurrentUser";

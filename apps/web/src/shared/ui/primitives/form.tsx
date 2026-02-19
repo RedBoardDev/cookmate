@@ -1,7 +1,7 @@
 "use client";
 
 import type * as React from "react";
-import { cn } from "@/shared/lib/utils";
+import { cn } from "@/shared/core/utils/cn";
 
 interface FormProps {
   form: { handleSubmit: () => void };

@@ -1,7 +1,7 @@
 "use client";
 
-import type { ResponseErrorConfig } from "@/shared/lib/httpClient";
-import { useUserFacingErrorMessage } from "@/shared/lib/use-api-error";
+import type { ResponseErrorConfig } from "@/shared/core/network/httpClient";
+import { useUserFacingErrorMessage } from "@/shared/core/network/use-api-error";
 
 type ErrorMessageProps = {
   error: ResponseErrorConfig<unknown> | null;

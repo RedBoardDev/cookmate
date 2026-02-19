@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import { cn } from "@/shared/lib/utils";
+import { cn } from "@/shared/core/utils/cn";
 
 type CardVariant = "solid" | "soft" | "subtle" | "muted" | "ghost";
 type CardRadius = "none" | "sm" | "md" | "lg" | "xl" | "2xl" | "3xl";

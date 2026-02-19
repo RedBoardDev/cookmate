@@ -5,8 +5,8 @@ import useEmblaCarousel, { type UseEmblaCarouselType } from "embla-carousel-reac
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import * as React from "react";
 
-import { cn } from "@/shared/lib/utils";
-import { Button } from "@/shared/ui/primitives/button";
+import { cn } from "@/shared/core/utils/cn";
+import { Button } from "@/shared/core/ui/primitives/button";
 
 type CarouselApi = UseEmblaCarouselType[1];
 type UseCarouselParameters = Parameters<typeof useEmblaCarousel>;

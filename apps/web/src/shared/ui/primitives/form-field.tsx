@@ -2,8 +2,8 @@
 
 import { Trans } from "@lingui/react/macro";
 import type * as React from "react";
-import { cn } from "@/shared/lib/utils";
-import { Label } from "@/shared/ui/primitives/label";
+import { cn } from "@/shared/core/utils/cn";
+import { Label } from "@/shared/core/ui/primitives/label";
 
 /** Structural type matching TanStack FieldApi — avoids coupling to its 23 generic params. */
 export type FieldErrorMeta = {

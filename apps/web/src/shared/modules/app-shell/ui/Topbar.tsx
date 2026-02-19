@@ -6,7 +6,7 @@ import Link from "next/link";
 import { useSelectedLayoutSegments } from "next/navigation";
 import type { ReactNode } from "react";
 import iconImage from "@/app/icon.png";
-import { Button } from "@/shared/core/ui/primitives/button";
+import { Button } from "@/shared/ui/primitives/button";
 import { cn } from "@/shared/core/utils/cn";
 import { NAV_ITEMS } from "@/shared/modules/app-shell/domain/navigation.config";
 import { isNavActive } from "@/shared/modules/app-shell/domain/navigation.policy";

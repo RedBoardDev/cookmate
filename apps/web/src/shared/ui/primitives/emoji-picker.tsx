@@ -10,7 +10,7 @@ import {
 import { LoaderIcon, SearchIcon } from "lucide-react";
 import type * as React from "react";
 
-import { cn } from "@/shared/lib/utils";
+import { cn } from "@/shared/core/utils/cn";
 
 function EmojiPicker({ className, ...props }: React.ComponentProps<typeof EmojiPickerPrimitive.Root>) {
   return (
