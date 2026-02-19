@@ -16,11 +16,7 @@ const EnvSchema = z.object({
   // Better Auth
   BETTER_AUTH_SECRET: z.string().min(32),
   BETTER_AUTH_URL: z.string().url(),
-  BETTER_AUTH_DISABLE_ORIGIN_CHECK: z
-    .coerce
-    .boolean()
-    .optional()
-    .default(false),
+  BETTER_AUTH_DISABLE_ORIGIN_CHECK: z.coerce.boolean().optional().default(false),
 
   // OAuth Providers (optional)
   GOOGLE_CLIENT_ID: z.string().optional(),

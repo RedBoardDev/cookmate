@@ -11,9 +11,11 @@ import { listCollectionsWhereConfigs } from "./where";
 export const listCollectionsHandler: RouteHandler<typeof schemas> = async (ctx) => {
   const { id: userId } = ctx.user;
   const pagination = parsePagination(ctx.query);
-  const filters = parseWhereParams(ctx.query, listCollectionsWhereConfigs);
+  const filters = parseWhereParams(ctx.query, listCollectionsWhereConfigs, { userId });
   const orderBy = parseSortParams(ctx.query, listCollectionsSortConfig);
-  const where = combineWhere({ userId }, filters);
+
+  const baseWhere = ctx.query.whereRole ? {} : { userId };
+  const where = combineWhere(baseWhere, filters);
 
   const [collections, total] = await Promise.all([
     listCollectionsSelect(where, selectConfig.select, orderBy, pagination),

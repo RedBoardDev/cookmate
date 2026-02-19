@@ -1,4 +1,4 @@
-import { collectionPropsSchema, InvalidCollectionDataError } from "@cookmate/domain/collection";
+import { collectionSchema, InvalidCollectionDataError } from "@cookmate/domain/collection";
 import type { z } from "zod";
 import { CollectionVisibility } from "@/generated/prisma/enums";
 import { getPrisma } from "@/infra/db/prisma";
@@ -14,7 +14,7 @@ const createCollectionFn = async (input: CreateCollectionInput) => {
   const shortUrl = await generateUniqueCollectionShortUrl();
   const now = new Date();
 
-  const result = collectionPropsSchema.safeParse({
+  const result = collectionSchema.safeParse({
     name: input.name,
     emoji: input.emoji,
     description: input.description ?? null,

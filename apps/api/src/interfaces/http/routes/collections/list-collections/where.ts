@@ -1,7 +1,9 @@
 import { collectionVisibilitySchema } from "@cookmate/domain/collection";
+import { z } from "zod";
 import type { Prisma } from "@/generated/prisma/client";
 import {
   defineWhereConfigs,
+  whereCustom,
   whereDateRange,
   whereEnumValue,
   whereString,
@@ -10,7 +12,11 @@ import {
 
 type WhereInput = Prisma.CollectionWhereInput;
 
-export const listCollectionsWhereConfigs = defineWhereConfigs<WhereInput>([
+export type ListCollectionsContext = { userId: string };
+
+export const collectionRoleSchema = z.enum(["OWNER", "MEMBER", "ALL"]);
+
+export const listCollectionsWhereConfigs = defineWhereConfigs<WhereInput, ListCollectionsContext>([
   whereString("whereName", {
     field: "name",
     description: "Filter by name (contains)",
@@ -40,5 +46,21 @@ export const listCollectionsWhereConfigs = defineWhereConfigs<WhereInput>([
   whereDateRange("whereUpdatedAt", {
     field: "updatedAt",
     description: "Filter by updatedAt range",
+  }),
+  whereCustom<WhereInput, ListCollectionsContext>("whereRole", {
+    description: "Filter by user role in collection (OWNER, MEMBER, ALL)",
+    schema: collectionRoleSchema,
+    toWhere: (value, ctx) => {
+      switch (value) {
+        case "OWNER":
+          return { userId: ctx.userId };
+        case "MEMBER":
+          return { members: { some: { userId: ctx.userId } } };
+        case "ALL":
+          return {
+            OR: [{ userId: ctx.userId }, { members: { some: { userId: ctx.userId } } }],
+          };
+      }
+    },
   }),
 ]);

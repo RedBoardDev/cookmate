@@ -104,62 +104,6 @@ model Unit {
 }
 
 // ============================================================================
-// PARSING
-// ============================================================================
-
-enum ParsingType {
-  URL
-  IMAGE
-  TEXT
-  PDF
-  VIDEO
-  INSTAGRAM
-  TIKTOK
-  PINTEREST
-}
-
-enum ParsingStatus {
-  QUEUED
-  PROCESSING
-  COMPLETED
-  FAILED
-  CANCELLED
-}
-
-model ParsingJob {
-  id     String        @id @default(uuid())
-  userId String
-  type   ParsingType
-  status ParsingStatus @default(QUEUED)
-
-  // Input data (JSON flexible)
-  input Json
-
-  // Output (ParsedRecipe si completed)
-  result Json?
-
-  // Error info (si failed)
-  error Json? // { code: string, message: string }
-
-  // Progress tracking
-  progress Json? // { step: string, percent: number }
-
-  // Timestamps
-  createdAt   DateTime  @default(now())
-  startedAt   DateTime?
-  completedAt DateTime?
-  failedAt    DateTime?
-
-  // Relation
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  // Indexes
-  @@index([userId, createdAt(sort: Desc)])
-  @@index([status, createdAt])
-  @@map("parsing_jobs")
-}
-
-// ============================================================================
 // AUTHENTICATION (Better Auth)
 // ============================================================================
 
@@ -181,7 +125,6 @@ model User {
   recipes           Recipe[]
   collections       Collection[]
   collectionMembers CollectionMember[]
-  parsingJobs       ParsingJob[]
 
   @@map("users")
 }
