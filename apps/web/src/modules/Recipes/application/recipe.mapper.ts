@@ -1,31 +1,34 @@
+import type { RecipeBudget, RecipeDifficulty, RecipeSource, RecipeTag } from "@cookmate/domain/recipe";
 import type { GetRecipes200 } from "@/generated/types";
-import { RecipeEntity } from "@cookmate/domain/recipe";
+import { RecipeEntity } from "@/modules/Recipes/domain/entity/recipe.entity";
 
-type RecipeApiModel = GetRecipes200["data"][number];
+type RecipeData = GetRecipes200["data"][number];
 
 export const RecipeMapper = {
-  toDomain(data: RecipeApiModel): RecipeEntity {
-    return RecipeEntity.create(
-      {
+  toDomain(data: RecipeData): RecipeEntity {
+    return RecipeEntity.create({
+      recipe: {
+        id: data.id,
         title: data.title,
-        description: data.description ?? null,
+        description: data.description,
         servings: data.servings,
-        prepTimeMin: data.prepTimeMin ?? null,
-        cookTimeMin: data.cookTimeMin ?? null,
-        restTimeMin: data.restTimeMin ?? null,
+        prepTimeMin: data.prepTimeMin,
+        cookTimeMin: data.cookTimeMin,
+        restTimeMin: data.restTimeMin,
         totalTimeMin: data.totalTimeMin,
-        difficulty: data.difficulty ?? null,
-        budget: data.budget ?? null,
-        tags: data.tags,
-        source: data.source,
-        sourceUrl: data.sourceUrl ?? null,
-        shortUrl: data.shortUrl ?? null,
+        difficulty: data.difficulty as RecipeDifficulty | null,
+        budget: data.budget as RecipeBudget | null,
+        tags: data.tags as RecipeTag[],
+        source: data.source as RecipeSource,
+        sourceUrl: data.sourceUrl,
+        shortUrl: data.shortUrl,
         userId: data.userId,
-        forkedFromDiscoverId: data.forkedFromDiscoverId ?? null,
+        forkedFromDiscoverId: data.forkedFromDiscoverId,
         createdAt: new Date(data.createdAt),
-        updatedAt: new Date(data.updatedAt)
+        updatedAt: new Date(data.updatedAt),
       },
-      data.id
-    );
-  }
+      imageUrl: null,
+      href: `/recipes/${data.id}`,
+    });
+  },
 };

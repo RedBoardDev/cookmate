@@ -1,10 +1,12 @@
+"use client";
+import { Chip } from "@heroui/react";
+import { useLingui } from "@lingui/react/macro";
+import type { LucideIcon } from "lucide-react";
 import Link from "next/link";
 import type { SyntheticEvent } from "react";
-import type { LucideIcon } from "lucide-react";
-import { Chip } from "@heroui/react";
 import Skeleton from "react-loading-skeleton";
-import { Card } from "@/shared/ui/primitives/card";
 import { cn } from "@/shared/lib/utils";
+import { Card } from "@/shared/ui/primitives/card";
 
 const FALLBACK_IMAGE_SRC = "/image_not_found.png";
 
@@ -30,8 +32,9 @@ export function RecipeCard({
   imageUrl,
   href,
   className,
-  isLoading = false
+  isLoading = false,
 }: RecipeCardProps) {
+  const { t } = useLingui();
   const imageSrc = imageUrl ?? FALLBACK_IMAGE_SRC;
 
   const handleImageError = (event: SyntheticEvent<HTMLImageElement>) => {
@@ -54,15 +57,11 @@ export function RecipeCard({
         "focus-within:ring-2 focus-within:ring-accent/40",
         "focus-within:ring-offset-2 focus-within:ring-offset-background",
         href && !isLoading ? "cursor-pointer" : "cursor-default",
-        className
+        className,
       )}
     >
       {href && !isLoading ? (
-        <Link
-          href={href}
-          aria-label={`Open ${title ?? "recipe"}`}
-          className="absolute inset-0 z-10"
-        />
+        <Link href={href} aria-label={t`Open ${title ?? t`recipe`}`} className="absolute inset-0 z-10" />
       ) : null}
 
       <div className="relative z-20 flex h-full flex-col pointer-events-none">
@@ -70,7 +69,7 @@ export function RecipeCard({
           {isLoading ? (
             <img
               src={FALLBACK_IMAGE_SRC}
-              alt="Recipe image not available"
+              alt={t`Recipe image not available`}
               onError={handleImageError}
               className="block h-full w-full object-cover object-center"
             />
@@ -78,7 +77,7 @@ export function RecipeCard({
             <>
               <img
                 src={imageSrc}
-                alt={title ?? "Recipe"}
+                alt={title ?? t`Recipe`}
                 onError={handleImageError}
                 className="block h-full w-full object-cover object-center"
               />
@@ -116,13 +115,7 @@ export function RecipeCard({
           ) : tags.length ? (
             <div className="flex flex-wrap gap-2">
               {tags.map((tag) => (
-                <Chip
-                  key={tag}
-                  variant="flat"
-                  size="sm"
-                  radius="full"
-                  className="bg-muted/70 text-muted-foreground"
-                >
+                <Chip key={tag} variant="soft" size="sm" className="rounded-full bg-muted/70 text-muted-foreground">
                   {tag}
                 </Chip>
               ))}

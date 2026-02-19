@@ -1,13 +1,11 @@
 "use client";
 
+import { Trans, useLingui } from "@lingui/react/macro";
 import { SlidersHorizontal } from "lucide-react";
 import Skeleton from "react-loading-skeleton";
-import { Button } from "@/shared/ui/primitives/button";
+import type { QuickFilterId, QuickFilterOption } from "@/modules/Recipes/domain/vo/recipes.filters";
 import { cn } from "@/shared/lib/utils";
-import type {
-  QuickFilterId,
-  QuickFilterOption
-} from "@/modules/Recipes/domain/recipes.filters";
+import { Button } from "@/shared/ui/primitives/button";
 
 interface RecipesFiltersProps {
   quickFilters: QuickFilterOption[];
@@ -16,24 +14,16 @@ interface RecipesFiltersProps {
   isLoading?: boolean;
 }
 
-export function RecipesFilters({
-  quickFilters,
-  isSelected,
-  onToggle,
-  isLoading = false
-}: RecipesFiltersProps) {
+export function RecipesFilters({ quickFilters, isSelected, onToggle, isLoading = false }: RecipesFiltersProps) {
+  const { t } = useLingui();
   const allFilter = quickFilters.find((f) => f.id === "all");
   const otherFilters = quickFilters.filter((f) => f.id !== "all");
   const skeletonWidths = [72, 96, 84, 110, 64];
 
   const filtersButton = (
-    <Button
-      size="sm"
-      variant="outline"
-      className="rounded-full px-4 shadow-sm hover:shadow-md"
-    >
+    <Button size="sm" variant="outline" className="rounded-full px-4 shadow-sm hover:shadow-md">
       <SlidersHorizontal className="h-4 w-4" />
-      Filters
+      <Trans>Filters</Trans>
     </Button>
   );
 
@@ -41,15 +31,10 @@ export function RecipesFilters({
     <div
       className={cn(
         "flex flex-col gap-3 border-t border-border/60 pt-4",
-        "md:flex-row md:items-center md:justify-between"
+        "md:flex-row md:items-center md:justify-between",
       )}
     >
-      <div
-        className={cn(
-          "flex min-w-0 flex-1 flex-col gap-3",
-          "md:flex-row md:items-center md:gap-2"
-        )}
-      >
+      <div className={cn("flex min-w-0 flex-1 flex-col gap-3", "md:flex-row md:items-center md:gap-2")}>
         <div className="flex items-center justify-between gap-2 md:justify-start">
           {isLoading ? (
             <Skeleton height={36} width={84} borderRadius={999} />
@@ -57,14 +42,11 @@ export function RecipesFilters({
             <Button
               size="sm"
               variant={isSelected(allFilter.id) ? "secondary" : "outline"}
-              className={cn(
-                "shrink-0 rounded-full px-4 transition-shadow",
-                isSelected(allFilter.id) && "bg-secondary"
-              )}
+              className={cn("shrink-0 rounded-full px-4 transition-shadow", isSelected(allFilter.id) && "bg-secondary")}
               aria-pressed={isSelected(allFilter.id)}
               onClick={() => onToggle(allFilter.id)}
             >
-              {allFilter.label}
+              {t(allFilter.label)}
             </Button>
           ) : null}
           <div className="md:hidden">{filtersButton}</div>
@@ -74,17 +56,12 @@ export function RecipesFilters({
             "flex w-full min-w-0 items-center gap-2",
             "overflow-x-auto pb-2 md:pb-0",
             "no-scrollbar",
-            "md:flex-1"
+            "md:flex-1",
           )}
         >
           {isLoading
             ? skeletonWidths.map((width, index) => (
-                <Skeleton
-                  key={`${width}-${index}`}
-                  height={36}
-                  width={width}
-                  borderRadius={999}
-                />
+                <Skeleton key={`${width}-${index}`} height={36} width={width} borderRadius={999} />
               ))
             : otherFilters.map((filterItem) => {
                 const active = isSelected(filterItem.id);
@@ -98,7 +75,7 @@ export function RecipesFilters({
                     aria-pressed={active}
                     onClick={() => onToggle(filterItem.id)}
                   >
-                    {filterItem.label}
+                    {t(filterItem.label)}
                   </Button>
                 );
               })}

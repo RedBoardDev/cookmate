@@ -1,22 +1,23 @@
 import type { GetCollections200 } from "@/generated/types";
-import { CollectionEntity } from "@cookmate/domain/collection";
+import { CollectionEntity } from "@/modules/Recipes/domain/entity/collection.entity";
 
-type CollectionApiModel = GetCollections200["data"][number];
+type CollectionData = GetCollections200["data"][number];
 
 export const CollectionMapper = {
-  toDomain(data: CollectionApiModel): CollectionEntity {
-    return CollectionEntity.create(
-      {
+  toDomain(data: CollectionData): CollectionEntity {
+    return CollectionEntity.create({
+      collection: {
+        id: data.id,
         name: data.name,
         emoji: data.emoji,
-        description: data.description ?? null,
+        description: data.description,
         ownerId: data.ownerId,
         visibility: data.visibility,
-        shortUrl: data.shortUrl ?? null,
+        shortUrl: data.shortUrl,
         createdAt: new Date(data.createdAt),
-        updatedAt: new Date(data.updatedAt)
+        updatedAt: new Date(data.updatedAt),
       },
-      data.id
-    );
-  }
+      recipeCount: data.recipeCount,
+    });
+  },
 };

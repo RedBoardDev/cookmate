@@ -1,30 +1,19 @@
+"use client";
+
+import { useLingui } from "@lingui/react/macro";
 import { Clock, Users } from "lucide-react";
+import type { RecipeEntity } from "@/modules/Recipes/domain/entity/recipe.entity";
+import { QUICK_FILTER_LABELS } from "@/modules/Recipes/domain/vo/recipes.filters";
 import { RecipeCard } from "@/modules/Recipes/ui/components/RecipeCard";
-import { QUICK_FILTER_LABELS } from "@/modules/Recipes/domain/recipes.filters";
-import type { RecipeTag } from "@cookmate/domain/recipe";
-import type { RecipeAggregate } from "@/modules/Recipes/domain/recipe.aggregate";
-
-function formatDuration(totalMinutes: number) {
-  if (totalMinutes < 60) {
-    return `${totalMinutes} min`;
-  }
-
-  const hours = Math.floor(totalMinutes / 60);
-  const minutes = totalMinutes % 60;
-
-  if (minutes === 0) {
-    return `${hours}h`;
-  }
-
-  return `${hours}h ${minutes}m`;
-}
 
 interface RecipesGridProps {
-  recipes: RecipeAggregate[];
+  recipes: RecipeEntity[];
   isLoading?: boolean;
 }
 
 export function RecipesGrid({ recipes, isLoading = false }: RecipesGridProps) {
+  const { t } = useLingui();
+
   if (isLoading) {
     return (
       <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3 motion-safe:animate-in motion-safe:fade-in-0">
@@ -37,31 +26,28 @@ export function RecipesGrid({ recipes, isLoading = false }: RecipesGridProps) {
 
   return (
     <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3 motion-safe:animate-in motion-safe:fade-in-0">
-      {recipes.map((aggregate) => {
-        const { recipe } = aggregate;
+      {recipes.map((entity) => {
         const meta = [
           {
             icon: Clock,
-            text: formatDuration(recipe.totalTimeMin)
+            text: entity.formattedDuration,
           },
           {
             icon: Users,
-            text: `${recipe.servings} servings`
-          }
+            text: t`${entity.servings} servings`,
+          },
         ];
 
-        const tags = recipe.tags.map(
-          (tag: RecipeTag) => QUICK_FILTER_LABELS[tag] ?? tag
-        );
+        const tags = entity.tags.map((tag) => (QUICK_FILTER_LABELS[tag] ? t(QUICK_FILTER_LABELS[tag]) : tag));
 
         return (
           <RecipeCard
-            key={recipe.id}
-            title={recipe.title}
+            key={entity.id}
+            title={entity.title}
             meta={meta}
             tags={tags}
-            imageUrl={aggregate.imageUrl}
-            href={aggregate.href}
+            imageUrl={entity.imageUrl}
+            href={entity.href}
           />
         );
       })}

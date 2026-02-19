@@ -7,12 +7,9 @@ type UseSelectableIdsOptions<T extends string> = {
 
 export function useSelectableIds<T extends string>(
   initialIds: T[],
-  { allId, syncWithInitial = false }: UseSelectableIdsOptions<T>
+  { allId, syncWithInitial = false }: UseSelectableIdsOptions<T>,
 ) {
-  const normalizedInitial = useMemo(
-    () => (initialIds.length ? initialIds : [allId]),
-    [allId, initialIds]
-  );
+  const normalizedInitial = useMemo(() => (initialIds.length ? initialIds : [allId]), [allId, initialIds]);
   const [selectedIds, setSelectedIds] = useState<T[]>(normalizedInitial);
 
   useEffect(() => {
@@ -23,10 +20,7 @@ export function useSelectableIds<T extends string>(
     setSelectedIds(normalizedInitial);
   }, [normalizedInitial, syncWithInitial]);
 
-  const isSelected = useCallback(
-    (id: T) => selectedIds.includes(id),
-    [selectedIds]
-  );
+  const isSelected = useCallback((id: T) => selectedIds.includes(id), [selectedIds]);
 
   const toggle = useCallback(
     (id: T) => {
@@ -38,19 +32,17 @@ export function useSelectableIds<T extends string>(
         }
 
         const withoutAll = prev.filter((item) => item !== allId);
-        const next = exists
-          ? withoutAll.filter((item) => item !== id)
-          : [...withoutAll, id];
+        const next = exists ? withoutAll.filter((item) => item !== id) : [...withoutAll, id];
 
         return next.length ? next : [allId];
       });
     },
-    [allId]
+    [allId],
   );
 
   return {
     selectedIds,
     isSelected,
-    toggle
+    toggle,
   };
 }

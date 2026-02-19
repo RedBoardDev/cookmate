@@ -1,30 +1,31 @@
 "use client";
 
+import type React from "react";
+import type { CollectionEntity } from "@/modules/Recipes/domain/entity/collection.entity";
+import type { RecipeEntity } from "@/modules/Recipes/domain/entity/recipe.entity";
+import type { QuickFilterId, QuickFilterOption } from "@/modules/Recipes/domain/vo/recipes.filters";
 import { RecipesCollections } from "@/modules/Recipes/ui/components/RecipesCollections";
-import { RecipesEmptyState } from "@/modules/Recipes/ui/states/RecipesEmptyState";
 import { RecipesFilters } from "@/modules/Recipes/ui/components/RecipesFilters";
 import { RecipesGrid } from "@/modules/Recipes/ui/components/RecipesGrid";
 import { RecipesHeader } from "@/modules/Recipes/ui/components/RecipesHeader";
-import type { RecipeAggregate } from "@/modules/Recipes/domain/recipe.aggregate";
-import type { CollectionAggregate } from "@/modules/Recipes/domain/collection.aggregate";
-import { Card } from "@/shared/ui/primitives/card";
+import { RecipesEmptyState } from "@/modules/Recipes/ui/states/RecipesEmptyState";
 import { cn } from "@/shared/lib/utils";
-import type {
-  QuickFilterId,
-  QuickFilterOption
-} from "@/modules/Recipes/domain/recipes.filters";
+import { Card } from "@/shared/ui/primitives/card";
 
 interface RecipesViewProps {
   isLoading?: boolean;
   totalRecipes: number;
   collectionsCount: number;
-  recipes: RecipeAggregate[];
-  collections: CollectionAggregate[];
+  recipes: RecipeEntity[];
+  collections: CollectionEntity[];
   selectedCollectionIds: string[];
   onToggleCollection: (collectionId: string) => void;
   quickFilters: QuickFilterOption[];
   isQuickFilterSelected: (filter: QuickFilterId) => boolean;
   onToggleQuickFilter: (filter: QuickFilterId) => void;
+  onManageCollections?: () => void;
+  collectionsModal?: React.ReactNode;
+  addRecipeAction?: React.ReactNode;
 }
 
 export function RecipesView({
@@ -37,7 +38,10 @@ export function RecipesView({
   onToggleCollection,
   quickFilters,
   isQuickFilterSelected,
-  onToggleQuickFilter
+  onToggleQuickFilter,
+  onManageCollections,
+  collectionsModal,
+  addRecipeAction,
 }: RecipesViewProps) {
   return (
     <section className="mx-auto w-full max-w-6xl px-4 pb-16 pt-8 md:pb-20">
@@ -50,22 +54,20 @@ export function RecipesView({
           padding="sm"
           className={cn(
             "md:rounded-3xl md:p-6",
-            "motion-safe:animate-in motion-safe:fade-in-0 motion-safe:slide-in-from-bottom-2"
+            "motion-safe:animate-in motion-safe:fade-in-0 motion-safe:slide-in-from-bottom-2",
           )}
         >
           <div className="flex flex-col gap-6">
-            <RecipesHeader
-              totalRecipes={totalRecipes}
-              collectionsCount={collectionsCount}
-              isLoading={isLoading}
-            />
+            <RecipesHeader totalRecipes={totalRecipes} collectionsCount={collectionsCount} isLoading={isLoading} />
             <RecipesCollections
               collections={collections}
               totalRecipes={totalRecipes}
               selectedIds={selectedCollectionIds}
               onToggle={onToggleCollection}
               isLoading={isLoading}
+              onManageClick={onManageCollections}
             />
+            {collectionsModal}
             <RecipesFilters
               quickFilters={quickFilters}
               isSelected={isQuickFilterSelected}
@@ -77,7 +79,7 @@ export function RecipesView({
         {isLoading ? (
           <RecipesGrid recipes={recipes} isLoading />
         ) : recipes.length === 0 ? (
-          <RecipesEmptyState />
+          <RecipesEmptyState addRecipeAction={addRecipeAction} />
         ) : (
           <RecipesGrid recipes={recipes} />
         )}

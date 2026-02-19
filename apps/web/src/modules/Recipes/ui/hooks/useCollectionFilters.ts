@@ -1,17 +1,21 @@
 import { useMemo } from "react";
+import type { GetRecipesQueryParams } from "@/generated/types";
 import { useSelectableIds } from "@/modules/Recipes/ui/hooks/useSelectableIds";
 
-const ALL_COLLECTION_ID = "all";
+export const ALL_COLLECTION_FILTER_ID = "all";
 
-export function useCollectionFilters(initialIds: string[] = [ALL_COLLECTION_ID]) {
+type CollectionFilterApiParams = Pick<GetRecipesQueryParams, "whereCollectionIds">;
+
+export function useCollectionFilters(initialIds: string[] = [ALL_COLLECTION_FILTER_ID]) {
   const { selectedIds, isSelected, toggle } = useSelectableIds(initialIds, {
-    allId: ALL_COLLECTION_ID
+    allId: ALL_COLLECTION_FILTER_ID,
   });
 
-  const apiParams = useMemo(() => {
-    if (selectedIds.includes(ALL_COLLECTION_ID)) {
+  const apiParams = useMemo<CollectionFilterApiParams | undefined>(() => {
+    if (selectedIds.includes(ALL_COLLECTION_FILTER_ID)) {
       return undefined;
     }
+
     return selectedIds.length > 0 ? { whereCollectionIds: selectedIds } : undefined;
   }, [selectedIds]);
 
@@ -19,6 +23,6 @@ export function useCollectionFilters(initialIds: string[] = [ALL_COLLECTION_ID])
     selectedIds,
     isSelected,
     toggleCollection: toggle,
-    apiParams
+    apiParams,
   };
 }
