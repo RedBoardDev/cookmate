@@ -17,3 +17,12 @@ export class InvalidRecipeImageDataError extends DomainError {
     super(message);
   }
 }
+
+export class NotRecipeImageOwnerError extends DomainError {
+  readonly code = "NOT_RECIPE_IMAGE_OWNER";
+  readonly httpStatus = 403;
+
+  constructor() {
+    super("You must be the recipe owner to perform this action on this image");
+  }
+}
