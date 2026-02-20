@@ -1,3 +1,3 @@
 export * from "./collection.policies";
+export * from "./collection.schema";
 export * from "./errors";
-export * from "./schemas/collection.schema";

@@ -9,8 +9,7 @@ export const instructionField = {
 };
 
 export const instructionSystemField = {
-  recipeId: z.uuid().nullable(),
-  discoverRecipeId: z.uuid().nullable(),
+  recipeId: z.uuid(),
   createdAt: z.date(),
   updatedAt: z.date(),
 };
@@ -20,7 +19,6 @@ export const instructionFields = {
   durationMin: { durationMin: instructionField.durationMin },
   order: { order: instructionField.order },
   recipeId: { recipeId: instructionSystemField.recipeId },
-  discoverRecipeId: { discoverRecipeId: instructionSystemField.discoverRecipeId },
   createdAt: { createdAt: instructionSystemField.createdAt },
   updatedAt: { updatedAt: instructionSystemField.updatedAt },
 };
