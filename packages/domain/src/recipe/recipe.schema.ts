@@ -1,37 +1,42 @@
 import { z } from "zod";
-import { collectionSchema } from "../collection/schemas/collection.schema";
+import { collectionSchema } from "../collection/collection.schema";
 import {
   BUDGETS,
   type BudgetValue,
   DIFFICULTIES,
   type DifficultyValue,
+  RECIPE_ATTRIBUTES,
+  RECIPE_CATEGORIES,
+  type RecipeAttributeValue,
+  type RecipeCategoryValue,
   SOURCES,
   type SourceValue,
-  TAGS,
-  type TagValue,
 } from "../shared/value-objects";
 
 export const recipeDifficultySchema = z.enum(DIFFICULTIES);
 export const recipeBudgetSchema = z.enum(BUDGETS);
 export const recipeSourceSchema = z.enum(SOURCES);
-export const recipeTagSchema = z.enum(TAGS);
+export const recipeCategorySchema = z.enum(RECIPE_CATEGORIES);
+export const recipeAttributeSchema = z.enum(RECIPE_ATTRIBUTES);
 
 export type { DifficultyValue as RecipeDifficulty };
 export type { BudgetValue as RecipeBudget };
 export type { SourceValue as RecipeSource };
-export type { TagValue as RecipeTag };
+export type { RecipeCategoryValue as RecipeCategory };
+export type { RecipeAttributeValue as RecipeAttribute };
 
 export const recipeField = {
-  title: z.string().min(1),
+  name: z.string().min(1),
   description: z.string().min(1).nullable(),
   servings: z.number().int().min(1),
-  prepTimeMin: z.number().int().min(0).nullable(),
-  cookTimeMin: z.number().int().min(0).nullable(),
-  restTimeMin: z.number().int().min(0).nullable(),
+  yieldUnitLabel: z.string().min(1).nullable(),
+  prepTimeMin: z.number().int().min(0),
+  cookTimeMin: z.number().int().min(0),
   totalTimeMin: z.number().int().min(0),
   difficulty: recipeDifficultySchema.nullable(),
   budget: recipeBudgetSchema.nullable(),
-  tags: z.array(recipeTagSchema),
+  categories: z.array(recipeCategorySchema),
+  attributes: z.array(recipeAttributeSchema),
 };
 
 export const recipeSystemField = {
@@ -39,27 +44,26 @@ export const recipeSystemField = {
   sourceUrl: z.string().min(1).nullable(),
   shortUrl: z.string().min(1).nullable(),
   userId: z.string().min(1),
-  forkedFromDiscoverId: z.uuid().nullable(),
   createdAt: z.date(),
   updatedAt: z.date(),
 };
 
 export const recipeFields = {
-  title: { title: recipeField.title },
+  name: { name: recipeField.name },
   description: { description: recipeField.description },
   servings: { servings: recipeField.servings },
+  yieldUnitLabel: { yieldUnitLabel: recipeField.yieldUnitLabel },
   prepTimeMin: { prepTimeMin: recipeField.prepTimeMin },
   cookTimeMin: { cookTimeMin: recipeField.cookTimeMin },
-  restTimeMin: { restTimeMin: recipeField.restTimeMin },
   totalTimeMin: { totalTimeMin: recipeField.totalTimeMin },
   difficulty: { difficulty: recipeField.difficulty },
   budget: { budget: recipeField.budget },
-  tags: { tags: recipeField.tags },
+  categories: { categories: recipeField.categories },
+  attributes: { attributes: recipeField.attributes },
   source: { source: recipeSystemField.source },
   sourceUrl: { sourceUrl: recipeSystemField.sourceUrl },
   shortUrl: { shortUrl: recipeSystemField.shortUrl },
   userId: { userId: recipeSystemField.userId },
-  forkedFromDiscoverId: { forkedFromDiscoverId: recipeSystemField.forkedFromDiscoverId },
   createdAt: { createdAt: recipeSystemField.createdAt },
   updatedAt: { updatedAt: recipeSystemField.updatedAt },
 };

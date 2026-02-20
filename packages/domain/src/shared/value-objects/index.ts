@@ -12,5 +12,14 @@ export {
   PARSING_TYPES,
   type ParsingTypeValue,
 } from "./parsing-type";
+export {
+  InvalidRecipeAttributeError,
+  RECIPE_ATTRIBUTES,
+  type RecipeAttributeValue,
+} from "./recipe-attribute";
+export {
+  InvalidRecipeCategoryError,
+  RECIPE_CATEGORIES,
+  type RecipeCategoryValue,
+} from "./recipe-category";
 export { InvalidSourceError, SOURCES, type SourceValue } from "./source";
-export { InvalidTagError, TAGS, type TagValue } from "./tag";

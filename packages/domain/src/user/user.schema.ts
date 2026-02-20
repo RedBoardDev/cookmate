@@ -6,6 +6,7 @@ export const userField = {
   email: z.email(),
   name: z.string().min(1).max(USER_NAME_MAX_LENGTH),
   avatar: z.string().min(1),
+  emailVerified: z.boolean(),
 };
 
 export const userSystemField = {
@@ -17,6 +18,7 @@ export const userFields = {
   email: { email: userField.email },
   name: { name: userField.name },
   avatar: { avatar: userField.avatar },
+  emailVerified: { emailVerified: userField.emailVerified },
   createdAt: { createdAt: userSystemField.createdAt },
   updatedAt: { updatedAt: userSystemField.updatedAt },
 };

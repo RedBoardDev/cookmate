@@ -1,13 +1,6 @@
 import { DomainError } from "../../errors";
 
-export const SOURCES = [
-  "MANUAL",
-  "IMPORT_URL",
-  "IMPORT_SOCIAL_NETWORK",
-  "IMPORT_IMAGE",
-  "IMPORT_TEXT",
-  "FORK_DISCOVER",
-] as const;
+export const SOURCES = ["MANUAL", "IMPORT_URL", "IMPORT_SOCIAL_NETWORK", "IMPORT_IMAGE", "IMPORT_TEXT"] as const;
 export type SourceValue = (typeof SOURCES)[number];
 
 export class InvalidSourceError extends DomainError {

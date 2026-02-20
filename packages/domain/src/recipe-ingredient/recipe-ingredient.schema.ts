@@ -1,32 +1,30 @@
 import { z } from "zod";
 
-const RECIPE_INGREDIENT_PREPARATION_MAX_LENGTH = 1000;
+const RECIPE_INGREDIENT_NOTE_MAX_LENGTH = 1000;
 
 export const recipeIngredientField = {
+  name: z.string().min(1),
   quantity: z.number().nonnegative().nullable(),
-  preparation: z.string().min(1).max(RECIPE_INGREDIENT_PREPARATION_MAX_LENGTH).nullable(),
+  unit: z.string().min(1).nullable(),
+  note: z.string().min(1).max(RECIPE_INGREDIENT_NOTE_MAX_LENGTH).nullable(),
   optional: z.boolean(),
   order: z.number().int().nonnegative(),
 };
 
 export const recipeIngredientSystemField = {
-  ingredientId: z.uuid(),
-  unitId: z.uuid().nullable(),
-  recipeId: z.uuid().nullable(),
-  discoverRecipeId: z.uuid().nullable(),
+  recipeId: z.uuid(),
   createdAt: z.date(),
   updatedAt: z.date(),
 };
 
 export const recipeIngredientFields = {
+  name: { name: recipeIngredientField.name },
   quantity: { quantity: recipeIngredientField.quantity },
-  preparation: { preparation: recipeIngredientField.preparation },
+  unit: { unit: recipeIngredientField.unit },
+  note: { note: recipeIngredientField.note },
   optional: { optional: recipeIngredientField.optional },
   order: { order: recipeIngredientField.order },
-  ingredientId: { ingredientId: recipeIngredientSystemField.ingredientId },
-  unitId: { unitId: recipeIngredientSystemField.unitId },
   recipeId: { recipeId: recipeIngredientSystemField.recipeId },
-  discoverRecipeId: { discoverRecipeId: recipeIngredientSystemField.discoverRecipeId },
   createdAt: { createdAt: recipeIngredientSystemField.createdAt },
   updatedAt: { updatedAt: recipeIngredientSystemField.updatedAt },
 };
