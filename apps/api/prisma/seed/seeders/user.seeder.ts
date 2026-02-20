@@ -12,6 +12,23 @@ export type SeededUser = {
   isFixed?: boolean;
 };
 
+type SignUpEmailInput = {
+  body: {
+    name: string;
+    email: string;
+    password: string;
+    avatar: string;
+  };
+};
+
+type SignUpEmailResult = {
+  user: {
+    id: string;
+    email: string;
+    name: string;
+  };
+};
+
 const createUser = async (prisma: PrismaClient, auth: AuthService, seed: UserSeed): Promise<SeededUser> => {
   const existing = await prisma.user.findUnique({
     where: { email: seed.email },
@@ -27,7 +44,8 @@ const createUser = async (prisma: PrismaClient, auth: AuthService, seed: UserSee
     };
   }
 
-  const response = await (auth.api.signUpEmail as any)({
+  const signUpEmail = auth.api.signUpEmail as unknown as (input: SignUpEmailInput) => Promise<SignUpEmailResult>;
+  const response = await signUpEmail({
     body: {
       name: seed.name,
       email: seed.email,

@@ -35,72 +35,26 @@ enum RecipeSource {
   IMPORT_SOCIAL_NETWORK
   IMPORT_IMAGE
   IMPORT_TEXT
-  FORK_DISCOVER
 }
 
-enum DiscoverRecipeSource {
-  API
-  SCRAPE_WEB
-  SCRAPE_SOCIAL_NETWORK
-}
-
-enum CollectionVisibility {
-  PRIVATE
-  PUBLIC
-}
-
-enum Tag {
-  // Meal types
+enum RecipeCategory {
   MAIN_COURSE
   APPETIZER
   SIDE_DISH
   DESSERT
   DRINK
+  BREAKFAST
+  SNACK
+  SOUP
+  SALAD
+  SAUCE
+}
 
-  // Characteristics
+enum RecipeAttribute {
   QUICK
   EASY
   HEALTHY
   VEGETARIAN
-}
-
-// ============================================================================
-// REFERENCE TABLE
-// ============================================================================
-
-model Ingredient {
-  id   String @id @default(uuid(7)) @db.Uuid
-  name String @unique
-
-  createdAt DateTime @default(now())
-
-  recipeIngredients RecipeIngredient[]
-
-  @@map("ingredients")
-}
-
-model Equipment {
-  id   String @id @default(uuid(7)) @db.Uuid
-  name String @unique
-
-  createdAt DateTime @default(now())
-
-  recipes         Recipe[]
-  discoverRecipes DiscoverRecipe[]
-
-  @@map("equipments")
-}
-
-model Unit {
-  id           String @id @default(uuid(7)) @db.Uuid
-  name         String @unique
-  abbreviation String @unique
-
-  createdAt DateTime @default(now())
-
-  recipeIngredients RecipeIngredient[]
-
-  @@map("units")
 }
 
 // ============================================================================
@@ -122,9 +76,8 @@ model User {
   accounts Account[]
 
   // Cookmate
-  recipes           Recipe[]
-  collections       Collection[]
-  collectionMembers CollectionMember[]
+  recipes     Recipe[]
+  collections Collection[]
 
   @@map("users")
 }
@@ -181,60 +134,25 @@ model Verification {
 }
 
 // ============================================================================
-// DISCOVER RECIPE (feed public)
-// ============================================================================
-
-model DiscoverRecipe {
-  id          String  @id @default(uuid(7)) @db.Uuid
-  title       String
-  description String?
-  servings    Int
-
-  prepTimeMin  Int?
-  cookTimeMin  Int?
-  restTimeMin  Int?
-  totalTimeMin Int
-
-  difficulty Difficulty?
-  budget     Budget?
-
-  source    DiscoverRecipeSource
-  sourceUrl String?
-  shortUrl  String?              @unique
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  // Recipe content
-  images       RecipeImage[]
-  ingredients  RecipeIngredient[]
-  equipments   Equipment[]
-  instructions Instruction[]
-  tags         Tag[]
-
-  // Recipes forked from this one
-  forkedRecipes Recipe[]
-
-  @@map("discover_recipes")
-}
-
-// ============================================================================
-// RECIPE (user recipes)
+// USER RECIPE
 // ============================================================================
 
 model Recipe {
-  id          String  @id @default(uuid(7)) @db.Uuid
-  title       String
-  description String?
-  servings    Int
+  id             String  @id @default(uuid(7)) @db.Uuid
+  name           String
+  description    String?
+  servings       Int
+  yieldUnitLabel String?
 
-  prepTimeMin  Int?
-  cookTimeMin  Int?
-  restTimeMin  Int?
+  prepTimeMin  Int
+  cookTimeMin  Int
   totalTimeMin Int
 
   difficulty Difficulty?
   budget     Budget?
+
+  categories RecipeCategory[]  @default([])
+  attributes RecipeAttribute[] @default([])
 
   source    RecipeSource
   sourceUrl String?
@@ -247,81 +165,59 @@ model Recipe {
   userId String
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  // If forked from Discover
-  forkedFromDiscoverId String?         @db.Uuid
-  forkedFromDiscover   DiscoverRecipe? @relation(fields: [forkedFromDiscoverId], references: [id], onDelete: SetNull)
-
   // Recipe content
-  images       RecipeImage[]
-  ingredients  RecipeIngredient[]
-  equipments   Equipment[]
-  instructions Instruction[]
-  tags         Tag[]
+  recipeIngredients  RecipeIngredient[]
+  recipeInstructions RecipeInstruction[]
+  images             RecipeImage[]
 
-  // Presence in collections
   collections Collection[]
 
   @@index([userId])
-  @@index([forkedFromDiscoverId])
   @@map("recipes")
 }
 
 // ============================================================================
-// RECIPE CONTENT (shared between Recipe and DiscoverRecipe)
-// Each table: recipeId XOR discoverRecipeId (only one filled)
+// RECIPE CONTENT
 // ============================================================================
 
 model RecipeImage {
-  id       String @id @default(uuid(7)) @db.Uuid
-  s3Url    String
-  name     String
-  mimeType String
-  size     Int
-  order    Int    @default(0)
+  id         String @id @default(uuid(7)) @db.Uuid
+  storageKey String
+  name       String
+  mimeType   String
+  size       Int
+  order      Int    @default(0)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  recipeId         String? @db.Uuid
-  discoverRecipeId String? @db.Uuid
-
-  recipe         Recipe?         @relation(fields: [recipeId], references: [id], onDelete: Cascade)
-  discoverRecipe DiscoverRecipe? @relation(fields: [discoverRecipeId], references: [id], onDelete: Cascade)
+  recipeId String @db.Uuid
+  recipe   Recipe @relation(fields: [recipeId], references: [id], onDelete: Cascade)
 
   @@index([recipeId])
-  @@index([discoverRecipeId])
   @@map("recipe_images")
 }
 
 model RecipeIngredient {
-  id          String  @id @default(uuid(7)) @db.Uuid
-  quantity    Float?
-  preparation String?
-  optional    Boolean @default(false)
-  order       Int     @default(0)
+  id       String   @id @default(uuid(7)) @db.Uuid
+  name     String
+  quantity Decimal?
+  unit     String?
+  note     String?
+  optional Boolean  @default(false)
+  order    Int
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  ingredientId String     @db.Uuid
-  ingredient   Ingredient @relation(fields: [ingredientId], references: [id], onDelete: Restrict)
-
-  unitId String? @db.Uuid
-  unit   Unit?   @relation(fields: [unitId], references: [id], onDelete: Restrict)
-
-  recipeId         String? @db.Uuid
-  discoverRecipeId String? @db.Uuid
-
-  recipe         Recipe?         @relation(fields: [recipeId], references: [id], onDelete: Cascade)
-  discoverRecipe DiscoverRecipe? @relation(fields: [discoverRecipeId], references: [id], onDelete: Cascade)
+  recipeId String @db.Uuid
+  recipe   Recipe @relation(fields: [recipeId], references: [id], onDelete: Cascade)
 
   @@index([recipeId])
-  @@index([discoverRecipeId])
-  @@index([ingredientId])
   @@map("recipe_ingredients")
 }
 
-model Instruction {
+model RecipeInstruction {
   id          String @id @default(uuid(7)) @db.Uuid
   text        String
   durationMin Int?
@@ -330,15 +226,11 @@ model Instruction {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  recipeId         String? @db.Uuid
-  discoverRecipeId String? @db.Uuid
-
-  recipe         Recipe?         @relation(fields: [recipeId], references: [id], onDelete: Cascade)
-  discoverRecipe DiscoverRecipe? @relation(fields: [discoverRecipeId], references: [id], onDelete: Cascade)
+  recipeId String @db.Uuid
+  recipe   Recipe @relation(fields: [recipeId], references: [id], onDelete: Cascade)
 
   @@index([recipeId])
-  @@index([discoverRecipeId])
-  @@map("instructions")
+  @@map("recipe_instructions")
 }
 
 // ============================================================================
@@ -351,39 +243,16 @@ model Collection {
   emoji       String
   description String?
 
-  visibility CollectionVisibility @default(PRIVATE)
-  shortUrl   String?              @unique
-
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   // Creator/owner
-  userId String
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  ownerId String
+  owner   User   @relation(fields: [ownerId], references: [id], onDelete: Cascade)
 
-  // Recipes in this collection
   recipes Recipe[]
 
-  // Collaborators
-  members CollectionMember[]
-
-  @@unique([userId, name])
-  @@index([userId])
+  @@unique([ownerId, name])
+  @@index([ownerId])
   @@map("collections")
-}
-
-model CollectionMember {
-  id       String   @id @default(uuid(7)) @db.Uuid
-  joinedAt DateTime @default(now())
-
-  collectionId String     @db.Uuid
-  collection   Collection @relation(fields: [collectionId], references: [id], onDelete: Cascade)
-
-  userId String
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  @@unique([collectionId, userId])
-  @@index([collectionId])
-  @@index([userId])
-  @@map("collection_members")
 }

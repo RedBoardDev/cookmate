@@ -1,10 +1,26 @@
 import { faker } from "@faker-js/faker";
-import { Budget, Difficulty, Tag } from "../../../src/generated/prisma/client";
+import { Budget, Difficulty, RecipeAttribute, RecipeCategory } from "../../../src/generated/prisma/client";
 import { createShortUrl } from "../lib/short-url";
 
-const MEAL_TAGS = [Tag.MAIN_COURSE, Tag.APPETIZER, Tag.SIDE_DISH, Tag.DESSERT, Tag.DRINK];
+const RECIPE_CATEGORIES = [
+  RecipeCategory.MAIN_COURSE,
+  RecipeCategory.APPETIZER,
+  RecipeCategory.SIDE_DISH,
+  RecipeCategory.DESSERT,
+  RecipeCategory.DRINK,
+  RecipeCategory.BREAKFAST,
+  RecipeCategory.SNACK,
+  RecipeCategory.SOUP,
+  RecipeCategory.SALAD,
+  RecipeCategory.SAUCE,
+];
 
-const CHARACTERISTIC_TAGS = [Tag.QUICK, Tag.EASY, Tag.HEALTHY, Tag.VEGETARIAN];
+const RECIPE_ATTRIBUTES = [
+  RecipeAttribute.QUICK,
+  RecipeAttribute.EASY,
+  RecipeAttribute.HEALTHY,
+  RecipeAttribute.VEGETARIAN,
+];
 
 const TITLE_PREFIXES = [
   "Gratin de",
@@ -35,43 +51,50 @@ const buildTitle = (ingredientNames: string[]): string => {
   return `${ingredient} ${suffix}`;
 };
 
-const buildTags = (): Tag[] => {
-  const tags = new Set<Tag>();
-  tags.add(pickOne(MEAL_TAGS));
+const buildCategories = (): RecipeCategory[] => {
+  const categories = new Set<RecipeCategory>();
+  categories.add(pickOne(RECIPE_CATEGORIES));
+  if (maybe(0.2)) {
+    categories.add(pickOne(RECIPE_CATEGORIES));
+  }
+  return Array.from(categories);
+};
+
+const buildAttributes = (): RecipeAttribute[] => {
+  const attributes = new Set<RecipeAttribute>();
   if (maybe(0.6)) {
-    tags.add(pickOne(CHARACTERISTIC_TAGS));
+    attributes.add(pickOne(RECIPE_ATTRIBUTES));
   }
   if (maybe(0.25)) {
-    tags.add(pickOne(CHARACTERISTIC_TAGS));
+    attributes.add(pickOne(RECIPE_ATTRIBUTES));
   }
-  return Array.from(tags);
+  return Array.from(attributes);
 };
 
 const buildTimes = () => {
-  const prepTimeMin = maybe(0.85) ? faker.number.int({ min: 5, max: 30 }) : null;
-  const cookTimeMin = maybe(0.9) ? faker.number.int({ min: 10, max: 90 }) : null;
-  const restTimeMin = maybe(0.3) ? faker.number.int({ min: 5, max: 30 }) : null;
-  const totalTimeMin = (prepTimeMin ?? 0) + (cookTimeMin ?? 0) + (restTimeMin ?? 0);
+  const prepTimeMin = faker.number.int({ min: 5, max: 30 });
+  const cookTimeMin = faker.number.int({ min: 10, max: 90 });
+  const totalTimeMin = prepTimeMin + cookTimeMin;
 
   return {
     prepTimeMin,
     cookTimeMin,
-    restTimeMin,
-    totalTimeMin: totalTimeMin > 0 ? totalTimeMin : faker.number.int({ min: 10, max: 60 }),
+    totalTimeMin,
   };
 };
 
 export type RecipeBaseSeed = {
-  title: string;
+  name: string;
   description: string | null;
   servings: number;
-  prepTimeMin: number | null;
-  cookTimeMin: number | null;
-  restTimeMin: number | null;
+  yieldUnitLabel: string | null;
+  prepTimeMin: number;
+  cookTimeMin: number;
   totalTimeMin: number;
   difficulty: Difficulty | null;
   budget: Budget | null;
-  tags: Tag[];
+  categories: RecipeCategory[];
+  attributes: RecipeAttribute[];
   shortUrl: string;
 };
 
@@ -80,13 +103,15 @@ export const buildRecipeBase = (ingredientNames: string[]): RecipeBaseSeed => {
   const description = faker.lorem.sentences(faker.number.int({ min: 1, max: 2 }));
 
   return {
-    title: buildTitle(ingredientNames),
+    name: buildTitle(ingredientNames),
     description,
     servings: faker.number.int({ min: 1, max: 6 }),
+    yieldUnitLabel: maybe(0.7) ? pickOne(["portions", "personnes", "parts"]) : null,
     ...times,
     difficulty: maybe(0.8) ? pickOne(Object.values(Difficulty)) : null,
     budget: maybe(0.7) ? pickOne(Object.values(Budget)) : null,
-    tags: buildTags(),
+    categories: buildCategories(),
+    attributes: buildAttributes(),
     shortUrl: createShortUrl(),
   };
 };

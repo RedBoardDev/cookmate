@@ -10,17 +10,12 @@ export type SeedConfig = {
     password: string;
   };
   recipesPerUser: SeedRange;
-  discoverRecipes: {
-    count: number;
-  };
   collectionsPerUser: SeedRange;
   content: {
     ingredientsPerRecipe: SeedRange;
     instructionsPerRecipe: SeedRange;
     imagesPerRecipe: SeedRange;
-    equipmentsPerRecipe: SeedRange;
   };
-  forkedRecipeRatio: number;
 };
 
 export const DEFAULT_SEED_CONFIG: SeedConfig = {
@@ -32,9 +27,6 @@ export const DEFAULT_SEED_CONFIG: SeedConfig = {
   recipesPerUser: {
     min: 3,
     max: 8,
-  },
-  discoverRecipes: {
-    count: 15,
   },
   collectionsPerUser: {
     min: 1,
@@ -53,12 +45,7 @@ export const DEFAULT_SEED_CONFIG: SeedConfig = {
       min: 0,
       max: 3,
     },
-    equipmentsPerRecipe: {
-      min: 1,
-      max: 4,
-    },
   },
-  forkedRecipeRatio: 0.2,
 };
 
 export type SeedConfigResult = {
@@ -123,7 +110,6 @@ Seed options:
   --clean            Clean database before seeding (default)
   --no-clean         Skip database cleaning
   --users=NUMBER     Number of users (default ${DEFAULT_SEED_CONFIG.users.count})
-  --discover=NUMBER  Number of discover recipes (default ${DEFAULT_SEED_CONFIG.discoverRecipes.count})
   --recipes-min=NUM  Min recipes per user (default ${DEFAULT_SEED_CONFIG.recipesPerUser.min})
   --recipes-max=NUM  Max recipes per user (default ${DEFAULT_SEED_CONFIG.recipesPerUser.max})
   --collections-min=NUM  Min collections per user (default ${DEFAULT_SEED_CONFIG.collectionsPerUser.min})
@@ -143,8 +129,6 @@ export const parseSeedConfig = (argv: string[]): SeedConfigResult => {
   }
 
   const usersCount = toNumber(args.users, DEFAULT_SEED_CONFIG.users.count);
-  const discoverCount = toNumber(args.discover ?? args["discover-recipes"], DEFAULT_SEED_CONFIG.discoverRecipes.count);
-
   const recipesPerUser = normalizeRange({
     min: toNumber(args["recipes-min"], DEFAULT_SEED_CONFIG.recipesPerUser.min),
     max: toNumber(args["recipes-max"], DEFAULT_SEED_CONFIG.recipesPerUser.max),
@@ -163,9 +147,6 @@ export const parseSeedConfig = (argv: string[]): SeedConfigResult => {
       users: {
         ...DEFAULT_SEED_CONFIG.users,
         count: usersCount,
-      },
-      discoverRecipes: {
-        count: discoverCount,
       },
       recipesPerUser,
       collectionsPerUser,

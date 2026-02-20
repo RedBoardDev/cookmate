@@ -1,5 +1,5 @@
 import { faker } from "@faker-js/faker";
-import type { Collection, Prisma, PrismaClient, Recipe } from "../../../src/generated/prisma/client";
+import type { Collection, PrismaClient, Recipe } from "../../../src/generated/prisma/client";
 import type { SeedConfig } from "../config";
 import { buildCollectionSeed } from "../factories/collection.factory";
 import { logger } from "../lib/logger";
@@ -41,10 +41,56 @@ export const seedCollections = async (
   logger.info("Seeding collections...");
 
   const collections: Collection[] = [];
-  const members: Prisma.CollectionMemberCreateManyInput[] = [];
 
   for (const user of users) {
     const userRecipes = recipesByUser.get(user.id) ?? [];
+    if (user.isFixed) {
+      const sorted = [...userRecipes].sort((a, b) => a.name.localeCompare(b.name));
+      const firstSlice = sorted.slice(0, Math.min(sorted.length, 6));
+      const secondSlice = sorted.slice(Math.min(sorted.length, 6), Math.min(sorted.length, 14));
+
+      const fixedCollections = [
+        {
+          name: "A tester - cas limites",
+          description: "Recettes avec profils atypiques pour QA.",
+          emoji: "🧪",
+          recipes: firstSlice,
+        },
+        {
+          name: "Flow principal",
+          description: "Recettes standards pour tests UX quotidiens.",
+          emoji: "✅",
+          recipes: secondSlice,
+        },
+        {
+          name: "Vide (test UI)",
+          description: "Collection sans recette pour tester les états vides.",
+          emoji: "📭",
+          recipes: [] as Recipe[],
+        },
+      ];
+
+      for (const fixed of fixedCollections) {
+        const collection = await prisma.collection.create({
+          data: {
+            name: fixed.name,
+            description: fixed.description,
+            emoji: fixed.emoji,
+            ownerId: user.id,
+            recipes:
+              fixed.recipes.length > 0
+                ? {
+                    connect: fixed.recipes.map((recipe) => ({ id: recipe.id })),
+                  }
+                : undefined,
+          },
+        });
+        collections.push(collection);
+      }
+
+      continue;
+    }
+
     const collectionCount = pickCount(config.collectionsPerUser.min, config.collectionsPerUser.max);
     const usedNames = new Set<string>();
     const assignedRecipeIds = new Set<string>();
@@ -65,9 +111,7 @@ export const seedCollections = async (
           name,
           description: seed.description,
           emoji: seed.emoji,
-          visibility: seed.visibility,
-          shortUrl: seed.shortUrl,
-          userId: user.id,
+          ownerId: user.id,
           recipes:
             selectedRecipes.length > 0
               ? {
@@ -79,21 +123,6 @@ export const seedCollections = async (
 
       collections.push(collection);
       userCollections.push(collection);
-
-      const otherUsers = users.filter((candidate) => candidate.id !== user.id);
-      if (otherUsers.length === 0) {
-        continue;
-      }
-
-      const memberCount = Math.min(otherUsers.length, faker.number.int({ min: 0, max: 2 }));
-      const selectedMembers = faker.helpers.arrayElements(otherUsers, memberCount);
-
-      for (const member of selectedMembers) {
-        members.push({
-          collectionId: collection.id,
-          userId: member.id,
-        });
-      }
     }
 
     if (userRecipes.length > 0 && userCollections.length > 0) {
@@ -113,14 +142,7 @@ export const seedCollections = async (
     }
   }
 
-  if (members.length > 0) {
-    await prisma.collectionMember.createMany({
-      data: members,
-      skipDuplicates: true,
-    });
-  }
-
-  logger.success(`Collections seeded (${collections.length} collections, ` + `${members.length} members)`);
+  logger.success(`Collections seeded (${collections.length})`);
 
   return { collections };
 };

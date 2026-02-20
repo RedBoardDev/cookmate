@@ -1,6 +1,4 @@
 import { faker } from "@faker-js/faker";
-import { CollectionVisibility } from "../../../src/generated/prisma/client";
-import { createShortUrl } from "../lib/short-url";
 
 const EMOJIS = [
   "\u{1F35D}",
@@ -46,8 +44,6 @@ export type CollectionSeed = {
   name: string;
   description: string | null;
   emoji: string;
-  visibility: CollectionVisibility;
-  shortUrl: string;
 };
 
 const buildCollectionName = (): string => {
@@ -62,6 +58,4 @@ export const buildCollectionSeed = (): CollectionSeed => ({
   name: buildCollectionName(),
   description: faker.lorem.sentence(),
   emoji: faker.helpers.arrayElement(EMOJIS),
-  visibility: maybe(0.2) ? CollectionVisibility.PUBLIC : CollectionVisibility.PRIVATE,
-  shortUrl: createShortUrl(),
 });
