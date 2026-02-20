@@ -36,57 +36,12 @@ export class NotCollectionMemberError extends DomainError {
   }
 }
 
-export class MemberAlreadyExistsError extends DomainError {
-  readonly code = "MEMBER_ALREADY_EXISTS";
-  readonly httpStatus = 409;
-
-  constructor() {
-    super("User is already a member of this collection");
-  }
-}
-
-export class MemberNotFoundError extends DomainError {
-  readonly code = "MEMBER_NOT_FOUND";
-  readonly httpStatus = 404;
-
-  constructor() {
-    super("Member not found in this collection");
-  }
-}
-
-export class CannotRemoveOwnerError extends DomainError {
-  readonly code = "CANNOT_REMOVE_OWNER";
-  readonly httpStatus = 400;
-
-  constructor() {
-    super("Cannot remove the owner from the collection");
-  }
-}
-
 export class CollectionLimitReachedError extends DomainError {
   readonly code = "COLLECTION_LIMIT_REACHED";
   readonly httpStatus = 403;
 
   constructor(limit = 15) {
     super(`Collection limit reached (${limit} max)`);
-  }
-}
-
-export class InvalidCollectionMemberDataError extends DomainError {
-  readonly code = "INVALID_COLLECTION_MEMBER_DATA";
-  readonly httpStatus = 400;
-
-  constructor(message = "Invalid collection member data") {
-    super(message);
-  }
-}
-
-export class CannotAddMemberError extends DomainError {
-  readonly code = "CANNOT_ADD_MEMBER";
-  readonly httpStatus = 403;
-
-  constructor() {
-    super("You cannot add yourself as a member of this collection");
   }
 }
 

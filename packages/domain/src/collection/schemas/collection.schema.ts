@@ -3,9 +3,6 @@ import { z } from "zod";
 const COLLECTION_NAME_MAX_LENGTH = 100;
 const COLLECTION_DESCRIPTION_MAX_LENGTH = 500;
 
-export const collectionVisibilitySchema = z.enum(["PRIVATE", "PUBLIC"]);
-export type CollectionVisibility = z.infer<typeof collectionVisibilitySchema>;
-
 export const collectionField = {
   name: z.string().min(1).max(COLLECTION_NAME_MAX_LENGTH),
   emoji: z.emoji(),
@@ -14,8 +11,6 @@ export const collectionField = {
 
 export const collectionSystemField = {
   ownerId: z.string().min(1),
-  visibility: collectionVisibilitySchema,
-  shortUrl: z.string().nullable(),
   createdAt: z.date(),
   updatedAt: z.date(),
 };
@@ -25,8 +20,6 @@ export const collectionFields = {
   emoji: { emoji: collectionField.emoji },
   description: { description: collectionField.description },
   ownerId: { ownerId: collectionSystemField.ownerId },
-  visibility: { visibility: collectionSystemField.visibility },
-  shortUrl: { shortUrl: collectionSystemField.shortUrl },
   createdAt: { createdAt: collectionSystemField.createdAt },
   updatedAt: { updatedAt: collectionSystemField.updatedAt },
 };
