@@ -23,6 +23,11 @@ interface RecipesViewProps {
   quickFilters: QuickFilterOption[];
   isQuickFilterSelected: (filter: QuickFilterId) => boolean;
   onToggleQuickFilter: (filter: QuickFilterId) => void;
+  hasNextPage?: boolean;
+  isFetchingNextPage?: boolean;
+  hasLoadMoreError?: boolean;
+  onLoadMore?: () => void;
+  onRetryLoadMore?: () => void;
   onManageCollections?: () => void;
   collectionsModal?: React.ReactNode;
   addRecipeAction?: React.ReactNode;
@@ -39,6 +44,11 @@ export function RecipesView({
   quickFilters,
   isQuickFilterSelected,
   onToggleQuickFilter,
+  hasNextPage = false,
+  isFetchingNextPage = false,
+  hasLoadMoreError = false,
+  onLoadMore,
+  onRetryLoadMore,
   onManageCollections,
   collectionsModal,
   addRecipeAction,
@@ -81,7 +91,14 @@ export function RecipesView({
         ) : recipes.length === 0 ? (
           <RecipesEmptyState addRecipeAction={addRecipeAction} />
         ) : (
-          <RecipesGrid recipes={recipes} />
+          <RecipesGrid
+            recipes={recipes}
+            hasNextPage={hasNextPage}
+            isFetchingNextPage={isFetchingNextPage}
+            hasLoadMoreError={hasLoadMoreError}
+            onLoadMore={onLoadMore}
+            onRetryLoadMore={onRetryLoadMore}
+          />
         )}
       </div>
     </section>

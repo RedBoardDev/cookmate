@@ -23,6 +23,10 @@ export function RecipesScreen({ onManageCollections, collectionsModal, addRecipe
     onToggleQuickFilter,
     onToggleCollection,
     isLoading,
+    loadMoreError,
+    hasNextPage,
+    isFetchingNextPage,
+    loadMore,
     error,
     retry,
   } = useRecipesScreen();
@@ -43,6 +47,11 @@ export function RecipesScreen({ onManageCollections, collectionsModal, addRecipe
       quickFilters={QUICK_FILTER_OPTIONS}
       isQuickFilterSelected={isQuickFilterSelected}
       onToggleQuickFilter={onToggleQuickFilter}
+      hasNextPage={hasNextPage}
+      isFetchingNextPage={isFetchingNextPage}
+      hasLoadMoreError={loadMoreError !== null}
+      onLoadMore={loadMore}
+      onRetryLoadMore={loadMore}
       onManageCollections={onManageCollections}
       collectionsModal={collectionsModal}
       addRecipeAction={addRecipeAction}
