@@ -35,6 +35,7 @@ export function useInfiniteRecipes(params?: GetRecipesQueryParams) {
         { signal },
       ),
     getNextPageParam: (lastPage, allPages, lastPageParam) => getRecipesNextPageParam(lastPage, allPages, lastPageParam),
+    placeholderData: (previousData) => previousData,
     retry: false,
   });
 
@@ -48,12 +49,15 @@ export function useInfiniteRecipes(params?: GetRecipesQueryParams) {
 
   const error = recipes.length > 0 ? null : apiQuery.error;
   const loadMoreError = apiQuery.isFetchNextPageError ? apiQuery.error : null;
+  const isInitialLoading = apiQuery.isPending && pages.length === 0;
+  const isRefreshing = apiQuery.isFetching && !isInitialLoading && !apiQuery.isFetchingNextPage;
 
   return {
     recipes,
     totalItems,
     hasNextPage: Boolean(apiQuery.hasNextPage),
-    isLoading: apiQuery.isPending,
+    isLoading: isInitialLoading,
+    isRefreshing,
     isFetchingNextPage: apiQuery.isFetchingNextPage,
     error,
     loadMoreError,

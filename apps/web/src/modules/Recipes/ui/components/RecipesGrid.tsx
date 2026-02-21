@@ -1,16 +1,18 @@
 "use client";
 
 import { useLingui } from "@lingui/react/macro";
-import { Clock, Users } from "lucide-react";
+import { Clock, Loader2, Users } from "lucide-react";
 import type { RecipeEntity } from "@/modules/Recipes/domain/entity/recipe.entity";
 import { QUICK_FILTER_LABELS } from "@/modules/Recipes/domain/vo/recipes.filters";
 import { RecipeCard } from "@/modules/Recipes/ui/components/RecipeCard";
 import { RecipesInfiniteFooter } from "@/modules/Recipes/ui/components/RecipesInfiniteFooter";
+import { cn } from "@/shared/core/utils/cn";
 
 interface RecipesGridProps {
   recipes: RecipeEntity[];
   isLoading?: boolean;
   hasNextPage?: boolean;
+  isRefreshing?: boolean;
   isFetchingNextPage?: boolean;
   hasLoadMoreError?: boolean;
   onLoadMore?: () => void;
@@ -21,6 +23,7 @@ export function RecipesGrid({
   recipes,
   isLoading = false,
   hasNextPage = false,
+  isRefreshing = false,
   isFetchingNextPage = false,
   hasLoadMoreError = false,
   onLoadMore,
@@ -40,7 +43,14 @@ export function RecipesGrid({
 
   return (
     <div className="motion-safe:animate-in motion-safe:fade-in-0">
-      <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+      {isRefreshing ? (
+        <div className="mb-4 flex items-center justify-center gap-2 text-sm text-muted-foreground">
+          <Loader2 className="h-4 w-4 animate-spin" />
+          <span>{t`Updating recipes...`}</span>
+        </div>
+      ) : null}
+
+      <div className={cn("grid gap-6 md:grid-cols-2 xl:grid-cols-3", isRefreshing && "opacity-65 transition-opacity")}>
         {recipes.map((entity) => {
           const meta = [
             {

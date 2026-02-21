@@ -24,6 +24,7 @@ interface RecipesViewProps {
   isQuickFilterSelected: (filter: QuickFilterId) => boolean;
   onToggleQuickFilter: (filter: QuickFilterId) => void;
   hasNextPage?: boolean;
+  isRefreshing?: boolean;
   isFetchingNextPage?: boolean;
   hasLoadMoreError?: boolean;
   onLoadMore?: () => void;
@@ -45,6 +46,7 @@ export function RecipesView({
   isQuickFilterSelected,
   onToggleQuickFilter,
   hasNextPage = false,
+  isRefreshing = false,
   isFetchingNextPage = false,
   hasLoadMoreError = false,
   onLoadMore,
@@ -94,6 +96,7 @@ export function RecipesView({
           <RecipesGrid
             recipes={recipes}
             hasNextPage={hasNextPage}
+            isRefreshing={isRefreshing}
             isFetchingNextPage={isFetchingNextPage}
             hasLoadMoreError={hasLoadMoreError}
             onLoadMore={onLoadMore}

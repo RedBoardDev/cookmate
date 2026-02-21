@@ -34,12 +34,17 @@ export function useRecipesScreen() {
   }, [collectionsQuery.refetch, recipesQuery.refetch]);
 
   const loadMore = useCallback(() => {
-    if (!recipesQuery.hasNextPage || recipesQuery.isFetchingNextPage) {
+    if (!recipesQuery.hasNextPage || recipesQuery.isFetchingNextPage || recipesQuery.isRefreshing) {
       return;
     }
 
     void recipesQuery.fetchNextPage({ cancelRefetch: false }).catch(() => undefined);
-  }, [recipesQuery.fetchNextPage, recipesQuery.hasNextPage, recipesQuery.isFetchingNextPage]);
+  }, [
+    recipesQuery.fetchNextPage,
+    recipesQuery.hasNextPage,
+    recipesQuery.isFetchingNextPage,
+    recipesQuery.isRefreshing,
+  ]);
 
   const collectionsCount = useMemo(() => {
     if (selectedCollectionIds.includes(ALL_COLLECTION_FILTER_ID)) {
@@ -62,6 +67,7 @@ export function useRecipesScreen() {
     error: forceLoading ? null : (recipesQuery.error ?? collectionsQuery.error),
     loadMoreError: forceLoading ? null : recipesQuery.loadMoreError,
     hasNextPage: recipesQuery.hasNextPage,
+    isRefreshing: recipesQuery.isRefreshing,
     isFetchingNextPage: recipesQuery.isFetchingNextPage,
     loadMore,
     retry,
