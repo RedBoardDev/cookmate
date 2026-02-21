@@ -5,7 +5,7 @@ import type { RecipeIngredient as DomainRecipeIngredient } from "@cookmate/domai
 interface RecipeIngredientProps {
   name: Ingredient["name"];
   amount: string | null;
-  note?: DomainRecipeIngredient["preparation"];
+  note?: DomainRecipeIngredient["note"];
 }
 
 function normalizeValue(value: string): string {

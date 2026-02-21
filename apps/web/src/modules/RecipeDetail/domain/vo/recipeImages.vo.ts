@@ -2,7 +2,7 @@ import { ValueObject } from "@cookmate/core";
 import type { RecipeImage as DomainRecipeImage } from "@cookmate/domain/recipe-image";
 
 export type RecipeImageItem = {
-  src: DomainRecipeImage["s3Url"] | null;
+  src: string | null;
   alt: DomainRecipeImage["name"];
 };
 

@@ -1,5 +1,12 @@
-import type { Recipe, RecipeBudget, RecipeDifficulty, RecipeSource, RecipeTag } from "@cookmate/domain/recipe";
-import { BUDGETS, DIFFICULTIES, SOURCES, TAGS } from "@cookmate/domain/shared/value-objects";
+import type {
+  Recipe,
+  RecipeAttribute,
+  RecipeBudget,
+  RecipeCategory,
+  RecipeDifficulty,
+  RecipeSource,
+} from "@cookmate/domain/recipe";
+import { BUDGETS, DIFFICULTIES, SOURCES } from "@cookmate/domain/shared/value-objects";
 import type { GetRecipesRecipeid200 } from "@/generated/types";
 import {
   RecipeDetailAggregate,
@@ -35,28 +42,24 @@ function normalizeRecipeSource(value: RecipeData["source"]): RecipeSource {
   return SOURCES.includes(value as RecipeSource) ? (value as RecipeSource) : DEFAULT_RECIPE_SOURCE;
 }
 
-function normalizeRecipeTags(values: RecipeData["tags"]): RecipeTag[] {
-  return values.filter((value): value is RecipeTag => TAGS.includes(value as RecipeTag));
-}
-
 function mapRecipe(data: RecipeData): Recipe {
   return {
     id: data.id,
-    title: data.title,
+    name: data.name,
     description: data.description,
     servings: data.servings,
+    yieldUnitLabel: data.yieldUnitLabel,
     prepTimeMin: data.prepTimeMin,
     cookTimeMin: data.cookTimeMin,
-    restTimeMin: data.restTimeMin,
     totalTimeMin: data.totalTimeMin,
     difficulty: normalizeRecipeDifficulty(data.difficulty),
     budget: normalizeRecipeBudget(data.budget),
-    tags: normalizeRecipeTags(data.tags),
+    categories: data.categories as RecipeCategory[],
+    attributes: data.attributes as RecipeAttribute[],
     source: normalizeRecipeSource(data.source),
     sourceUrl: data.sourceUrl,
     shortUrl: data.shortUrl,
     userId: data.userId,
-    forkedFromDiscoverId: data.forkedFromDiscoverId,
     createdAt: new Date(data.createdAt),
     updatedAt: new Date(data.updatedAt),
   };
@@ -67,7 +70,7 @@ function mapImages(images: RecipeData["images"]): RecipeImages {
     .slice()
     .sort((a, b) => a.order - b.order)
     .map((image) => ({
-      src: image.s3Url,
+      src: null,
       alt: image.name,
     }));
 
@@ -85,18 +88,16 @@ function mapIngredients(ingredients: RecipeData["ingredients"]): RecipeIngredien
         amountParts.push(ingredient.quantity.toString());
       }
 
-      if (ingredient.unit?.abbreviation) {
-        amountParts.push(ingredient.unit.abbreviation);
-      } else if (ingredient.unit?.name) {
-        amountParts.push(ingredient.unit.name);
+      if (ingredient.unit) {
+        amountParts.push(ingredient.unit);
       }
 
       const amount = amountParts.length > 0 ? amountParts.join(" ") : null;
 
       return RecipeIngredient.create({
-        name: ingredient.ingredient.name,
+        name: ingredient.name,
         amount,
-        note: ingredient.preparation,
+        note: ingredient.note,
       });
     });
 }

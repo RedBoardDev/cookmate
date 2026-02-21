@@ -35,14 +35,6 @@ export class RecipeDetailCollectionEntity extends Entity<RecipeDetailCollectionE
     return this.props.collection.ownerId;
   }
 
-  get visibility(): Collection["visibility"] {
-    return this.props.collection.visibility;
-  }
-
-  get isPublic(): boolean {
-    return this.props.collection.visibility === "PUBLIC";
-  }
-
   get recipeCount(): number {
     return this.props.recipeCount;
   }

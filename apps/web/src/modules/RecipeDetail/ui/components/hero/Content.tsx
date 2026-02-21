@@ -17,7 +17,6 @@ const SOURCE_LABELS: Record<RecipeSource, MessageDescriptor> = {
   IMPORT_SOCIAL_NETWORK: msg`Social import`,
   IMPORT_IMAGE: msg`Image import`,
   IMPORT_TEXT: msg`Text import`,
-  FORK_DISCOVER: msg`Discover recipe`,
 };
 
 interface HeroContentProps {

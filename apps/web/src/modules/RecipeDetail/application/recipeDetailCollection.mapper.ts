@@ -12,8 +12,6 @@ export const RecipeDetailCollectionMapper = {
         emoji: data.emoji,
         description: data.description,
         ownerId: data.ownerId,
-        visibility: data.visibility,
-        shortUrl: data.shortUrl,
         createdAt: new Date(data.createdAt),
         updatedAt: new Date(data.updatedAt),
       },

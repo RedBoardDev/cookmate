@@ -1,5 +1,5 @@
 import { Entity, UniqueEntityID } from "@cookmate/core";
-import type { Recipe, RecipeTag } from "@cookmate/domain/recipe";
+import type { Recipe, RecipeCategory } from "@cookmate/domain/recipe";
 import { DIFFICULTIES } from "@cookmate/domain/shared/value-objects";
 import { RecipeDifficulty, type RecipeDifficultyType } from "@/modules/RecipeDetail/domain/vo/recipeDifficulty.vo";
 import type { RecipeImageItem, RecipeImages } from "@/modules/RecipeDetail/domain/vo/recipeImages.vo";
@@ -31,16 +31,24 @@ export class RecipeDetailAggregate extends Entity<RecipeDetailAggregateProps> {
     return this._id.toString();
   }
 
+  get name(): string {
+    return this.props.recipe.name;
+  }
+
   get title(): string {
-    return this.props.recipe.title;
+    return this.props.recipe.name;
   }
 
   get description(): string {
     return this.props.recipe.description ?? "";
   }
 
-  get tags(): readonly RecipeTag[] {
-    return this.props.recipe.tags;
+  get categories(): readonly RecipeCategory[] {
+    return this.props.recipe.categories;
+  }
+
+  get tags(): readonly RecipeCategory[] {
+    return this.props.recipe.categories;
   }
 
   get source(): Recipe["source"] {
