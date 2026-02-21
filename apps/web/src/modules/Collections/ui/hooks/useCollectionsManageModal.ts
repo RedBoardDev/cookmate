@@ -16,7 +16,7 @@ export function useCollectionsManageModal() {
   const { t } = useLingui();
   const [screen, setScreen] = useState<Screen>("list");
 
-  const { collections, isLoading } = useCollections({ whereRole: "OWNER" });
+  const { collections, isLoading } = useCollections();
   const deleteCollection = useDeleteCollection({
     onSuccess: () => {
       toast.success(t(msg`Collection deleted`));

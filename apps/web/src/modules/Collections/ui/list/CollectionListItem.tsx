@@ -4,7 +4,6 @@ import { Trans, useLingui } from "@lingui/react/macro";
 import { Trash2 } from "lucide-react";
 import type { CollectionEntity } from "@/modules/Collections/domain/entity/collection.entity";
 import { cn } from "@/shared/core/utils/cn";
-import { Badge } from "@/shared/ui/primitives/badge";
 import { Button } from "@/shared/ui/primitives/button";
 import { Card } from "@/shared/ui/primitives/card";
 import { PopConfirm } from "@/shared/ui/primitives/popconfirm";
@@ -37,11 +36,6 @@ export function CollectionListItem({ collection, recipeCount, onDelete, isDeleti
         <div className="flex min-w-0 flex-1 flex-col gap-1">
           <div className="flex items-center gap-2">
             <h3 className="truncate text-base font-semibold text-foreground">{collection.name}</h3>
-            {collection.isPublic && (
-              <Badge variant="outline" className="shrink-0 text-xs">
-                <Trans>Public</Trans>
-              </Badge>
-            )}
           </div>
 
           {collection.description && <p className="truncate text-sm text-muted-foreground">{collection.description}</p>}

@@ -2,19 +2,10 @@
 
 import { useMemo } from "react";
 import { useGetCollections } from "@/generated/hooks";
-import type { GetCollectionsQueryParams } from "@/generated/types";
 import { CollectionMapper } from "@/modules/Collections/application/collection.mapper";
 
-type UseCollectionsOptions = {
-  whereRole?: GetCollectionsQueryParams["whereRole"];
-};
-
-export function useCollections(options: UseCollectionsOptions = {}) {
-  const params: GetCollectionsQueryParams | undefined = options.whereRole
-    ? { whereRole: options.whereRole }
-    : undefined;
-
-  const apiQuery = useGetCollections(params, {
+export function useCollections() {
+  const apiQuery = useGetCollections(undefined, {
     query: {
       retry: false,
     },

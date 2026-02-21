@@ -1,34 +1,26 @@
 "use client";
 
+import { Trans, useLingui } from "@lingui/react/macro";
+import { Eye, EyeOff, Loader2, Lock } from "lucide-react";
 import { useState } from "react";
+import type { ApiError } from "@/shared/core/network/api-error";
+import { ErrorMessage } from "@/shared/ui/form/ErrorMessage";
+import { FieldError } from "@/shared/ui/form/FieldError";
 import { Button } from "@/shared/ui/primitives/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/shared/ui/primitives/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/shared/ui/primitives/card";
+import { Form } from "@/shared/ui/primitives/form";
 import { Input } from "@/shared/ui/primitives/input";
 import { Label } from "@/shared/ui/primitives/label";
-import { Form } from "@/shared/ui/primitives/form";
-import { FieldError } from "@/shared/ui/form/FieldError";
-import { ErrorMessage } from "@/shared/ui/form/ErrorMessage";
-import type { ResponseErrorConfig } from "@/shared/lib/httpClient";
-import { Lock, Eye, EyeOff, Loader2 } from "lucide-react";
 import type { useChangePasswordForm } from "../hooks/useChangePasswordForm";
 
 interface PasswordSectionProps {
   form: ReturnType<typeof useChangePasswordForm>["form"];
   isSubmitting: boolean;
-  error: ResponseErrorConfig<any> | null;
+  error: ApiError | null;
 }
 
-export function PasswordSection({
-  form,
-  isSubmitting,
-  error,
-}: PasswordSectionProps) {
+export function PasswordSection({ form, isSubmitting, error }: PasswordSectionProps) {
+  const { t } = useLingui();
   const [showCurrentPassword, setShowCurrentPassword] = useState(false);
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -37,9 +29,11 @@ export function PasswordSection({
   return (
     <Card variant="soft" border="soft" shadow="flat" radius="3xl">
       <CardHeader>
-        <CardTitle className="text-xl font-display">Password</CardTitle>
+        <CardTitle className="text-xl font-display">
+          <Trans>Password</Trans>
+        </CardTitle>
         <CardDescription>
-          Change your password to keep your account secure.
+          <Trans>Change your password to keep your account secure.</Trans>
         </CardDescription>
       </CardHeader>
       <CardContent>
@@ -47,11 +41,8 @@ export function PasswordSection({
           <form.Field name="currentPassword">
             {(field) => (
               <div className="space-y-2">
-                <Label
-                  htmlFor={field.name}
-                  className="text-sm font-medium text-foreground"
-                >
-                  Current password
+                <Label htmlFor={field.name} className="text-sm font-medium text-foreground">
+                  <Trans>Current password</Trans>
                 </Label>
                 <div className="relative">
                   <Lock className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
@@ -61,25 +52,17 @@ export function PasswordSection({
                     value={field.state.value}
                     onChange={(e) => field.handleChange(e.target.value)}
                     onBlur={field.handleBlur}
-                    placeholder="Enter current password"
+                    placeholder={t`Enter current password`}
                     disabled={isSubmitting}
                     className="pl-9 pr-9"
                   />
                   <button
                     type="button"
                     onClick={() => setShowCurrentPassword(!showCurrentPassword)}
-                    aria-label={
-                      showCurrentPassword
-                        ? "Hide current password"
-                        : "Show current password"
-                    }
+                    aria-label={showCurrentPassword ? t`Hide current password` : t`Show current password`}
                     className="absolute right-3 top-1/2 -translate-y-1/2 rounded-md text-muted-foreground hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/30"
                   >
-                    {showCurrentPassword ? (
-                      <EyeOff className="h-4 w-4" />
-                    ) : (
-                      <Eye className="h-4 w-4" />
-                    )}
+                    {showCurrentPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                   </button>
                 </div>
                 <FieldError field={field} />
@@ -90,11 +73,8 @@ export function PasswordSection({
           <form.Field name="newPassword">
             {(field) => (
               <div className="space-y-2">
-                <Label
-                  htmlFor={field.name}
-                  className="text-sm font-medium text-foreground"
-                >
-                  New password
+                <Label htmlFor={field.name} className="text-sm font-medium text-foreground">
+                  <Trans>New password</Trans>
                 </Label>
                 <div className="relative">
                   <Lock className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
@@ -104,23 +84,17 @@ export function PasswordSection({
                     value={field.state.value}
                     onChange={(e) => field.handleChange(e.target.value)}
                     onBlur={field.handleBlur}
-                    placeholder="Enter new password"
+                    placeholder={t`Enter new password`}
                     disabled={isSubmitting}
                     className="pl-9 pr-9"
                   />
                   <button
                     type="button"
                     onClick={() => setShowNewPassword(!showNewPassword)}
-                    aria-label={
-                      showNewPassword ? "Hide new password" : "Show new password"
-                    }
+                    aria-label={showNewPassword ? t`Hide new password` : t`Show new password`}
                     className="absolute right-3 top-1/2 -translate-y-1/2 rounded-md text-muted-foreground hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/30"
                   >
-                    {showNewPassword ? (
-                      <EyeOff className="h-4 w-4" />
-                    ) : (
-                      <Eye className="h-4 w-4" />
-                    )}
+                    {showNewPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                   </button>
                 </div>
                 <FieldError field={field} />
@@ -131,11 +105,8 @@ export function PasswordSection({
           <form.Field name="confirmPassword">
             {(field) => (
               <div className="space-y-2">
-                <Label
-                  htmlFor={field.name}
-                  className="text-sm font-medium text-foreground"
-                >
-                  Confirm new password
+                <Label htmlFor={field.name} className="text-sm font-medium text-foreground">
+                  <Trans>Confirm new password</Trans>
                 </Label>
                 <div className="relative">
                   <Lock className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
@@ -145,27 +116,17 @@ export function PasswordSection({
                     value={field.state.value}
                     onChange={(e) => field.handleChange(e.target.value)}
                     onBlur={field.handleBlur}
-                    placeholder="Confirm new password"
+                    placeholder={t`Confirm new password`}
                     disabled={isSubmitting}
                     className="pl-9 pr-9"
                   />
                   <button
                     type="button"
-                    onClick={() =>
-                      setShowConfirmPassword(!showConfirmPassword)
-                    }
-                    aria-label={
-                      showConfirmPassword
-                        ? "Hide confirm password"
-                        : "Show confirm password"
-                    }
+                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                    aria-label={showConfirmPassword ? t`Hide confirm password` : t`Show confirm password`}
                     className="absolute right-3 top-1/2 -translate-y-1/2 rounded-md text-muted-foreground hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/30"
                   >
-                    {showConfirmPassword ? (
-                      <EyeOff className="h-4 w-4" />
-                    ) : (
-                      <Eye className="h-4 w-4" />
-                    )}
+                    {showConfirmPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                   </button>
                 </div>
                 <FieldError field={field} />
@@ -184,11 +145,8 @@ export function PasswordSection({
                   disabled={isSubmitting}
                   className="h-4 w-4 rounded border border-border/70 text-primary focus:ring-2 focus:ring-primary/40"
                 />
-                <Label
-                  htmlFor={field.name}
-                  className="text-sm text-muted-foreground cursor-pointer"
-                >
-                  Revoke all other sessions
+                <Label htmlFor={field.name} className="text-sm text-muted-foreground cursor-pointer">
+                  <Trans>Revoke all other sessions</Trans>
                 </Label>
               </div>
             )}
@@ -205,20 +163,16 @@ export function PasswordSection({
                 disabled={isSubmitting}
                 className="rounded-full"
               >
-                Cancel
+                <Trans>Cancel</Trans>
               </Button>
-              <Button
-                type="submit"
-                disabled={isSubmitting || !hasChanges}
-                className="rounded-full"
-              >
+              <Button type="submit" disabled={isSubmitting || !hasChanges} className="rounded-full">
                 {isSubmitting ? (
                   <>
                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                    Changing...
+                    {t`Changing...`}
                   </>
                 ) : (
-                  "Change password"
+                  t`Change password`
                 )}
               </Button>
             </div>

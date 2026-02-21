@@ -12,4 +12,3 @@ export function createLoginSchema(i18n: I18n) {
 }
 
 export type LoginInput = z.infer<ReturnType<typeof createLoginSchema>>;
-

@@ -1,12 +1,18 @@
 "use client";
 
+import { msg } from "@lingui/core/macro";
+import { useLingui } from "@lingui/react/macro";
+import { toast } from "sonner";
+import { getUserFacingErrorMessage } from "@/shared/core/network/api-error";
 import { useDevSkeleton } from "@/shared/ui/hooks/useDevSkeleton";
+import { DEFAULT_USER_AVATAR_PATH } from "@/shared/modules/user-session/domain/services/userAvatar.service";
 import { useSettings } from "../api/useSettings";
-import { useProfileForm } from "./hooks/useProfileForm";
 import { useChangePasswordForm } from "./hooks/useChangePasswordForm";
+import { useProfileForm } from "./hooks/useProfileForm";
 import { SettingsView } from "./SettingsView";
 
 export function SettingsScreen() {
+  const { t } = useLingui();
   const { aggregate, isLoading } = useSettings();
   const forceLoading = useDevSkeleton();
   const loading = isLoading || forceLoading || !aggregate;
@@ -16,14 +22,27 @@ export function SettingsScreen() {
     isSubmitting: profileIsSubmitting,
     error: profileError,
   } = useProfileForm({
-    initialData: aggregate?.profile ?? { name: "", avatar: "/avatars/avatar_1.png" },
+    initialData: aggregate?.profile ?? { name: "", avatar: DEFAULT_USER_AVATAR_PATH },
+    onSuccess: () => {
+      toast.success(t(msg`Profile updated`));
+    },
+    onError: (error) => {
+      toast.error(getUserFacingErrorMessage(t, error));
+    },
   });
 
   const {
     form: passwordForm,
     isSubmitting: passwordIsSubmitting,
     error: passwordError,
-  } = useChangePasswordForm();
+  } = useChangePasswordForm({
+    onSuccess: () => {
+      toast.success(t(msg`Password changed`));
+    },
+    onError: (error) => {
+      toast.error(getUserFacingErrorMessage(t, error));
+    },
+  });
 
   return (
     <SettingsView

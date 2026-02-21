@@ -1,28 +1,26 @@
 "use client";
 
 import { useQueryClient } from "@tanstack/react-query";
-import type { ResponseErrorConfig } from "@/shared/lib/httpClient";
-import { useChangePassword } from "@/generated/hooks/AuthHooks/useChangePassword";
-import { useSession } from "@/modules/Auth/api/useSession";
-import type { ChangePasswordInput } from "../application/password.schema";
 import { getSessionQueryKey } from "@/generated";
+import { useChangePassword } from "@/generated/hooks/AuthHooks/useChangePassword";
+import type { ApiError } from "@/shared/core/network/api-error";
+import { useCurrentSession } from "@/shared/modules/user-session/api/useCurrentSession";
+import type { ChangePasswordInput } from "../application/password.schema";
 
 interface UseChangePasswordSettingsOptions {
   onSuccess?: () => void;
-  onError?: (error: ResponseErrorConfig<any>) => void;
+  onError?: (error: ApiError) => void;
 }
 
-export function useChangePasswordSettings(
-  options: UseChangePasswordSettingsOptions = {}
-) {
+export function useChangePasswordSettings(options: UseChangePasswordSettingsOptions = {}) {
   const queryClient = useQueryClient();
-  const { refresh } = useSession();
+  const { refresh } = useCurrentSession();
 
   const changePassword = useChangePassword({
     mutation: {
       onSuccess: async () => {
         await queryClient.invalidateQueries({
-          queryKey: [getSessionQueryKey()],
+          queryKey: getSessionQueryKey(),
         });
         await refresh();
         options.onSuccess?.();

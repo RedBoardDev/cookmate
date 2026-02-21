@@ -1,31 +1,24 @@
 "use client";
 
-import { useEffect } from "react";
 import { useForm } from "@tanstack/react-form";
-import type { ResponseErrorConfig } from "@/shared/lib/httpClient";
+import { useEffect } from "react";
+import type { SettingsAggregate } from "@/modules/Settings/domain/entity/settings.aggregate";
+import type { ApiError } from "@/shared/core/network/api-error";
 import { useUpdateUserSettings } from "../../api/useUpdateUserSettings";
-import {
-  updateProfileSchema,
-  updateProfileDefaultValues,
-} from "../../application/settings.schema";
-import type { SettingsAggregate } from "../../domain/settings.aggregate";
+import { updateProfileDefaultValues, updateProfileSchema } from "../../application/settings.schema";
 
 interface UseProfileFormOptions {
   initialData: SettingsAggregate["profile"];
   onSuccess?: () => void;
-  onError?: (error: ResponseErrorConfig<any>) => void;
+  onError?: (error: ApiError) => void;
 }
 
-export function useProfileForm({
-  initialData,
-  onSuccess,
-  onError,
-}: UseProfileFormOptions) {
+export function useProfileForm({ initialData, onSuccess, onError }: UseProfileFormOptions) {
   const mutation = useUpdateUserSettings({
     onSuccess: () => {
       onSuccess?.();
     },
-    onError: (error: ResponseErrorConfig<any>) => {
+    onError: (error: ApiError) => {
       onError?.(error);
     },
   });
@@ -39,8 +32,7 @@ export function useProfileForm({
       onChange: updateProfileSchema,
     },
     onSubmit: ({ value }) => {
-      const validatedData = updateProfileSchema.parse(value);
-      mutation.mutate(validatedData);
+      mutation.mutate(value);
     },
   });
 
@@ -49,7 +41,8 @@ export function useProfileForm({
       ...updateProfileDefaultValues,
       ...initialData,
     });
-  }, [initialData.name, initialData.avatar, form]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- form.reset is stable, including `form` causes infinite loop
+  }, [initialData.name, initialData.avatar]);
 
   return {
     form,

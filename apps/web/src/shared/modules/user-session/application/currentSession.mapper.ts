@@ -14,6 +14,7 @@ export const CurrentSessionMapper = {
       email: user.email,
       name: user.name,
       avatar: user.avatar ?? user.image ?? DEFAULT_USER_AVATAR_PATH,
+      emailVerified: user.emailVerified ?? false,
       createdAt: new Date(user.createdAt),
       updatedAt: new Date(user.updatedAt),
     };
@@ -29,6 +30,7 @@ export const CurrentSessionMapper = {
         email: parsedUser.data.email,
         name: parsedUser.data.name,
         avatar: parsedUser.data.avatar,
+        emailVerified: parsedUser.data.emailVerified,
         createdAt: new Date(parsedUser.data.createdAt),
         updatedAt: new Date(parsedUser.data.updatedAt),
       },

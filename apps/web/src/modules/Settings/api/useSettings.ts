@@ -1,32 +1,20 @@
 "use client";
 
 import { useMemo } from "react";
-import { useAuth } from "@/shared/providers/auth-provider";
+import type { SettingsAggregate } from "@/modules/Settings/domain/entity/settings.aggregate";
+import { useCurrentUser } from "@/shared/modules/user-session/ui/hooks/useCurrentUser";
 import { SettingsMapper } from "../application/settings.mapper";
-import type { SettingsAggregate } from "../domain/settings.aggregate";
-import type { User } from "@/generated/types";
 
 export function useSettings() {
-  const { user, session, isLoading } = useAuth();
+  const { user, isLoading } = useCurrentUser();
 
   const aggregate = useMemo<SettingsAggregate | null>(() => {
-    if (!user || !session || isLoading) {
+    if (!user || isLoading) {
       return null;
     }
 
-    const userData: User = {
-      id: user.id,
-      name: user.name,
-      email: user.email,
-      avatar: user.avatarUrl ?? "/avatars/avatar_1.png",
-      image: user.avatarUrl ?? undefined,
-      createdAt: session.createdAt,
-      updatedAt: session.updatedAt,
-      emailVerified: false,
-    };
-
-    return SettingsMapper.toDomain(userData);
-  }, [user, session, isLoading]);
+    return SettingsMapper.toDomain(user);
+  }, [user, isLoading]);
 
   return {
     aggregate,

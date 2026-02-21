@@ -1,27 +1,26 @@
 "use client";
 
-import { useEffect } from "react";
+import { useLingui } from "@lingui/react/macro";
 import { useForm } from "@tanstack/react-form";
-import type { ResponseErrorConfig } from "@/shared/lib/httpClient";
+import { useEffect, useMemo } from "react";
+import type { ApiError } from "@/shared/core/network/api-error";
 import { useChangePasswordSettings } from "../../api/useChangePassword";
-import {
-  changePasswordSchema,
-  changePasswordDefaultValues,
-} from "../../application/password.schema";
+import { changePasswordDefaultValues, createChangePasswordSchema } from "../../application/password.schema";
 
 interface UseChangePasswordFormOptions {
   onSuccess?: () => void;
-  onError?: (error: ResponseErrorConfig<any>) => void;
+  onError?: (error: ApiError) => void;
 }
 
-export function useChangePasswordForm(
-  options: UseChangePasswordFormOptions = {}
-) {
+export function useChangePasswordForm(options: UseChangePasswordFormOptions = {}) {
+  const { i18n } = useLingui();
+  const schema = useMemo(() => createChangePasswordSchema(i18n), [i18n]);
+
   const mutation = useChangePasswordSettings({
     onSuccess: () => {
       options.onSuccess?.();
     },
-    onError: (error: ResponseErrorConfig<any>) => {
+    onError: (error: ApiError) => {
       options.onError?.(error);
     },
   });
@@ -29,8 +28,8 @@ export function useChangePasswordForm(
   const form = useForm({
     defaultValues: changePasswordDefaultValues,
     onSubmit: ({ value }) => {
-      const validatedData = changePasswordSchema.parse(value);
-      mutation.mutate(validatedData);
+      const validated = schema.parse(value);
+      mutation.mutate(validated);
     },
   });
 
@@ -38,7 +37,8 @@ export function useChangePasswordForm(
     if (mutation.isSuccess) {
       form.reset();
     }
-  }, [mutation.isSuccess, form]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- form.reset is stable, including `form` causes infinite loop
+  }, [mutation.isSuccess]);
 
   return {
     form,

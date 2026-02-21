@@ -1,13 +1,15 @@
 "use client";
 
-import type { ResponseErrorConfig } from "@/shared/lib/httpClient";
-import { ProfileSection } from "./sections/ProfileSection";
-import { AccountSection } from "./sections/AccountSection";
-import { PasswordSection } from "./sections/PasswordSection";
+import { Trans } from "@lingui/react/macro";
+import type { ApiError } from "@/shared/core/network/api-error";
+import { cn } from "@/shared/core/utils/cn";
 import { Card } from "@/shared/ui/primitives/card";
-import { cn } from "@/shared/lib/utils";
-import type { useProfileForm } from "./hooks/useProfileForm";
 import type { useChangePasswordForm } from "./hooks/useChangePasswordForm";
+import type { useProfileForm } from "./hooks/useProfileForm";
+import { AccountSection } from "./sections/AccountSection";
+import { LanguageSection } from "./sections/LanguageSection";
+import { PasswordSection } from "./sections/PasswordSection";
+import { ProfileSection } from "./sections/ProfileSection";
 
 interface SettingsViewProps {
   isDataLoading?: boolean;
@@ -18,10 +20,10 @@ interface SettingsViewProps {
   };
   profileForm: ReturnType<typeof useProfileForm>["form"];
   profileIsSubmitting: boolean;
-  profileError: ResponseErrorConfig<any> | null;
+  profileError: ApiError | null;
   passwordForm: ReturnType<typeof useChangePasswordForm>["form"];
   passwordIsSubmitting: boolean;
-  passwordError: ResponseErrorConfig<any> | null;
+  passwordError: ApiError | null;
 }
 
 export function SettingsView({
@@ -42,22 +44,21 @@ export function SettingsView({
         shadow="elevated"
         radius="3xl"
         padding="none"
-        className={cn(
-          "p-5 md:p-6 motion-safe:animate-in motion-safe:fade-in-0",
-          "motion-safe:slide-in-from-bottom-2"
-        )}
+        className={cn("p-5 md:p-6 motion-safe:animate-in motion-safe:fade-in-0", "motion-safe:slide-in-from-bottom-2")}
       >
         <div className="space-y-2">
           <h1 className="text-3xl font-display font-semibold text-foreground">
-            Settings
+            <Trans>Settings</Trans>
           </h1>
           <p className="text-sm text-muted-foreground">
-            Manage your account settings and preferences.
+            <Trans>Manage your account settings and preferences.</Trans>
           </p>
         </div>
       </Card>
 
       <div className="space-y-6">
+        <LanguageSection />
+
         <ProfileSection
           form={profileForm}
           isSubmitting={profileIsSubmitting}
@@ -72,11 +73,7 @@ export function SettingsView({
           isDataLoading={isDataLoading}
         />
 
-        <PasswordSection
-          form={passwordForm}
-          isSubmitting={passwordIsSubmitting}
-          error={passwordError}
-        />
+        <PasswordSection form={passwordForm} isSubmitting={passwordIsSubmitting} error={passwordError} />
       </div>
     </div>
   );
