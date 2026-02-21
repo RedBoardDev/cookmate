@@ -6,7 +6,7 @@ import { Trans, useLingui } from "@lingui/react/macro";
 import { CreditCard, HelpCircle, LogOut, Settings, User } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { cn } from "@/shared/core/utils/cn";
 import { userAvatarService } from "@/shared/modules/user-session/domain/services/userAvatar.service";
 import { useCurrentUser } from "@/shared/modules/user-session/ui/hooks/useCurrentUser";
@@ -59,6 +59,10 @@ export function UserMenu({ onSignOut }: UserMenuProps) {
     return userAvatarService.resolveSrc(user?.avatarUrl);
   }, [user?.avatarUrl]);
 
+  useEffect(() => {
+    setAvatarError(false);
+  }, [avatarSrc]);
+
   const handleLogout = () => {
     onSignOut?.();
   };
@@ -109,7 +113,8 @@ export function UserMenu({ onSignOut }: UserMenuProps) {
       <DropdownMenuContent
         align="end"
         className={cn(
-          "w-[calc(100vw-2rem)] max-w-xs rounded-2xl border border-border/60 bg-background/95 p-0 shadow-lg",
+          "w-[calc(100vw-2rem)] max-w-xs overflow-hidden rounded-[1.25rem] border border-border/60 bg-background/90 p-0 shadow-lg backdrop-blur-xl",
+          "supports-[backdrop-filter]:bg-background/80",
           "sm:w-64 sm:max-w-none",
         )}
       >
@@ -134,7 +139,7 @@ export function UserMenu({ onSignOut }: UserMenuProps) {
           </div>
         </div>
 
-        <div className="p-1">
+        <div className="px-1 py-1">
           {MENU_ITEMS.map((item) => {
             const Icon = item.icon;
 
@@ -143,7 +148,7 @@ export function UserMenu({ onSignOut }: UserMenuProps) {
                 key={item.href}
                 asChild
                 className={cn(
-                  "rounded-sm px-3 py-2 text-sm font-medium transition-colors",
+                  "rounded-lg px-3 py-2 text-sm font-medium transition-colors",
                   "text-muted-foreground hover:bg-accent/20 hover:text-foreground",
                   "focus:bg-accent/20 focus:text-foreground",
                 )}
@@ -157,12 +162,12 @@ export function UserMenu({ onSignOut }: UserMenuProps) {
           })}
         </div>
 
-        <DropdownMenuSeparator className="-mx-1 my-0 border-border/50" />
-        <div className="p-1">
+        <DropdownMenuSeparator className="mx-1 my-1 border-border/50" />
+        <div className="px-1 pb-1">
           <DropdownMenuItem
             onClick={handleLogout}
             className={cn(
-              "rounded-sm px-3 py-2 text-sm font-medium transition-colors",
+              "rounded-lg px-3 py-2 text-sm font-medium transition-colors",
               "text-primary hover:bg-primary/10 hover:text-primary",
               "focus:bg-primary/10 focus:text-primary",
             )}

@@ -59,6 +59,7 @@ export interface ImageUploadProps
   id?: string;
   ariaLabelAdd?: string;
   ariaLabelRemove?: string;
+  showAddSlot?: boolean;
 }
 
 const ImageUpload = React.forwardRef<HTMLDivElement, ImageUploadProps>(
@@ -75,6 +76,7 @@ const ImageUpload = React.forwardRef<HTMLDivElement, ImageUploadProps>(
       id,
       ariaLabelAdd,
       ariaLabelRemove,
+      showAddSlot = true,
       ...rest
     },
     ref,
@@ -188,6 +190,14 @@ const ImageUpload = React.forwardRef<HTMLDivElement, ImageUploadProps>(
       setIsDragging(false);
     }, []);
 
+    const handleInputChange = useCallback(
+      (e: React.ChangeEvent<HTMLInputElement>) => {
+        handleFilesAdded(e.target.files);
+        e.target.value = "";
+      },
+      [handleFilesAdded],
+    );
+
     // --- Rendering logic ---
     const canAddMore = (files?.length || 0) < maxCount;
 
@@ -235,8 +245,21 @@ const ImageUpload = React.forwardRef<HTMLDivElement, ImageUploadProps>(
           </div>
         ))}
 
+        {!showAddSlot && canAddMore && (
+          <input
+            id={inputId}
+            type="file"
+            accept={accept}
+            multiple={maxCount > 1}
+            disabled={disabled}
+            aria-label={resolvedAriaLabelAdd}
+            className="sr-only"
+            onChange={handleInputChange}
+          />
+        )}
+
         {/* Dropzone / Upload Button */}
-        {canAddMore && (
+        {showAddSlot && canAddMore && (
           <label
             htmlFor={inputId}
             onDrop={onDrop}
@@ -252,10 +275,7 @@ const ImageUpload = React.forwardRef<HTMLDivElement, ImageUploadProps>(
               disabled={disabled}
               aria-label={resolvedAriaLabelAdd}
               className="sr-only" // Rendu invisible mais accessible aux screen readers
-              onChange={(e) => {
-                handleFilesAdded(e.target.files);
-                e.target.value = ""; // Reset pour permettre le ré-upload du même fichier si supprimé
-              }}
+              onChange={handleInputChange}
             />
             <div className="flex flex-col items-center justify-center gap-1 p-2 text-center">
               {isDragging ? (
