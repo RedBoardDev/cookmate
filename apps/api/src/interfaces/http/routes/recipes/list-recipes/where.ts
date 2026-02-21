@@ -1,4 +1,10 @@
-import { recipeBudgetSchema, recipeDifficultySchema, recipeSourceSchema, recipeTagSchema } from "@cookmate/domain";
+import {
+  recipeAttributeSchema,
+  recipeBudgetSchema,
+  recipeCategorySchema,
+  recipeDifficultySchema,
+  recipeSourceSchema,
+} from "@cookmate/domain";
 import { z } from "zod";
 import type { Prisma } from "@/generated/prisma/client";
 import {
@@ -15,9 +21,9 @@ import { arrayParamSchema } from "@/shared/lib/list-query/utils/array-param-sche
 type WhereInput = Prisma.RecipeWhereInput;
 
 export const listRecipesWhereConfigs = defineWhereConfigs<WhereInput>([
-  whereString("whereTitle", {
-    field: "title",
-    description: "Filter by title (contains)",
+  whereString("whereName", {
+    field: "name",
+    description: "Filter by name (contains)",
     contains: true,
     insensitive: true,
   }),
@@ -42,6 +48,18 @@ export const listRecipesWhereConfigs = defineWhereConfigs<WhereInput>([
     description: "Filter by source",
     schema: recipeSourceSchema,
   }),
+  whereEnumArray("whereCategories", {
+    field: "categories",
+    description: "Filter by categories (has at least one)",
+    schema: recipeCategorySchema,
+    op: "hasSome",
+  }),
+  whereEnumArray("whereAttributes", {
+    field: "attributes",
+    description: "Filter by attributes (has at least one)",
+    schema: recipeAttributeSchema,
+    op: "hasSome",
+  }),
   whereUuidArray("whereIds", {
     field: "id",
     description: "Filter by recipe IDs",
@@ -54,12 +72,6 @@ export const listRecipesWhereConfigs = defineWhereConfigs<WhereInput>([
   whereDateRange("whereUpdatedAt", {
     field: "updatedAt",
     description: "Filter by updatedAt range",
-  }),
-  whereEnumArray("whereTags", {
-    field: "tags",
-    description: "Filter by tags (has at least one of the specified tags)",
-    schema: recipeTagSchema,
-    op: "hasSome",
   }),
   whereCustom("whereCollectionIds", {
     description: "Filter by collection IDs",

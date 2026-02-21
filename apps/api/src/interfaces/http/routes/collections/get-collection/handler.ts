@@ -11,10 +11,10 @@ export const getCollectionHandler: RouteHandler<typeof schemas> = async (ctx) =>
 
   const collection = await getCollectionSelect({ id: collectionId }, selectConfig.select);
 
-  const isOwner = await getCollectionErrors(collection, userId);
+  getCollectionErrors(collection, userId);
 
   return {
     status: HttpStatus.OK,
-    data: selectConfig.transform(collection, { isOwner }),
+    data: selectConfig.transform(collection),
   };
 };

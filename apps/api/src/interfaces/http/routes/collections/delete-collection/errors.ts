@@ -2,6 +2,6 @@ import { CollectionPolicies } from "@cookmate/domain/collection";
 import { getCollectionSelect } from "@/infra/db/repositories/collection/get-collection";
 
 export const deleteCollectionErrors = async (collectionId: string, userId: string): Promise<void> => {
-  const collection = await getCollectionSelect({ id: collectionId }, { userId: true });
-  CollectionPolicies.assertOwner(collection.userId, userId);
+  const collection = await getCollectionSelect({ id: collectionId }, { ownerId: true });
+  CollectionPolicies.assertOwner(collection.ownerId, userId);
 };

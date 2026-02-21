@@ -8,9 +8,7 @@ const select = {
   name: true,
   emoji: true,
   description: true,
-  visibility: true,
-  shortUrl: true,
-  userId: true,
+  ownerId: true,
   createdAt: true,
   updatedAt: true,
   _count: {
@@ -31,9 +29,8 @@ const responseSchema = z.array(
 type ResponseDto = z.infer<typeof responseSchema>;
 
 const transform = (data: SelectResult): ResponseDto => {
-  return data.map(({ userId, _count, ...rest }) => ({
+  return data.map(({ _count, ...rest }) => ({
     ...rest,
-    ownerId: userId,
     recipeCount: _count.recipes,
   }));
 };

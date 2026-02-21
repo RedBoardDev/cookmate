@@ -5,13 +5,12 @@ import type { SelectConfig } from "@/shared/types/select-config";
 
 const select = {
   id: true,
-  s3Url: true,
+  storageKey: true,
   name: true,
   mimeType: true,
   size: true,
   order: true,
   recipeId: true,
-  discoverRecipeId: true,
   createdAt: true,
   updatedAt: true,
 } satisfies Prisma.RecipeImageSelect;

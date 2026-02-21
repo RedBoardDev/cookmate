@@ -1,69 +1,48 @@
-import {
-  equipmentSchema,
-  instructionSchema,
-  recipeImageSchema,
-  recipeIngredientSchema,
-  recipeSchema,
-} from "@cookmate/domain";
+import { instructionSchema, recipeImageSchema, recipeIngredientSchema, recipeSchema } from "@cookmate/domain";
 import { z } from "zod";
 import type { Prisma } from "@/generated/prisma/client";
 
 const select = {
   id: true,
-  title: true,
+  name: true,
   description: true,
   servings: true,
+  yieldUnitLabel: true,
   prepTimeMin: true,
   cookTimeMin: true,
-  restTimeMin: true,
   totalTimeMin: true,
   difficulty: true,
   budget: true,
-  tags: true,
+  categories: true,
+  attributes: true,
   source: true,
   sourceUrl: true,
   shortUrl: true,
   userId: true,
-  forkedFromDiscoverId: true,
   createdAt: true,
   updatedAt: true,
-  ingredients: {
+  recipeIngredients: {
     select: {
       id: true,
+      name: true,
       quantity: true,
-      preparation: true,
+      unit: true,
+      note: true,
       optional: true,
       order: true,
-      ingredientId: true,
-      unitId: true,
       recipeId: true,
-      discoverRecipeId: true,
       createdAt: true,
       updatedAt: true,
-      ingredient: {
-        select: {
-          id: true,
-          name: true,
-        },
-      },
-      unit: {
-        select: {
-          id: true,
-          name: true,
-          abbreviation: true,
-        },
-      },
     },
     orderBy: { order: "asc" as const },
   },
-  instructions: {
+  recipeInstructions: {
     select: {
       id: true,
       text: true,
       durationMin: true,
       order: true,
       recipeId: true,
-      discoverRecipeId: true,
       createdAt: true,
       updatedAt: true,
     },
@@ -72,24 +51,16 @@ const select = {
   images: {
     select: {
       id: true,
-      s3Url: true,
+      storageKey: true,
       name: true,
       mimeType: true,
       size: true,
       order: true,
       recipeId: true,
-      discoverRecipeId: true,
       createdAt: true,
       updatedAt: true,
     },
     orderBy: { order: "asc" as const },
-  },
-  equipments: {
-    select: {
-      id: true,
-      name: true,
-      createdAt: true,
-    },
   },
   collections: {
     select: {
@@ -103,24 +74,9 @@ const select = {
 export type SelectResult = Prisma.RecipeGetPayload<{ select: typeof select }>;
 
 export const responseSchema = recipeSchema.extend({
-  ingredients: z.array(
-    recipeIngredientSchema.extend({
-      ingredient: z.object({
-        id: z.string(),
-        name: z.string(),
-      }),
-      unit: z
-        .object({
-          id: z.string(),
-          name: z.string(),
-          abbreviation: z.string().nullable(),
-        })
-        .nullable(),
-    }),
-  ),
+  ingredients: z.array(recipeIngredientSchema),
   instructions: z.array(instructionSchema),
   images: z.array(recipeImageSchema),
-  equipments: z.array(equipmentSchema),
   collections: z.array(
     z.object({
       id: z.string(),
@@ -133,7 +89,15 @@ export const responseSchema = recipeSchema.extend({
 export type ResponseDto = z.infer<typeof responseSchema>;
 
 const transform = (data: SelectResult): ResponseDto => {
-  return data;
+  const { recipeIngredients, recipeInstructions, ...recipe } = data;
+  return {
+    ...recipe,
+    ingredients: recipeIngredients.map((ingredient) => ({
+      ...ingredient,
+      quantity: ingredient.quantity === null ? null : ingredient.quantity.toNumber(),
+    })),
+    instructions: recipeInstructions,
+  };
 };
 
 export const selectConfig = {

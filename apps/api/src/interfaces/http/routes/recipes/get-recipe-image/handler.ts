@@ -11,7 +11,7 @@ export const getRecipeImageHandler: RouteHandler<typeof schemas> = async (ctx) =
 
   const recipeImage = await getRecipeImageSelect({ id: imageId }, selectConfig.select);
 
-  await getRecipeImageErrors(recipeImage, userId, imageId);
+  await getRecipeImageErrors(recipeImage, userId);
 
   return {
     status: HttpStatus.OK,
