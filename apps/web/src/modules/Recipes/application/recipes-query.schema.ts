@@ -1,9 +1,9 @@
-import { TAGS } from "@cookmate/domain/shared/value-objects";
+import { RECIPE_CATEGORIES } from "@cookmate/domain/shared/value-objects";
 import { z } from "zod";
 import type { GetRecipesQueryParams } from "@/generated/types";
 
 const recipesQueryFiltersSchema = z.object({
-  whereTags: z.array(z.enum(TAGS)).min(1).optional(),
+  whereCategories: z.array(z.enum(RECIPE_CATEGORIES)).min(1).optional(),
   whereCollectionIds: z.array(z.string().min(1)).min(1).optional(),
 });
 
@@ -18,8 +18,8 @@ export function toRecipesQueryParams(filters: RecipesQueryFilters): GetRecipesQu
 
   const queryParams: GetRecipesQueryParams = {};
 
-  if (parsedFilters.data.whereTags) {
-    queryParams.whereTags = parsedFilters.data.whereTags;
+  if (parsedFilters.data.whereCategories) {
+    queryParams.whereCategories = parsedFilters.data.whereCategories;
   }
 
   if (parsedFilters.data.whereCollectionIds) {

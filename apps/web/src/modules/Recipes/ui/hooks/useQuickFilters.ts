@@ -1,4 +1,4 @@
-import type { RecipeTag } from "@cookmate/domain/recipe";
+import type { RecipeCategory } from "@cookmate/domain/recipe";
 import { useMemo } from "react";
 import type { GetRecipesQueryParams } from "@/generated/types";
 import type { QuickFilterId } from "@/modules/Recipes/domain/vo/recipes.filters";
@@ -6,7 +6,7 @@ import { useSelectableIds } from "@/modules/Recipes/ui/hooks/useSelectableIds";
 
 const ALL_FILTER_ID: QuickFilterId = "all";
 
-type QuickFilterApiParams = Pick<GetRecipesQueryParams, "whereTags">;
+type QuickFilterApiParams = Pick<GetRecipesQueryParams, "whereCategories">;
 
 export function useQuickFilters(initialFilters: QuickFilterId[]) {
   const { selectedIds, isSelected, toggle } = useSelectableIds(initialFilters, {
@@ -19,9 +19,11 @@ export function useQuickFilters(initialFilters: QuickFilterId[]) {
       return undefined;
     }
 
-    const tags = selectedIds.filter((filter): filter is RecipeTag => filter !== ALL_FILTER_ID);
+    const categories = selectedIds.filter(
+      (filter): filter is RecipeCategory => filter !== ALL_FILTER_ID,
+    );
 
-    return tags.length > 0 ? { whereTags: tags } : undefined;
+    return categories.length > 0 ? { whereCategories: categories } : undefined;
   }, [selectedIds]);
 
   return {

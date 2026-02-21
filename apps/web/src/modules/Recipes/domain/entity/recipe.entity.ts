@@ -1,5 +1,5 @@
 import { Entity, UniqueEntityID } from "@cookmate/core";
-import type { Recipe, RecipeTag } from "@cookmate/domain/recipe";
+import type { Recipe, RecipeCategory } from "@cookmate/domain/recipe";
 
 interface RecipeEntityProps {
   recipe: Recipe;
@@ -22,8 +22,12 @@ export class RecipeEntity extends Entity<RecipeEntityProps> {
     return this._id.toString();
   }
 
+  get name(): string {
+    return this.props.recipe.name;
+  }
+
   get title(): string {
-    return this.props.recipe.title;
+    return this.props.recipe.name;
   }
 
   get description(): string | null {
@@ -42,10 +46,6 @@ export class RecipeEntity extends Entity<RecipeEntityProps> {
     return this.props.recipe.cookTimeMin;
   }
 
-  get restTimeMin(): number | null {
-    return this.props.recipe.restTimeMin;
-  }
-
   get totalTimeMin(): number {
     return this.props.recipe.totalTimeMin;
   }
@@ -58,8 +58,12 @@ export class RecipeEntity extends Entity<RecipeEntityProps> {
     return this.props.recipe.budget;
   }
 
-  get tags(): readonly RecipeTag[] {
-    return this.props.recipe.tags;
+  get categories(): readonly RecipeCategory[] {
+    return this.props.recipe.categories;
+  }
+
+  get tags(): readonly RecipeCategory[] {
+    return this.props.recipe.categories;
   }
 
   get source(): Recipe["source"] {
@@ -76,10 +80,6 @@ export class RecipeEntity extends Entity<RecipeEntityProps> {
 
   get userId(): string {
     return this.props.recipe.userId;
-  }
-
-  get forkedFromDiscoverId(): string | null {
-    return this.props.recipe.forkedFromDiscoverId;
   }
 
   get createdAt(): Date {
@@ -121,8 +121,12 @@ export class RecipeEntity extends Entity<RecipeEntityProps> {
     return this.props.imageUrl !== null;
   }
 
-  hasTag(tag: RecipeTag): boolean {
-    return this.props.recipe.tags.includes(tag);
+  hasCategory(category: RecipeCategory): boolean {
+    return this.props.recipe.categories.includes(category);
+  }
+
+  hasTag(tag: RecipeCategory): boolean {
+    return this.props.recipe.categories.includes(tag);
   }
 
   get formattedDuration(): string {

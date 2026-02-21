@@ -25,9 +25,9 @@ export function useRecipesScreen() {
     () =>
       toRecipesQueryParams({
         whereCollectionIds: collectionFiltersApiParams?.whereCollectionIds,
-        whereTags: quickFiltersApiParams?.whereTags,
+        whereCategories: quickFiltersApiParams?.whereCategories,
       }),
-    [collectionFiltersApiParams?.whereCollectionIds, quickFiltersApiParams?.whereTags],
+    [collectionFiltersApiParams?.whereCollectionIds, quickFiltersApiParams?.whereCategories],
   );
 
   const recipesQuery = useRecipes(filters);

@@ -2,19 +2,10 @@
 
 import { useMemo } from "react";
 import { useGetCollections } from "@/generated/hooks";
-import type { GetCollectionsQueryParams } from "@/generated/types";
 import { CollectionMapper } from "@/modules/Recipes/application/collection.mapper";
 
-type UseRecipeCollectionsOptions = {
-  whereRole?: GetCollectionsQueryParams["whereRole"];
-};
-
-export function useRecipeCollections(options: UseRecipeCollectionsOptions = {}) {
-  const params: GetCollectionsQueryParams | undefined = options.whereRole
-    ? { whereRole: options.whereRole }
-    : undefined;
-
-  const apiQuery = useGetCollections(params, {
+export function useRecipeCollections() {
+  const apiQuery = useGetCollections(undefined, {
     query: {
       retry: false,
     },
