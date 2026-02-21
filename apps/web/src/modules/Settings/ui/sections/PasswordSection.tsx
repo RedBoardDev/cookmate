@@ -5,7 +5,7 @@ import { Eye, EyeOff, Loader2, Lock } from "lucide-react";
 import { useState } from "react";
 import type { ApiError } from "@/shared/core/network/api-error";
 import { ErrorMessage } from "@/shared/ui/form/ErrorMessage";
-import { FieldError } from "@/shared/ui/form/FieldError";
+import { FieldErrorHint } from "@/shared/ui/form/FieldErrorHint";
 import { Button } from "@/shared/ui/primitives/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/shared/ui/primitives/card";
 import { Form } from "@/shared/ui/primitives/form";
@@ -41,9 +41,12 @@ export function PasswordSection({ form, isSubmitting, error }: PasswordSectionPr
           <form.Field name="currentPassword">
             {(field) => (
               <div className="space-y-2">
-                <Label htmlFor={field.name} className="text-sm font-medium text-foreground">
-                  <Trans>Current password</Trans>
-                </Label>
+                <div className="inline-flex items-center gap-1.5">
+                  <Label htmlFor={field.name} className="text-sm font-medium text-foreground">
+                    <Trans>Current password</Trans>
+                  </Label>
+                  <FieldErrorHint field={field} />
+                </div>
                 <div className="relative">
                   <Lock className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
                   <Input
@@ -65,7 +68,6 @@ export function PasswordSection({ form, isSubmitting, error }: PasswordSectionPr
                     {showCurrentPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                   </button>
                 </div>
-                <FieldError field={field} />
               </div>
             )}
           </form.Field>
@@ -73,9 +75,12 @@ export function PasswordSection({ form, isSubmitting, error }: PasswordSectionPr
           <form.Field name="newPassword">
             {(field) => (
               <div className="space-y-2">
-                <Label htmlFor={field.name} className="text-sm font-medium text-foreground">
-                  <Trans>New password</Trans>
-                </Label>
+                <div className="inline-flex items-center gap-1.5">
+                  <Label htmlFor={field.name} className="text-sm font-medium text-foreground">
+                    <Trans>New password</Trans>
+                  </Label>
+                  <FieldErrorHint field={field} />
+                </div>
                 <div className="relative">
                   <Lock className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
                   <Input
@@ -97,7 +102,6 @@ export function PasswordSection({ form, isSubmitting, error }: PasswordSectionPr
                     {showNewPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                   </button>
                 </div>
-                <FieldError field={field} />
               </div>
             )}
           </form.Field>
@@ -105,9 +109,12 @@ export function PasswordSection({ form, isSubmitting, error }: PasswordSectionPr
           <form.Field name="confirmPassword">
             {(field) => (
               <div className="space-y-2">
-                <Label htmlFor={field.name} className="text-sm font-medium text-foreground">
-                  <Trans>Confirm new password</Trans>
-                </Label>
+                <div className="inline-flex items-center gap-1.5">
+                  <Label htmlFor={field.name} className="text-sm font-medium text-foreground">
+                    <Trans>Confirm new password</Trans>
+                  </Label>
+                  <FieldErrorHint field={field} />
+                </div>
                 <div className="relative">
                   <Lock className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
                   <Input
@@ -129,7 +136,6 @@ export function PasswordSection({ form, isSubmitting, error }: PasswordSectionPr
                     {showConfirmPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                   </button>
                 </div>
-                <FieldError field={field} />
               </div>
             )}
           </form.Field>

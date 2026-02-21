@@ -5,8 +5,10 @@ import { Smile } from "lucide-react";
 import { useState } from "react";
 import type { useCreateCollectionForm } from "@/modules/Collections/ui/hooks/useCreateCollectionForm";
 import { ModalViewLayout } from "@/modules/Collections/ui/layout/ModalViewLayout";
+import { cn } from "@/shared/core/utils/cn";
 import { ErrorMessage } from "@/shared/ui/form/ErrorMessage";
 import { FieldError } from "@/shared/ui/form/FieldError";
+import { FieldErrorHint, hasFieldError } from "@/shared/ui/form/FieldErrorHint";
 import { Button } from "@/shared/ui/primitives/button";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from "@/shared/ui/primitives/dropdown-menu";
 import {
@@ -43,9 +45,12 @@ export function CreateCollectionView({ form, isSubmitting, error, onBack }: Crea
           <form.Field name="name">
             {(field) => (
               <div className="flex-1 space-y-2">
-                <Label htmlFor={field.name}>
-                  <Trans>Name</Trans>
-                </Label>
+                <div className="inline-flex items-center gap-1.5">
+                  <Label htmlFor={field.name}>
+                    <Trans>Name</Trans>
+                  </Label>
+                  <FieldErrorHint field={field} message={t`Name is required`} />
+                </div>
                 <Input
                   id={field.name}
                   name={field.name}
@@ -56,49 +61,65 @@ export function CreateCollectionView({ form, isSubmitting, error, onBack }: Crea
                   onBlur={field.handleBlur}
                   disabled={isSubmitting}
                 />
-                <FieldError field={field} />
               </div>
             )}
           </form.Field>
 
           <form.Field name="emoji">
-            {(field) => (
-              <div className="space-y-2">
-                <div className="h-5" />
-                <DropdownMenu open={emojiOpen} onOpenChange={setEmojiOpen}>
-                  <DropdownMenuTrigger asChild>
-                    <Button
-                      type="button"
-                      variant="outline"
-                      size="icon"
-                      disabled={isSubmitting}
-                      className="h-10 w-10 rounded-full"
-                    >
-                      {field.state.value ? (
-                        <span className="text-lg">{field.state.value}</span>
-                      ) : (
-                        <Smile className="h-4 w-4" />
-                      )}
-                    </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent align="end" className="border-0 bg-transparent p-0 shadow-none">
-                    <EmojiPicker
-                      columns={8}
-                      onEmojiSelect={(emoji) => {
-                        field.handleChange(emoji.emoji);
-                        setEmojiOpen(false);
-                      }}
-                      className="h-[340px] w-[320px]"
-                    >
-                      <EmojiPickerSearch />
-                      <EmojiPickerContent />
-                      <EmojiPickerFooter />
-                    </EmojiPicker>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-                <FieldError field={field} />
-              </div>
-            )}
+            {(field) => {
+              const hasEmojiValidationError = hasFieldError(field);
+
+              return (
+                <div className="space-y-2">
+                  <div className="h-5" />
+                  <DropdownMenu
+                    open={emojiOpen}
+                    onOpenChange={(open) => {
+                      setEmojiOpen(open);
+                      if (!open) {
+                        field.handleBlur();
+                      }
+                    }}
+                  >
+                    <DropdownMenuTrigger asChild>
+                      <Button
+                        type="button"
+                        variant="outline"
+                        size="icon"
+                        aria-label={t`Select collection emoji`}
+                        aria-invalid={hasEmojiValidationError}
+                        disabled={isSubmitting}
+                        className={cn(
+                          "h-10 w-10 rounded-full",
+                          hasEmojiValidationError &&
+                            "border-destructive/70 text-destructive hover:border-destructive hover:text-destructive",
+                        )}
+                      >
+                        {field.state.value ? (
+                          <span className="text-lg">{field.state.value}</span>
+                        ) : (
+                          <Smile className="h-4 w-4" />
+                        )}
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end" className="border-0 bg-transparent p-0 shadow-none">
+                      <EmojiPicker
+                        columns={8}
+                        onEmojiSelect={(emoji) => {
+                          field.handleChange(emoji.emoji);
+                          setEmojiOpen(false);
+                        }}
+                        className="h-[340px] w-[320px]"
+                      >
+                        <EmojiPickerSearch />
+                        <EmojiPickerContent />
+                        <EmojiPickerFooter />
+                      </EmojiPicker>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                </div>
+              );
+            }}
           </form.Field>
         </div>
 

@@ -33,8 +33,8 @@ export const recipeField = {
   prepTimeMin: z.number().int().min(0),
   cookTimeMin: z.number().int().min(0),
   totalTimeMin: z.number().int().min(0),
-  difficulty: recipeDifficultySchema.nullable(),
-  budget: recipeBudgetSchema.nullable(),
+  difficulty: recipeDifficultySchema,
+  budget: recipeBudgetSchema,
   categories: z.array(recipeCategorySchema),
   attributes: z.array(recipeAttributeSchema),
 };

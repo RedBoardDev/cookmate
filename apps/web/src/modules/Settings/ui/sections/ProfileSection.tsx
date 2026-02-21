@@ -7,10 +7,10 @@ import { useState } from "react";
 import Skeleton from "react-loading-skeleton";
 import { SettingsAggregate } from "@/modules/Settings/domain/entity/settings.aggregate";
 import type { ApiError } from "@/shared/core/network/api-error";
-import { getAvatarSrc } from "@/shared/modules/user-session/domain/services/userAvatar.service";
 import { cn } from "@/shared/core/utils/cn";
+import { getAvatarSrc } from "@/shared/modules/user-session/domain/services/userAvatar.service";
 import { ErrorMessage } from "@/shared/ui/form/ErrorMessage";
-import { FieldError } from "@/shared/ui/form/FieldError";
+import { FieldErrorHint } from "@/shared/ui/form/FieldErrorHint";
 import { Button } from "@/shared/ui/primitives/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/shared/ui/primitives/card";
 import { Form } from "@/shared/ui/primitives/form";
@@ -131,9 +131,12 @@ export function ProfileSection({ form, isSubmitting, error, isDataLoading = fals
                   <form.Field name="name">
                     {(field) => (
                       <div className="space-y-2">
-                        <Label htmlFor={field.name} className="text-sm font-medium text-foreground">
-                          <Trans>Name</Trans>
-                        </Label>
+                        <div className="inline-flex items-center gap-1.5">
+                          <Label htmlFor={field.name} className="text-sm font-medium text-foreground">
+                            <Trans>Name</Trans>
+                          </Label>
+                          <FieldErrorHint field={field} message={t`Name is required`} />
+                        </div>
                         {isDataLoading ? (
                           <Skeleton height={40} />
                         ) : (
@@ -148,7 +151,6 @@ export function ProfileSection({ form, isSubmitting, error, isDataLoading = fals
                             className="w-full"
                           />
                         )}
-                        <FieldError field={field} />
                       </div>
                     )}
                   </form.Field>
