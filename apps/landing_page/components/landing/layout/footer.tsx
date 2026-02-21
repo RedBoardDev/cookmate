@@ -1,7 +1,9 @@
-"use client"
+"use client";
 
-import { Trans } from "@lingui/react/macro"
-import { Twitter, Instagram, Mail } from "lucide-react"
+import { Trans } from "@lingui/react/macro";
+import Image from "next/image";
+import { Instagram, Mail, Twitter } from "lucide-react";
+import iconImage from "@/app/icon.png";
 
 export function Footer() {
   return (
@@ -17,9 +19,9 @@ export function Footer() {
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-12">
           <div className="col-span-2 md:col-span-1">
             <div className="flex items-center gap-2.5 mb-4">
-              <div className="w-9 h-9 bg-gradient-to-br from-[#C6502B] to-[#A84423] rounded-xl flex items-center justify-center">
-                <span className="text-white font-display text-lg font-semibold">C</span>
-              </div>
+              <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-white/10 shadow-sm">
+                <Image src={iconImage} alt="Cookmate" width={36} height={36} className="h-9 w-9" />
+              </span>
               <span className="font-display text-xl text-white">Cookmate</span>
             </div>
             <p className="text-sm text-white/50 leading-relaxed">
@@ -124,5 +126,5 @@ export function Footer() {
         </div>
       </div>
     </footer>
-  )
+  );
 }

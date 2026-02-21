@@ -15,7 +15,10 @@ export function SectionHeader({ label, title, description, id }: SectionHeaderPr
       <p className="text-sm font-medium text-[#C6502B] mb-3 tracking-wide uppercase animate-in fade-in slide-in-from-top-2 duration-500">
         <Trans>{label}</Trans>
       </p>
-      <h2 id={id} className="font-display text-3xl md:text-4xl lg:text-5xl text-[#221B16] mb-4 tracking-tight leading-tight">
+      <h2
+        id={id}
+        className="font-display text-3xl md:text-4xl lg:text-5xl text-[#221B16] mb-4 tracking-tight leading-tight"
+      >
         <Trans>{title}</Trans>
       </h2>
       {description && (

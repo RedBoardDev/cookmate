@@ -1,13 +1,13 @@
-"use client"
+"use client";
 
-import { ArrowRight, Users, CheckCircle2, Sparkles } from "lucide-react"
-import { Trans } from "@lingui/react/macro"
-import { SectionContainer } from "../layout/section-container"
-import { PrimaryButton } from "../ui/primary-button"
-import { TrustSignal } from "../ui/trust-signal"
+import { Trans } from "@lingui/react/macro";
+import { ArrowRight, CheckCircle2, Sparkles, Users } from "lucide-react";
+import { SectionContainer } from "../layout/section-container";
+import { PrimaryButton } from "../ui/primary-button";
+import { TrustSignal } from "../ui/trust-signal";
 
 interface CtaSectionProps {
-  onSignup: () => void
+  onSignup: () => void;
 }
 
 export function CtaSection({ onSignup }: CtaSectionProps) {
@@ -61,5 +61,5 @@ export function CtaSection({ onSignup }: CtaSectionProps) {
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#A43F20]/50 via-[#B54526]/30 to-[#1C1917]" />
       </div>
     </section>
-  )
+  );
 }

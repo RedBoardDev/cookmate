@@ -1,19 +1,31 @@
-"use client"
+"use client";
 
-import Image from "next/image"
-import { useLingui, Trans } from "@lingui/react/macro"
-import { Heart, Link2, Clock, Users, Flame, ChefHat, Calendar, ShoppingCart, ArrowRight, RotateCcw, CheckCircle2 } from "lucide-react"
-import { PrimaryButton } from "../ui/primary-button"
-import { RecipeMeta } from "../ui/recipe-meta"
-import { Tag } from "../ui/tag"
+import { Trans, useLingui } from "@lingui/react/macro";
+import {
+  ArrowRight,
+  Calendar,
+  CheckCircle2,
+  ChefHat,
+  Clock,
+  Flame,
+  Heart,
+  Link2,
+  RotateCcw,
+  ShoppingCart,
+  Users,
+} from "lucide-react";
+import Image from "next/image";
+import { PrimaryButton } from "../ui/primary-button";
+import { RecipeMeta } from "../ui/recipe-meta";
+import { Tag } from "../ui/tag";
 
 interface RecipePreviewProps {
-  onSignup: () => void
-  onReset: () => void
+  onSignup: () => void;
+  onReset: () => void;
 }
 
 export function RecipePreview({ onSignup, onReset }: RecipePreviewProps) {
-  const { t } = useLingui()
+  const { t } = useLingui();
 
   return (
     <div className="max-w-3xl mx-auto">
@@ -72,11 +84,7 @@ export function RecipePreview({ onSignup, onReset }: RecipePreviewProps) {
             </div>
 
             <div className="flex gap-2">
-              <PrimaryButton
-                onClick={onSignup}
-                size="md"
-                className="flex-1 rounded-xl shadow-md shadow-[#C6502B]/15"
-              >
+              <PrimaryButton onClick={onSignup} size="md" className="flex-1 rounded-xl shadow-md shadow-[#C6502B]/15">
                 <ChefHat className="w-4 h-4" />
                 <Trans>Cook</Trans>
               </PrimaryButton>
@@ -98,5 +106,5 @@ export function RecipePreview({ onSignup, onReset }: RecipePreviewProps) {
         </PrimaryButton>
       </div>
     </div>
-  )
+  );
 }
