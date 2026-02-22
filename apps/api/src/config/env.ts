@@ -18,6 +18,12 @@ const EnvSchema = z.object({
   BETTER_AUTH_URL: z.string().url(),
   BETTER_AUTH_DISABLE_ORIGIN_CHECK: z.coerce.boolean().optional().default(false),
 
+  // AWS S3
+  AWS_REGION: z.string().min(1),
+  AWS_S3_BUCKET_NAME: z.string().min(1),
+  AWS_S3_ACCESS_KEY_ID: z.string().min(1),
+  AWS_S3_SECRET_ACCESS_KEY: z.string().min(1),
+
   // OAuth Providers (optional)
   GOOGLE_CLIENT_ID: z.string().optional(),
   GOOGLE_CLIENT_SECRET: z.string().optional(),
