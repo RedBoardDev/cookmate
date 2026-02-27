@@ -30,7 +30,7 @@ export function CollectionListItem({ collection, recipeCount, onDelete, isDeleti
     >
       <div className="flex flex-1 items-center gap-3 min-w-0">
         <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-muted/60 text-2xl">
-          {collection.emoji}
+          {collection.emoji.value}
         </div>
 
         <div className="flex min-w-0 flex-1 flex-col gap-1">

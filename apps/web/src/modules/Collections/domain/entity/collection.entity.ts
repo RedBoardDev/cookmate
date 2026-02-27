@@ -1,8 +1,12 @@
 import { Entity, UniqueEntityID } from "@cookmate/core";
-import { type Collection, CollectionPolicies } from "@cookmate/domain/collection";
+import type { CollectionProps } from "@cookmate/domain/collection";
+import type { EmojiVO } from "@/shared/domain/value-objects/emoji.vo";
 
 interface CollectionEntityProps {
-  collection: Collection;
+  id: string;
+  name: CollectionProps["name"];
+  emoji: EmojiVO;
+  description: CollectionProps["description"];
   recipeCount: number;
 }
 
@@ -12,7 +16,7 @@ export class CollectionEntity extends Entity<CollectionEntityProps> {
   }
 
   static create(props: CollectionEntityProps): CollectionEntity {
-    return new CollectionEntity(props, new UniqueEntityID(props.collection.id));
+    return new CollectionEntity(props, new UniqueEntityID(props.id));
   }
 
   get id(): string {
@@ -20,26 +24,18 @@ export class CollectionEntity extends Entity<CollectionEntityProps> {
   }
 
   get name(): string {
-    return this.props.collection.name;
+    return this.props.name;
   }
 
-  get emoji(): string {
-    return this.props.collection.emoji;
+  get emoji(): EmojiVO {
+    return this.props.emoji;
   }
 
   get description(): string | null {
-    return this.props.collection.description;
-  }
-
-  get ownerId(): string {
-    return this.props.collection.ownerId;
+    return this.props.description;
   }
 
   get recipeCount(): number {
     return this.props.recipeCount;
-  }
-
-  isOwned(userId: string): boolean {
-    return CollectionPolicies.isOwner(this.props.collection.ownerId, userId);
   }
 }

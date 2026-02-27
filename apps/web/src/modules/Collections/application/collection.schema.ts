@@ -1,10 +1,12 @@
-import { collectionField } from "@cookmate/domain/collection";
+import { collectionValueSchemas } from "@cookmate/domain/collection";
 import { z } from "zod";
 
 export const createCollectionSchema = z.object({
-  name: collectionField.name,
-  emoji: collectionField.emoji,
-  description: collectionField.description,
+  id: collectionValueSchemas.id,
+  name: collectionValueSchemas.name,
+  emoji: collectionValueSchemas.emoji,
+  description: collectionValueSchemas.description,
+  recipeCount: z.number(),
 });
 
 export type CreateCollectionInput = z.infer<typeof createCollectionSchema>;
