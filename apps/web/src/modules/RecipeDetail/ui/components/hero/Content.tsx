@@ -29,11 +29,10 @@ interface HeroContentProps {
 
 export function HeroContent({ title, description, tags, source, isLoading = false }: HeroContentProps) {
   const { t } = useLingui();
-  const tagSkeletons = [68, 84, 56];
   const safeTags = tags ?? [];
   const sourceLabel = source ? t(SOURCE_LABELS[source.type]) : null;
-  const hasTags = isLoading || safeTags.length > 0;
-  const hasDescription = isLoading || Boolean(description?.trim());
+  const hasTags = safeTags.length > 0;
+  const hasDescription = Boolean(description?.trim());
 
   return (
     <div className="flex flex-col gap-4 px-6 pt-6 pb-5 md:px-8 md:pt-8 md:pb-5">
@@ -53,22 +52,18 @@ export function HeroContent({ title, description, tags, source, isLoading = fals
 
       {hasTags ? (
         <div className="flex flex-wrap items-center gap-2">
-          {isLoading
-            ? tagSkeletons.map((width, index) => (
-                <Skeleton key={`${width}-${index}`} width={width} height={20} borderRadius={999} />
-              ))
-            : safeTags.map((tag) => (
-                <Badge
-                  key={tag}
-                  variant="outline"
-                  className={cn(
-                    "rounded-full border-border/60 bg-muted/60",
-                    "text-xs font-medium text-muted-foreground",
-                  )}
-                >
-                  {tag}
-                </Badge>
-              ))}
+          {safeTags.map((tag) => (
+            <Badge
+              key={tag}
+              variant="outline"
+              className={cn(
+                "rounded-full border-border/60 bg-muted/60",
+                "text-xs font-medium text-muted-foreground",
+              )}
+            >
+              {tag}
+            </Badge>
+          ))}
         </div>
       ) : null}
 
@@ -79,14 +74,12 @@ export function HeroContent({ title, description, tags, source, isLoading = fals
           </h1>
           {hasDescription ? (
             <p className="max-w-[44ch] text-sm leading-relaxed text-muted-foreground md:text-base">
-              {isLoading ? <Skeleton count={2} /> : description}
+              {description}
             </p>
           ) : null}
         </div>
 
-        {isLoading ? (
-          <Skeleton width={160} />
-        ) : source && sourceLabel ? (
+        {source && sourceLabel ? (
           <Link
             href={source.url}
             target="_blank"

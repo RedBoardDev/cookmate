@@ -19,16 +19,6 @@ export function StepCard({ instruction, isLoading = false }: StepCardProps) {
           <Skeleton circle width={36} height={36} />
           <div className="flex flex-1 flex-col gap-3">
             <Skeleton count={2} />
-            <div className="flex items-center gap-2 text-xs text-muted-foreground">
-              <Timer className="h-3.5 w-3.5" />
-              <Skeleton width={64} />
-            </div>
-            <div
-              className={cn("flex items-start gap-2 rounded-xl bg-muted/70 px-3 py-2", "text-xs text-muted-foreground")}
-            >
-              <Lightbulb className="mt-0.5 h-3.5 w-3.5 text-primary" />
-              <Skeleton width="80%" />
-            </div>
           </div>
         </div>
       </Card>

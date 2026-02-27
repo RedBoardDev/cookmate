@@ -24,8 +24,6 @@ export function HeroActions({
   disableShare = false,
 }: HeroActionsProps) {
   const { t } = useLingui();
-  if (isLoading) return null;
-
   const isDesktop = variant === "desktop";
   const buttonClass = cn(
     "h-9 w-9 rounded-xl border-border/60",
@@ -45,7 +43,7 @@ export function HeroActions({
         className={buttonClass}
         aria-label={t`Edit recipe`}
         onClick={onEdit}
-        disabled={!onEdit}
+        disabled={isLoading || !onEdit}
       >
         <Pencil className="h-4 w-4" />
       </Button>
@@ -56,7 +54,7 @@ export function HeroActions({
         className={buttonClass}
         aria-label={t`Add to collection`}
         onClick={onOpenCollections}
-        disabled={disableCollections || !onOpenCollections}
+        disabled={isLoading || disableCollections || !onOpenCollections}
       >
         <FolderOpen className="h-4 w-4" />
       </Button>
@@ -67,7 +65,7 @@ export function HeroActions({
         className={buttonClass}
         aria-label={t`Share recipe`}
         onClick={onShare}
-        disabled={disableShare || !onShare}
+        disabled={isLoading || disableShare || !onShare}
       >
         <Share2 className="h-4 w-4" />
       </Button>
