@@ -6,15 +6,11 @@ type CollectionData = GetCollections200["data"][number];
 export const RecipeDetailCollectionMapper = {
   toDomain(data: CollectionData): RecipeDetailCollectionEntity {
     return RecipeDetailCollectionEntity.create({
-      collection: {
-        id: data.id,
-        name: data.name,
-        emoji: data.emoji,
-        description: data.description,
-        ownerId: data.ownerId,
-        createdAt: new Date(data.createdAt),
-        updatedAt: new Date(data.updatedAt),
-      },
+      id: data.id,
+      name: data.name,
+      emoji: data.emoji,
+      description: data.description,
+      ownerId: data.ownerId,
       recipeCount: data.recipeCount,
     });
   },

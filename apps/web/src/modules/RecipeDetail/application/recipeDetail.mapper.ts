@@ -1,151 +1,50 @@
-import type {
-  Recipe,
-  RecipeAttribute,
-  RecipeBudget,
-  RecipeCategory,
-  RecipeDifficulty,
-  RecipeSource,
-} from "@cookmate/domain/recipe";
-import { BUDGETS, DIFFICULTIES, SOURCES } from "@cookmate/domain/shared/value-objects";
-import type { GetRecipesRecipeid200 } from "@/generated/types";
-import {
-  RecipeDetailAggregate,
-  type RecipeTones,
-  recipeTones,
-} from "@/modules/RecipeDetail/domain/entity/recipeDetail.aggregate";
+import type { RecipeCategory } from "@cookmate/domain/recipe";
+import type { GetRecipesRecipeid200, GetRecipesRecipeidImages200 } from "@/generated/types";
+import { RecipeDetailImagesMapper } from "@/modules/RecipeDetail/application/recipeDetailImages.mapper";
+import { RecipeDetailIngredientsMapper } from "@/modules/RecipeDetail/application/recipeDetailIngredients.mapper";
+import { RecipeDetailInstructionsMapper } from "@/modules/RecipeDetail/application/recipeDetailInstructions.mapper";
+import { RecipeDetailAggregate } from "@/modules/RecipeDetail/domain/entity/recipeDetail.aggregate";
+import { RecipeDifficulty } from "@/modules/RecipeDetail/domain/vo/recipeDifficulty.vo";
 import { RecipeDuration } from "@/modules/RecipeDetail/domain/vo/recipeDuration.vo";
-import { RecipeImages } from "@/modules/RecipeDetail/domain/vo/recipeImages.vo";
-import { RecipeIngredient } from "@/modules/RecipeDetail/domain/vo/recipeIngredient.vo";
-import { RecipeInstruction } from "@/modules/RecipeDetail/domain/vo/recipeInstruction.vo";
+import { RecipeServings } from "@/modules/RecipeDetail/domain/vo/recipeServings.vo";
+import { RecipeSourceVO } from "@/modules/RecipeDetail/domain/vo/recipeSource.vo";
 
 type RecipeData = GetRecipesRecipeid200["data"];
 
-const DEFAULT_RECIPE_SOURCE: RecipeSource = "MANUAL";
-
-function normalizeRecipeDifficulty(value: RecipeData["difficulty"]): RecipeDifficulty | null {
-  if (!value) {
-    return null;
+function normalizeRecipeShortUrl(value: RecipeData["shortUrl"]): string {
+  if (typeof value === "string" && value.trim().length > 0) {
+    return value;
   }
 
-  return DIFFICULTIES.includes(value as RecipeDifficulty) ? (value as RecipeDifficulty) : null;
-}
-
-function normalizeRecipeBudget(value: RecipeData["budget"]): RecipeBudget | null {
-  if (!value) {
-    return null;
-  }
-
-  return BUDGETS.includes(value as RecipeBudget) ? (value as RecipeBudget) : null;
-}
-
-function normalizeRecipeSource(value: RecipeData["source"]): RecipeSource {
-  return SOURCES.includes(value as RecipeSource) ? (value as RecipeSource) : DEFAULT_RECIPE_SOURCE;
-}
-
-function mapRecipe(data: RecipeData): Recipe {
-  return {
-    id: data.id,
-    name: data.name,
-    description: data.description,
-    servings: data.servings,
-    yieldUnitLabel: data.yieldUnitLabel,
-    prepTimeMin: data.prepTimeMin,
-    cookTimeMin: data.cookTimeMin,
-    totalTimeMin: data.totalTimeMin,
-    difficulty: normalizeRecipeDifficulty(data.difficulty),
-    budget: normalizeRecipeBudget(data.budget),
-    categories: data.categories as RecipeCategory[],
-    attributes: data.attributes as RecipeAttribute[],
-    source: normalizeRecipeSource(data.source),
-    sourceUrl: data.sourceUrl,
-    shortUrl: data.shortUrl,
-    userId: data.userId,
-    createdAt: new Date(data.createdAt),
-    updatedAt: new Date(data.updatedAt),
-  };
-}
-
-function mapImages(images: RecipeData["images"]): RecipeImages {
-  const items = images
-    .slice()
-    .sort((a, b) => a.order - b.order)
-    .map((image) => ({
-      src: null,
-      alt: image.name,
-    }));
-
-  return RecipeImages.create(items);
-}
-
-function mapIngredients(ingredients: RecipeData["ingredients"]): RecipeIngredient[] {
-  return ingredients
-    .slice()
-    .sort((a, b) => a.order - b.order)
-    .map((ingredient) => {
-      const amountParts: string[] = [];
-
-      if (ingredient.quantity !== null && ingredient.quantity !== undefined) {
-        amountParts.push(ingredient.quantity.toString());
-      }
-
-      if (ingredient.unit) {
-        amountParts.push(ingredient.unit);
-      }
-
-      const amount = amountParts.length > 0 ? amountParts.join(" ") : null;
-
-      return RecipeIngredient.create({
-        name: ingredient.name,
-        amount,
-        note: ingredient.note,
-      });
-    });
-}
-
-function mapInstructions(instructions: RecipeData["instructions"]): RecipeInstruction[] {
-  return instructions
-    .slice()
-    .sort((a, b) => a.order - b.order)
-    .map((instruction, index) => {
-      const duration =
-        instruction.durationMin !== null && instruction.durationMin !== undefined
-          ? RecipeDuration.create(instruction.durationMin)
-          : null;
-
-      return RecipeInstruction.create({
-        step: index + 1,
-        description: instruction.text,
-        duration,
-        tip: null,
-      });
-    });
-}
-
-function selectHeroTone(recipeId: string): RecipeTones {
-  const hash = recipeId.split("").reduce((acc, char) => acc + char.charCodeAt(0), 0);
-  return recipeTones[hash % recipeTones.length];
+  throw new Error("Recipe shortUrl is required.");
 }
 
 export const RecipeDetailMapper = {
-  toDomain(apiData?: GetRecipesRecipeid200 | null): RecipeDetailAggregate | null {
+  toDomain(
+    apiData?: GetRecipesRecipeid200 | null,
+    imageData?: GetRecipesRecipeidImages200["data"] | null,
+  ): RecipeDetailAggregate | null {
     if (!apiData?.data) {
       return null;
     }
 
-    const recipe = mapRecipe(apiData.data);
-    const ingredients = mapIngredients(apiData.data.ingredients);
-    const instructions = mapInstructions(apiData.data.instructions);
-    const images = mapImages(apiData.data.images);
-    const heroTone = selectHeroTone(recipe.id);
-    const collectionIds = apiData.data.collections.map((collection) => collection.id);
+    const recipe = apiData.data;
 
     return RecipeDetailAggregate.create({
-      recipe,
-      ingredients,
-      instructions,
-      images,
-      heroTone,
-      collectionIds,
+      id: recipe.id,
+      name: recipe.name,
+      description: recipe.description,
+      servings: RecipeServings.create(recipe.servings),
+      duration: RecipeDuration.create(recipe.totalTimeMin),
+      difficulty: RecipeDifficulty.create(recipe.difficulty),
+      categories: recipe.categories as RecipeCategory[],
+      source: RecipeSourceVO.create(recipe.source),
+      sourceUrl: recipe.sourceUrl,
+      shortUrl: normalizeRecipeShortUrl(recipe.shortUrl),
+      ingredients: RecipeDetailIngredientsMapper.toDomain(recipe.ingredients),
+      instructions: RecipeDetailInstructionsMapper.toDomain(recipe.instructions),
+      images: RecipeDetailImagesMapper.toDomain(imageData),
+      collectionIds: recipe.collections.map((collection) => collection.id),
     });
   },
 };
