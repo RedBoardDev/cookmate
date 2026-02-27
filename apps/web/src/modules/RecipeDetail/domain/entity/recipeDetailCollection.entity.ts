@@ -1,8 +1,11 @@
 import { Entity, UniqueEntityID } from "@cookmate/core";
-import { type Collection, CollectionPolicies } from "@cookmate/domain/collection";
 
 interface RecipeDetailCollectionEntityProps {
-  collection: Collection;
+  id: string;
+  name: string;
+  emoji: string;
+  description: string | null;
+  ownerId: string;
   recipeCount: number;
 }
 
@@ -12,7 +15,7 @@ export class RecipeDetailCollectionEntity extends Entity<RecipeDetailCollectionE
   }
 
   static create(props: RecipeDetailCollectionEntityProps): RecipeDetailCollectionEntity {
-    return new RecipeDetailCollectionEntity(props, new UniqueEntityID(props.collection.id));
+    return new RecipeDetailCollectionEntity(props, new UniqueEntityID(props.id));
   }
 
   get id(): string {
@@ -20,19 +23,19 @@ export class RecipeDetailCollectionEntity extends Entity<RecipeDetailCollectionE
   }
 
   get name(): string {
-    return this.props.collection.name;
+    return this.props.name;
   }
 
   get emoji(): string {
-    return this.props.collection.emoji;
+    return this.props.emoji;
   }
 
   get description(): string | null {
-    return this.props.collection.description;
+    return this.props.description;
   }
 
   get ownerId(): string {
-    return this.props.collection.ownerId;
+    return this.props.ownerId;
   }
 
   get recipeCount(): number {
@@ -40,6 +43,6 @@ export class RecipeDetailCollectionEntity extends Entity<RecipeDetailCollectionE
   }
 
   isOwned(userId: string): boolean {
-    return CollectionPolicies.isOwner(this.props.collection.ownerId, userId);
+    return this.props.ownerId === userId;
   }
 }

@@ -1,8 +1,8 @@
 import { ValueObject } from "@cookmate/core";
-import type { Recipe } from "@cookmate/domain/recipe";
 
+/** Positive integer (≥1). Matches domain recipe field semantics. */
 interface RecipeServingsProps {
-  value: Recipe["servings"];
+  value: number;
 }
 
 function isValidServings(value: number) {
@@ -14,21 +14,14 @@ export class RecipeServings extends ValueObject<RecipeServingsProps> {
     super(props);
   }
 
-  public static create(value: Recipe["servings"]): RecipeServings {
+  public static create(value: number): RecipeServings {
     if (!isValidServings(value)) {
       throw new Error("RecipeServings must be a positive integer.");
     }
     return new RecipeServings({ value });
   }
 
-  public static fromValue(value?: number | null): RecipeServings | null {
-    if (value === null || value === undefined) return null;
-    if (!isValidServings(value)) return null;
-
-    return new RecipeServings({ value });
-  }
-
-  get value(): Recipe["servings"] {
+  get value(): number {
     return this.props.value;
   }
 

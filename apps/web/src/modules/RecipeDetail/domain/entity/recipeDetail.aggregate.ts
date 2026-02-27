@@ -1,21 +1,28 @@
 import { Entity, UniqueEntityID } from "@cookmate/core";
-import type { Recipe, RecipeCategory } from "@cookmate/domain/recipe";
-import { DIFFICULTIES } from "@cookmate/domain/shared/value-objects";
-import { RecipeDifficulty, type RecipeDifficultyType } from "@/modules/RecipeDetail/domain/vo/recipeDifficulty.vo";
+import type { RecipeCategory, RecipeSource } from "@cookmate/domain/recipe";
+import type { RecipeDifficulty } from "@/modules/RecipeDetail/domain/vo/recipeDifficulty.vo";
+import type { RecipeDuration } from "@/modules/RecipeDetail/domain/vo/recipeDuration.vo";
 import type { RecipeImageItem, RecipeImages } from "@/modules/RecipeDetail/domain/vo/recipeImages.vo";
 import type { RecipeIngredient } from "@/modules/RecipeDetail/domain/vo/recipeIngredient.vo";
 import type { RecipeInstruction } from "@/modules/RecipeDetail/domain/vo/recipeInstruction.vo";
-
-export const recipeTones = ["sunrise", "herb", "spice", "oat", "berry"];
-export type RecipeTones = (typeof recipeTones)[number];
+import type { RecipeServings } from "@/modules/RecipeDetail/domain/vo/recipeServings.vo";
+import type { RecipeSourceVO } from "@/modules/RecipeDetail/domain/vo/recipeSource.vo";
 
 export interface RecipeDetailAggregateProps {
-  recipe: Recipe;
-  ingredients: RecipeIngredient[];
-  instructions: RecipeInstruction[];
+  id: string;
+  name: string;
+  description: string | null;
+  servings: RecipeServings;
+  duration: RecipeDuration;
+  difficulty: RecipeDifficulty;
+  categories: readonly RecipeCategory[];
+  source: RecipeSourceVO;
+  sourceUrl: string | null;
+  shortUrl: string;
+  ingredients: readonly RecipeIngredient[];
+  instructions: readonly RecipeInstruction[];
   images: RecipeImages;
-  heroTone: RecipeTones;
-  collectionIds: string[];
+  collectionIds: readonly string[];
 }
 
 export class RecipeDetailAggregate extends Entity<RecipeDetailAggregateProps> {
@@ -24,7 +31,7 @@ export class RecipeDetailAggregate extends Entity<RecipeDetailAggregateProps> {
   }
 
   static create(props: RecipeDetailAggregateProps): RecipeDetailAggregate {
-    return new RecipeDetailAggregate(props, new UniqueEntityID(props.recipe.id));
+    return new RecipeDetailAggregate(props, new UniqueEntityID(props.id));
   }
 
   get id(): string {
@@ -32,47 +39,39 @@ export class RecipeDetailAggregate extends Entity<RecipeDetailAggregateProps> {
   }
 
   get name(): string {
-    return this.props.recipe.name;
+    return this.props.name;
   }
 
-  get title(): string {
-    return this.props.recipe.name;
-  }
-
-  get description(): string {
-    return this.props.recipe.description ?? "";
+  get description(): string | null {
+    return this.props.description;
   }
 
   get categories(): readonly RecipeCategory[] {
-    return this.props.recipe.categories;
+    return this.props.categories;
   }
 
-  get tags(): readonly RecipeCategory[] {
-    return this.props.recipe.categories;
-  }
-
-  get source(): Recipe["source"] {
-    return this.props.recipe.source;
+  get source(): RecipeSource {
+    return this.props.source.value;
   }
 
   get sourceUrl(): string | null {
-    return this.props.recipe.sourceUrl;
+    return this.props.sourceUrl;
   }
 
-  get shortUrl(): string | null {
-    return this.props.recipe.shortUrl;
+  get shortUrl(): string {
+    return this.props.shortUrl;
   }
 
-  get totalTimeMin(): number {
-    return this.props.recipe.totalTimeMin;
+  get duration(): RecipeDuration {
+    return this.props.duration;
   }
 
   get servings(): number {
-    return this.props.recipe.servings;
+    return this.props.servings.value;
   }
 
-  get difficulty(): RecipeDifficultyType {
-    return RecipeDifficulty.fromValue(this.props.recipe.difficulty)?.value ?? DIFFICULTIES[0];
+  get difficulty(): RecipeDifficulty {
+    return this.props.difficulty;
   }
 
   get ingredients(): readonly RecipeIngredient[] {
@@ -91,47 +90,7 @@ export class RecipeDetailAggregate extends Entity<RecipeDetailAggregateProps> {
     return this.props.images.items;
   }
 
-  get heroTone(): RecipeTones {
-    return this.props.heroTone;
-  }
-
   get collectionIds(): readonly string[] {
     return this.props.collectionIds;
-  }
-
-  get hasImages(): boolean {
-    return this.props.images.hasImages;
-  }
-
-  get primaryImage(): RecipeImageItem | null {
-    return this.props.images.primaryImage;
-  }
-
-  get ingredientCount(): number {
-    return this.props.ingredients.length;
-  }
-
-  get stepCount(): number {
-    return this.props.instructions.length;
-  }
-
-  get hasShortUrl(): boolean {
-    return this.props.recipe.shortUrl !== null && this.props.recipe.shortUrl.trim().length > 0;
-  }
-
-  get durationHours(): number {
-    return Math.floor(this.props.recipe.totalTimeMin / 60);
-  }
-
-  get durationRemainingMinutes(): number {
-    return this.props.recipe.totalTimeMin % 60;
-  }
-
-  get isDurationShort(): boolean {
-    return this.props.recipe.totalTimeMin < 60;
-  }
-
-  belongsToCollection(collectionId: string): boolean {
-    return this.props.collectionIds.includes(collectionId);
   }
 }

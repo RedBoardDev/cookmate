@@ -1,12 +1,20 @@
 import { ValueObject } from "@cookmate/core";
 import type { RecipeDifficulty as DomainRecipeDifficulty } from "@cookmate/domain/recipe";
 import { DIFFICULTIES } from "@cookmate/domain/shared/value-objects";
+import type { MessageDescriptor } from "@lingui/core";
+import { msg } from "@lingui/core/macro";
 
 interface RecipeDifficultyProps {
   value: DomainRecipeDifficulty;
 }
 
 export type RecipeDifficultyType = DomainRecipeDifficulty;
+
+const RECIPE_DIFFICULTY_LABELS: Record<DomainRecipeDifficulty, MessageDescriptor> = {
+  EASY: msg`Easy`,
+  MEDIUM: msg`Medium`,
+  HARD: msg`Hard`,
+};
 
 export class RecipeDifficulty extends ValueObject<RecipeDifficultyProps> {
   private constructor(props: RecipeDifficultyProps) {
@@ -25,20 +33,12 @@ export class RecipeDifficulty extends ValueObject<RecipeDifficultyProps> {
     return new RecipeDifficulty({ value });
   }
 
-  public static fromValue(value?: DomainRecipeDifficulty | null): RecipeDifficulty | null {
-    if (!value) {
-      return null;
-    }
-
-    if (!RecipeDifficulty.isValidRecipeDifficulty(value)) {
-      return null;
-    }
-
-    return new RecipeDifficulty({ value });
-  }
-
   get value(): DomainRecipeDifficulty {
     return this.props.value;
+  }
+
+  get translationKey(): MessageDescriptor {
+    return RECIPE_DIFFICULTY_LABELS[this.props.value];
   }
 
   get ordinal(): number {

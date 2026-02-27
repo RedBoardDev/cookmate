@@ -21,13 +21,6 @@ export class RecipeDuration extends ValueObject<RecipeDurationProps> {
     return new RecipeDuration({ value });
   }
 
-  public static fromValue(value?: number | null): RecipeDuration | null {
-    if (value === null || value === undefined) return null;
-    if (!isValidDuration(value)) return null;
-
-    return new RecipeDuration({ value });
-  }
-
   get value(): NonNullable<Instruction["durationMin"]> {
     return this.props.value;
   }
@@ -45,5 +38,13 @@ export class RecipeDuration extends ValueObject<RecipeDurationProps> {
   /** Whether the duration is less than one hour. */
   get isShort(): boolean {
     return this.props.value < 60;
+  }
+
+  toDisplayString(): string {
+    if (this.isShort) {
+      return `${this.value} min`;
+    }
+
+    return `${this.hours}H${this.remainingMinutes.toString().padStart(2, "0")}`;
   }
 }
