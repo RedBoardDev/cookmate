@@ -32,9 +32,11 @@ export function HeroContent({ title, description, tags, source, isLoading = fals
   const tagSkeletons = [68, 84, 56];
   const safeTags = tags ?? [];
   const sourceLabel = source ? t(SOURCE_LABELS[source.type]) : null;
+  const hasTags = isLoading || safeTags.length > 0;
+  const hasDescription = isLoading || Boolean(description?.trim());
 
   return (
-    <div className="flex flex-col gap-6 p-6 md:p-8">
+    <div className="flex flex-col gap-4 px-6 pt-6 pb-5 md:px-8 md:pt-8 md:pb-5">
       <div className="hidden md:flex">
         <Button
           asChild
@@ -49,30 +51,37 @@ export function HeroContent({ title, description, tags, source, isLoading = fals
         </Button>
       </div>
 
-      <div className="flex flex-wrap items-center gap-2">
-        {isLoading
-          ? tagSkeletons.map((width, index) => (
-              <Skeleton key={`${width}-${index}`} width={width} height={20} borderRadius={999} />
-            ))
-          : safeTags.map((tag) => (
-              <Badge
-                key={tag}
-                variant="outline"
-                className={cn("rounded-full border-border/60 bg-muted/60", "text-xs font-medium text-muted-foreground")}
-              >
-                {tag}
-              </Badge>
-            ))}
-      </div>
+      {hasTags ? (
+        <div className="flex flex-wrap items-center gap-2">
+          {isLoading
+            ? tagSkeletons.map((width, index) => (
+                <Skeleton key={`${width}-${index}`} width={width} height={20} borderRadius={999} />
+              ))
+            : safeTags.map((tag) => (
+                <Badge
+                  key={tag}
+                  variant="outline"
+                  className={cn(
+                    "rounded-full border-border/60 bg-muted/60",
+                    "text-xs font-medium text-muted-foreground",
+                  )}
+                >
+                  {tag}
+                </Badge>
+              ))}
+        </div>
+      ) : null}
 
-      <div className="space-y-3">
-        <div className="space-y-2">
-          <h1 className="text-2xl font-display tracking-tight md:text-3xl">
+      <div className="space-y-4 pt-1 md:pt-2">
+        <div className="space-y-3">
+          <h1 className="max-w-[18ch] text-2xl font-display leading-tight tracking-tight md:text-3xl">
             {isLoading ? <Skeleton width="80%" /> : title}
           </h1>
-          <p className="text-sm leading-relaxed text-muted-foreground md:text-base">
-            {isLoading ? <Skeleton count={2} /> : description}
-          </p>
+          {hasDescription ? (
+            <p className="max-w-[44ch] text-sm leading-relaxed text-muted-foreground md:text-base">
+              {isLoading ? <Skeleton count={2} /> : description}
+            </p>
+          ) : null}
         </div>
 
         {isLoading ? (

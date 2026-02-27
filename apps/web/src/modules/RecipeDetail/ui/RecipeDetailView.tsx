@@ -27,8 +27,8 @@ export function RecipeDetailView({
   }
 
   return (
-    <section className="mx-auto w-full max-w-6xl px-4 pb-16 pt-8 md:pb-20">
-      <div className="flex flex-col gap-8 md:gap-10">
+    <section className="mx-auto w-full max-w-6xl px-4 pb-16 pt-6 md:px-5 md:pb-20 md:pt-8">
+      <div className="flex flex-col gap-8 md:gap-12">
         <Hero
           detail={detail}
           isLoading={isLoading}

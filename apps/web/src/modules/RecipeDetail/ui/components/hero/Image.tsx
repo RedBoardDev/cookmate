@@ -17,8 +17,8 @@ export function HeroImage({ images, isLoading = false, actions }: HeroImageProps
   const visibleImages = isLoading ? [] : (images ?? []);
 
   return (
-    <div className="border-b border-border/60 bg-muted/20 md:border-b-0 md:border-r">
-      <div className="relative aspect-[4/3] md:aspect-auto md:h-full">
+    <div className="min-w-0 overflow-hidden border-b border-border/60 bg-muted/20 md:relative md:min-h-0 md:self-stretch md:border-b-0 md:border-r">
+      <div className="relative aspect-[4/3] w-full overflow-hidden md:absolute md:inset-0 md:h-auto md:aspect-auto">
         <div className="absolute left-4 top-4 z-10 md:hidden">
           <Button
             asChild

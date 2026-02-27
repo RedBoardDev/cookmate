@@ -1,29 +1,20 @@
 "use client";
-import type { MessageDescriptor } from "@lingui/core";
-import { msg } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react/macro";
 import { Clock, Gauge, Users } from "lucide-react";
 import Skeleton from "react-loading-skeleton";
-import type { RecipeDifficultyType } from "@/modules/RecipeDetail/domain/vo/recipeDifficulty.vo";
-import { cn } from "@/shared/core/utils/cn";
-import { Card } from "@/shared/ui/primitives/card";
-
-const DIFFICULTY_LABELS: Record<RecipeDifficultyType, MessageDescriptor> = {
-  EASY: msg`Easy`,
-  MEDIUM: msg`Medium`,
-  HARD: msg`Hard`,
-};
+import type { RecipeDifficulty } from "@/modules/RecipeDetail/domain/vo/recipeDifficulty.vo";
+import type { RecipeDuration } from "@/modules/RecipeDetail/domain/vo/recipeDuration.vo";
 
 interface HeroStatsProps {
-  totalMinutes?: number;
+  duration?: RecipeDuration;
   servings?: number;
-  difficulty?: RecipeDifficultyType;
+  difficulty?: RecipeDifficulty;
   isLoading?: boolean;
 }
 
-export function HeroStats({ totalMinutes, servings, difficulty, isLoading = false }: HeroStatsProps) {
+export function HeroStats({ duration, servings, difficulty, isLoading = false }: HeroStatsProps) {
   const { t } = useLingui();
-  if (!isLoading && (totalMinutes === undefined || servings === undefined || difficulty === undefined)) {
+  if (!isLoading && (!duration || servings === undefined || difficulty === undefined)) {
     return null;
   }
 
@@ -31,7 +22,7 @@ export function HeroStats({ totalMinutes, servings, difficulty, isLoading = fals
     {
       id: "totalTime",
       label: t`Total time`,
-      value: totalMinutes !== undefined ? t`${totalMinutes} min` : "",
+      value: duration ? duration.toDisplayString() : "",
       icon: Clock,
     },
     {
@@ -43,28 +34,30 @@ export function HeroStats({ totalMinutes, servings, difficulty, isLoading = fals
     {
       id: "difficulty",
       label: t`Difficulty`,
-      value: difficulty ? t(DIFFICULTY_LABELS[difficulty]) : "",
+      value: difficulty ? t(difficulty.translationKey) : "",
       icon: Gauge,
     },
   ];
 
   return (
-    <div className="grid grid-cols-2 gap-4 border-t border-border/70 pt-4 lg:grid-cols-3">
+    <div className="grid grid-cols-3 gap-2 border-t border-border/70 pt-4 md:gap-3 md:pt-5">
       {stats.map((stat) => (
-        <Card
+        <div
           key={stat.id}
-          variant="soft"
-          border="soft"
-          shadow="flat"
-          radius="2xl"
-          className={cn("flex items-center gap-3 px-4 py-3 text-sm")}
+          className="flex min-w-0 items-center rounded-2xl border border-border/60 bg-background/70 px-3 py-2.5 shadow-sm md:px-3.5"
         >
-          <stat.icon className="h-4 w-4 text-muted-foreground" />
-          <div className="flex flex-col">
-            <span className="font-semibold text-foreground">{isLoading ? <Skeleton width={48} /> : stat.value}</span>
-            <span className="text-xs text-muted-foreground">{stat.label}</span>
+          <div className="flex min-w-0 items-center gap-2.5">
+            <stat.icon className="h-4.5 w-4.5 shrink-0 text-muted-foreground md:h-5 md:w-5" />
+            <div className="flex min-w-0 flex-1 flex-col items-start justify-center">
+              <span className="truncate text-sm font-semibold leading-tight text-foreground">
+                {isLoading ? <Skeleton width={40} /> : stat.value}
+              </span>
+              <span className="truncate text-[11px] leading-tight text-muted-foreground md:text-xs">
+                {stat.label}
+              </span>
+            </div>
           </div>
-        </Card>
+        </div>
       ))}
     </div>
   );

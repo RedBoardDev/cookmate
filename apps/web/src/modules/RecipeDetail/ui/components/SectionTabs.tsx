@@ -16,8 +16,8 @@ export function SectionTabs({ activeSection, onChange }: SectionTabsProps) {
   return (
     <div
       className={cn(
-        "sticky top-4 z-20 flex items-center gap-2 rounded-full border border-border/60",
-        "bg-card/90 p-1 shadow-sm backdrop-blur lg:hidden",
+        "sticky top-3 z-20 flex w-full max-w-md items-center gap-2 self-center rounded-2xl border border-border/60",
+        "bg-card/90 p-1.5 shadow-md backdrop-blur lg:hidden",
       )}
     >
       {(["ingredients", "steps"] as const).map((section) => {
@@ -30,7 +30,7 @@ export function SectionTabs({ activeSection, onChange }: SectionTabsProps) {
             size="sm"
             variant="ghost"
             className={cn(
-              "flex-1 rounded-full text-sm",
+              "h-10 flex-1 rounded-xl text-sm",
               "transition-all focus-visible:ring-2",
               "focus-visible:ring-accent/40 focus-visible:ring-offset-2",
               "focus-visible:ring-offset-background",

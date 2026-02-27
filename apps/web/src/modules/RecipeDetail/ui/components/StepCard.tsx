@@ -1,6 +1,5 @@
 "use client";
 
-import { useLingui } from "@lingui/react/macro";
 import { Lightbulb, Timer } from "lucide-react";
 import Skeleton from "react-loading-skeleton";
 import type { RecipeInstruction } from "@/modules/RecipeDetail/domain/vo/recipeInstruction.vo";
@@ -13,8 +12,6 @@ interface StepCardProps {
 }
 
 export function StepCard({ instruction, isLoading = false }: StepCardProps) {
-  const { t } = useLingui();
-
   if (isLoading || !instruction) {
     return (
       <Card variant="soft" border="soft" shadow="flat" radius="2xl" className="p-5">
@@ -56,7 +53,7 @@ export function StepCard({ instruction, isLoading = false }: StepCardProps) {
           {instruction.duration ? (
             <div className="flex items-center gap-2 text-xs text-muted-foreground">
               <Timer className="h-3.5 w-3.5" />
-              <span>{t`${instruction.duration.value} min`}</span>
+              <span>{instruction.duration.toDisplayString()}</span>
             </div>
           ) : null}
 

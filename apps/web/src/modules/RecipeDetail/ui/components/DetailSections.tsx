@@ -26,7 +26,7 @@ export function DetailSections({ detail, isLoading = false }: DetailSectionsProp
         <div
           className={cn(
             activeSection === "ingredients" ? "block" : "hidden",
-            "lg:sticky lg:top-24 lg:block lg:w-80 lg:shrink-0",
+            "lg:sticky lg:top-28 lg:block lg:w-80 lg:shrink-0",
           )}
         >
           <IngredientsCard
@@ -38,7 +38,7 @@ export function DetailSections({ detail, isLoading = false }: DetailSectionsProp
           />
         </div>
 
-        <div className={cn(activeSection === "steps" ? "block" : "hidden", "lg:block lg:flex-1")}>
+        <div className={cn(activeSection === "steps" ? "block" : "hidden", "lg:block lg:min-w-0 lg:flex-1")}>
           <Instructions instructions={detail?.instructions} isLoading={isLoading} />
         </div>
       </div>

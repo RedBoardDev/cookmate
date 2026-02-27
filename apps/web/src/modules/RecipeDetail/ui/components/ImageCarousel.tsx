@@ -16,12 +16,12 @@ const FALLBACK_IMAGE_SRC = "/image_not_found.png";
 
 function FallbackImage({ alt, onError }: { alt: string; onError: (e: SyntheticEvent<HTMLImageElement>) => void }) {
   return (
-    <div className="h-full">
+    <div className="flex h-full w-full items-center justify-center overflow-hidden">
       <img
         src={FALLBACK_IMAGE_SRC}
         alt={alt}
         onError={onError}
-        className="block h-full w-full bg-muted/20 object-contain object-center"
+        className="block h-full w-full max-h-full max-w-full bg-muted/20 object-contain object-center md:w-auto"
       />
     </div>
   );
@@ -55,34 +55,34 @@ export function ImageCarousel({ images }: ImageCarouselProps) {
     const imageSrc = image.src ?? FALLBACK_IMAGE_SRC;
 
     return (
-      <div className="h-full">
+      <div className="flex h-full w-full items-center justify-center overflow-hidden">
         <img
           src={imageSrc}
           alt={image.alt || t`Recipe image`}
           onError={handleImageError}
-          className="block h-full w-full bg-muted/20 object-contain object-center"
+          className="block h-full w-full max-h-full max-w-full bg-muted/20 object-contain object-center md:w-auto"
         />
       </div>
     );
   }
 
   return (
-    <div className="flex h-full flex-col gap-3">
+    <div className="flex h-full w-full min-w-0 flex-col gap-3">
       <Carousel
         opts={{ loop: hasMultipleImages }}
-        className="group h-full min-h-0 flex-1 cursor-grab active:cursor-grabbing"
+        className="group h-full w-full min-h-0 min-w-0 flex-1 cursor-grab active:cursor-grabbing"
       >
-        <CarouselContent containerClassName="h-full" className="ml-0 h-full items-stretch">
+        <CarouselContent containerClassName="h-full w-full" className="ml-0 h-full w-full items-stretch">
           {availableImages.map((image, index) => {
             const imageSrc = image.src ?? FALLBACK_IMAGE_SRC;
 
             return (
-              <CarouselItem key={image.src ?? `fallback-${index}`} className="h-full pl-0">
+              <CarouselItem key={image.src ?? `fallback-${index}`} className="flex h-full w-full items-center justify-center pl-0">
                 <img
                   src={imageSrc}
                   alt={image.alt || t`Recipe image`}
                   onError={handleImageError}
-                  className="block h-full w-full bg-muted/20 object-contain object-center"
+                  className="block h-full w-full max-h-full max-w-full bg-muted/20 object-contain object-center md:w-auto"
                 />
               </CarouselItem>
             );

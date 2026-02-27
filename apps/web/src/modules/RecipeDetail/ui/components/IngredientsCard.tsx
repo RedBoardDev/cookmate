@@ -37,8 +37,8 @@ export function IngredientsCard({
   const hasIngredients = safeIngredients.length > 0;
 
   return (
-    <Card variant="soft" border="soft" shadow="flat" radius="3xl" className="p-5">
-      <div className="flex flex-col gap-5">
+    <Card variant="soft" border="soft" shadow="flat" radius="3xl" className="p-6">
+      <div className="flex flex-col gap-6">
         <div className="flex items-center justify-between">
           <div className="space-y-1">
             <h2 className="text-lg font-semibold">
@@ -52,7 +52,7 @@ export function IngredientsCard({
           <div
             className={cn(
               "flex items-center gap-2 rounded-full border border-border/60",
-              "bg-muted/60 px-2 py-1 shadow-sm",
+              "bg-muted/60 px-2.5 py-1 shadow-sm",
             )}
           >
             <Button
@@ -122,7 +122,7 @@ export function IngredientsCard({
         <Button
           type="button"
           variant="outline"
-          className="rounded-full shadow-sm transition-shadow hover:shadow-md"
+          className="h-11 rounded-full shadow-sm transition-shadow hover:shadow-md"
           disabled={isLoading}
         >
           <ShoppingCart className="h-4 w-4" />

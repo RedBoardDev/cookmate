@@ -3,13 +3,13 @@
 import { useLingui } from "@lingui/react/macro";
 import { useCallback } from "react";
 import { toast } from "sonner";
-import { useRecipeDetail } from "@/modules/RecipeDetail/api/useRecipeDetail";
+import { useRecipeDetailAggregate } from "@/modules/RecipeDetail/api/useRecipeDetailAggregate";
 import { recipeShareService } from "@/modules/RecipeDetail/application/shareUrl.service";
 import { useRecipeCollectionsActions } from "@/modules/RecipeDetail/ui/hooks/useRecipeCollectionsActions";
 
 export function useRecipeDetailScreen(recipeId: string) {
   const { t } = useLingui();
-  const { detail, error, isLoading, refetch } = useRecipeDetail(recipeId);
+  const { detail, error, isLoading, refetch } = useRecipeDetailAggregate(recipeId);
 
   const collectionsActions = useRecipeCollectionsActions({
     recipeId: detail?.id ?? "",
@@ -30,7 +30,7 @@ export function useRecipeDetailScreen(recipeId: string) {
     if (typeof navigator !== "undefined" && typeof navigator.share === "function") {
       try {
         await navigator.share({
-          title: detail.title || t`Cookmate recipe`,
+          title: detail.name || t`Cookmate recipe`,
           url: shareUrl,
         });
         return;

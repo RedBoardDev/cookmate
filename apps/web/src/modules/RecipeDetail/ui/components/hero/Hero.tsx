@@ -48,7 +48,13 @@ export function Hero({
         />
       </div>
 
-      <Card variant="soft" border="soft" shadow="elevated" radius="3xl" className="relative overflow-hidden">
+      <Card
+        variant="soft"
+        border="soft"
+        shadow="elevated"
+        radius="3xl"
+        className="relative w-full overflow-hidden"
+      >
         <div className="grid gap-0 md:grid-cols-[minmax(0,0.48fr)_minmax(0,0.52fr)]">
           <HeroImage
             images={detail?.imageItems}
@@ -65,25 +71,22 @@ export function Hero({
             }
           />
 
-          <div className="flex flex-col gap-6">
+          <div className="flex min-w-0 flex-col">
             <HeroContent
-              title={detail?.title}
-              description={detail?.description}
-              tags={detail?.tags}
+              title={detail?.name}
+              description={detail?.description ?? undefined}
+              tags={detail?.categories.map((category) => String(category))}
               source={source}
               isLoading={isLoading}
             />
 
-            <div className="px-6 md:px-8">
+            <div className="space-y-6 px-6 pb-6 md:px-8 md:pb-8">
               <HeroStats
-                totalMinutes={detail?.totalTimeMin}
+                duration={detail?.duration}
                 servings={detail?.servings}
                 difficulty={detail?.difficulty}
                 isLoading={isLoading}
               />
-            </div>
-
-            <div className="px-6 pb-6 md:px-8 md:pb-8">
               <HeroCta isLoading={isLoading} />
             </div>
           </div>

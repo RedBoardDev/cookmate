@@ -11,15 +11,21 @@ export function HeroCta({ isLoading = false }: HeroCtaProps) {
 
   return (
     <div className="flex flex-col gap-3">
-      <Button className="w-full rounded-2xl px-6 shadow-sm">
+      <Button className="h-11 w-full rounded-2xl px-6 shadow-sm transition-shadow hover:shadow-md">
         <Trans>Start cooking</Trans>
       </Button>
-      <div className="grid grid-cols-2 gap-3">
-        <Button variant="outline" className="rounded-2xl px-6 shadow-sm">
+      <div className="grid grid-cols-2 gap-2.5">
+        <Button
+          variant="outline"
+          className="h-11 min-w-0 rounded-2xl px-4 shadow-sm transition-shadow hover:shadow-md md:px-6"
+        >
           <Calendar className="h-4 w-4" />
           <Trans>Plan it</Trans>
         </Button>
-        <Button variant="outline" className="rounded-2xl px-6 shadow-sm">
+        <Button
+          variant="outline"
+          className="h-11 min-w-0 rounded-2xl px-4 shadow-sm transition-shadow hover:shadow-md md:px-6"
+        >
           <ShoppingCart className="h-4 w-4" />
           <Trans>Add to groceries</Trans>
         </Button>
