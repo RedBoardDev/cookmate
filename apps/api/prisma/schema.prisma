@@ -148,15 +148,15 @@ model Recipe {
   cookTimeMin  Int
   totalTimeMin Int
 
-  difficulty Difficulty?
-  budget     Budget?
+  difficulty Difficulty
+  budget     Budget
 
   categories RecipeCategory[]  @default([])
   attributes RecipeAttribute[] @default([])
 
   source    RecipeSource
   sourceUrl String?
-  shortUrl  String?      @unique
+  shortUrl  String       @unique
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

@@ -74,7 +74,7 @@ export class RecipeEntity extends Entity<RecipeEntityProps> {
     return this.props.recipe.sourceUrl;
   }
 
-  get shortUrl(): string | null {
+  get shortUrl(): string {
     return this.props.recipe.shortUrl;
   }
 

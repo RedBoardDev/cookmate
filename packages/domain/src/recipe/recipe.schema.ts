@@ -42,7 +42,7 @@ export const recipeField = {
 export const recipeSystemField = {
   source: recipeSourceSchema,
   sourceUrl: z.string().min(1).nullable(),
-  shortUrl: z.string().min(1).nullable(),
+  shortUrl: z.string().min(1),
   userId: z.string().min(1),
   createdAt: z.date(),
   updatedAt: z.date(),

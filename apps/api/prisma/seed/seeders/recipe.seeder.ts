@@ -9,8 +9,8 @@ import {
 } from "../../../src/generated/prisma/client";
 import type { SeedConfig } from "../config";
 import { buildRecipeBase, type RecipeBaseSeed } from "../factories/recipe.factory";
-import { createShortUrl } from "../lib/short-url";
 import { logger } from "../lib/logger";
+import { createShortUrl } from "../lib/short-url";
 import type { SeededUser } from "./user.seeder";
 
 export type RecipeContentProfile =
@@ -99,7 +99,7 @@ const buildDevScenarios = (): ScenarioDefinition[] => [
       yieldUnitLabel: "personnes",
       prepTimeMin: 10,
       cookTimeMin: 0,
-      difficulty: null,
+      difficulty: Difficulty.EASY,
       budget: Budget.LOW,
       categories: [RecipeCategory.SALAD],
       attributes: [RecipeAttribute.HEALTHY],
@@ -150,8 +150,8 @@ const buildDevScenarios = (): ScenarioDefinition[] => [
       yieldUnitLabel: "parts",
       prepTimeMin: 18,
       cookTimeMin: 55,
-      difficulty: null,
-      budget: null,
+      difficulty: Difficulty.MEDIUM,
+      budget: Budget.MEDIUM,
       categories: [RecipeCategory.DESSERT],
       attributes: [],
       source: RecipeSource.IMPORT_IMAGE,
@@ -232,6 +232,23 @@ export const seedRecipes = async (
         userRecipes.push(created);
         recipes.push(created);
         contentProfilesByRecipeId.set(created.id, scenario.profile);
+      }
+
+      const extraRecipeTemplate = buildDevScenarios()[0];
+      for (let i = 0; i < 30; i += 1) {
+        const data = createRecipeData(ingredientNames, {
+          ...extraRecipeTemplate.data,
+          shortUrl: createShortUrl(),
+        });
+        const created = await prisma.recipe.create({
+          data: {
+            ...data,
+            userId: user.id,
+          },
+        });
+        userRecipes.push(created);
+        recipes.push(created);
+        contentProfilesByRecipeId.set(created.id, extraRecipeTemplate.profile);
       }
     }
 

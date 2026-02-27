@@ -91,8 +91,8 @@ export type RecipeBaseSeed = {
   prepTimeMin: number;
   cookTimeMin: number;
   totalTimeMin: number;
-  difficulty: Difficulty | null;
-  budget: Budget | null;
+  difficulty: Difficulty;
+  budget: Budget;
   categories: RecipeCategory[];
   attributes: RecipeAttribute[];
   shortUrl: string;
@@ -108,8 +108,8 @@ export const buildRecipeBase = (ingredientNames: string[]): RecipeBaseSeed => {
     servings: faker.number.int({ min: 1, max: 6 }),
     yieldUnitLabel: maybe(0.7) ? pickOne(["portions", "personnes", "parts"]) : null,
     ...times,
-    difficulty: maybe(0.8) ? pickOne(Object.values(Difficulty)) : null,
-    budget: maybe(0.7) ? pickOne(Object.values(Budget)) : null,
+    difficulty: pickOne(Object.values(Difficulty)),
+    budget: pickOne(Object.values(Budget)),
     categories: buildCategories(),
     attributes: buildAttributes(),
     shortUrl: createShortUrl(),
