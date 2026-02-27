@@ -179,15 +179,21 @@
 
 /* Elevated card shadows */
 .shadow-card {
-  box-shadow: 0 1px 3px hsl(var(--shadow-color) / 0.04), 0 4px 12px hsl(var(--shadow-color) / 0.06);
+  box-shadow:
+    0 1px 3px hsl(var(--shadow-color) / 0.04),
+    0 4px 12px hsl(var(--shadow-color) / 0.06);
 }
 
 .shadow-card-hover {
-  box-shadow: 0 2px 8px hsl(var(--shadow-color) / 0.06), 0 8px 24px hsl(var(--shadow-color) / 0.1);
+  box-shadow:
+    0 2px 8px hsl(var(--shadow-color) / 0.06),
+    0 8px 24px hsl(var(--shadow-color) / 0.1);
 }
 
 .shadow-elevated {
-  box-shadow: 0 4px 12px hsl(var(--shadow-color) / 0.08), 0 16px 48px hsl(var(--shadow-color) / 0.12);
+  box-shadow:
+    0 4px 12px hsl(var(--shadow-color) / 0.08),
+    0 16px 48px hsl(var(--shadow-color) / 0.12);
 }
 
 /* Scrollbar utilities */
@@ -314,7 +320,9 @@
   background-color: var(--card);
   border-radius: 1rem;
   border: 1px solid var(--border);
-  box-shadow: 0 1px 3px hsl(var(--shadow-color) / 0.04), 0 4px 12px hsl(var(--shadow-color) / 0.06);
+  box-shadow:
+    0 1px 3px hsl(var(--shadow-color) / 0.04),
+    0 4px 12px hsl(var(--shadow-color) / 0.06);
   transition: all 200ms ease-out;
 }
 
@@ -322,12 +330,16 @@
   background-color: var(--card);
   border-radius: 1rem;
   border: 1px solid var(--border);
-  box-shadow: 0 1px 3px hsl(var(--shadow-color) / 0.04), 0 4px 12px hsl(var(--shadow-color) / 0.06);
+  box-shadow:
+    0 1px 3px hsl(var(--shadow-color) / 0.04),
+    0 4px 12px hsl(var(--shadow-color) / 0.06);
   transition: all 200ms ease-out;
   cursor: pointer;
 }
 .card-interactive:hover {
-  box-shadow: 0 2px 8px hsl(var(--shadow-color) / 0.06), 0 8px 24px hsl(var(--shadow-color) / 0.1);
+  box-shadow:
+    0 2px 8px hsl(var(--shadow-color) / 0.06),
+    0 8px 24px hsl(var(--shadow-color) / 0.1);
   border-color: var(--border-hover);
 }
 
@@ -337,7 +349,8 @@
 
 /* Floating orb animation */
 @keyframes float {
-  0%, 100% {
+  0%,
+  100% {
     transform: translate(0, 0) scale(1);
   }
   33% {
@@ -350,7 +363,8 @@
 
 /* Slow pulse animation */
 @keyframes slowPulse {
-  0%, 100% {
+  0%,
+  100% {
     opacity: 0.4;
     transform: scale(1);
   }
@@ -362,7 +376,8 @@
 
 /* Gentle drift animation */
 @keyframes gentleDrift {
-  0%, 100% {
+  0%,
+  100% {
     transform: translate(0, 0);
   }
   50% {
@@ -385,7 +400,8 @@
 
 /* Orb glow animation */
 @keyframes orbGlow {
-  0%, 100% {
+  0%,
+  100% {
     opacity: 0.3;
     filter: blur(60px);
   }

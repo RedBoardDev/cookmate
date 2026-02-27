@@ -1,10 +1,10 @@
-import type React from "react";
+import { defaultLocale, isValidLocale, loadCatalogMessages, type Locale, locales } from "@cookmate/i18n";
+import { setupI18n } from "@lingui/core";
+import { setI18n } from "@lingui/react/server";
+import { Analytics } from "@vercel/analytics/next";
 import type { Metadata, Viewport } from "next";
 import { Barlow, Barlow_Semi_Condensed } from "next/font/google";
-import { Analytics } from "@vercel/analytics/next";
-import { setI18n } from "@lingui/react/server";
-import { setupI18n, type Messages } from "@lingui/core";
-import { locales, defaultLocale, type Locale, isValidLocale } from "@cookmate/i18n";
+import type React from "react";
 import { ClientI18nProvider } from "./i18n";
 import "../globals.css";
 
@@ -32,11 +32,7 @@ export function generateStaticParams() {
 }
 
 // Localized metadata
-export async function generateMetadata({
-  params,
-}: {
-  params: Promise<{ locale: Locale }>;
-}): Promise<Metadata> {
+export async function generateMetadata({ params }: { params: Promise<{ locale: Locale }> }): Promise<Metadata> {
   const { locale } = await params;
 
   const titles: Record<Locale, string> = {
@@ -137,13 +133,7 @@ export default async function LocaleLayout({
 }>) {
   const { locale: localeParam } = await params;
   const validLocale = isValidLocale(localeParam) ? localeParam : defaultLocale;
-
-  const messageLoaders: Record<Locale, () => Promise<{ messages: Messages }>> = {
-    en: () => import("@cookmate/i18n/locales/en/messages"),
-    fr: () => import("@cookmate/i18n/locales/fr/messages"),
-  };
-  const loadMessages = messageLoaders[validLocale] ?? messageLoaders[defaultLocale];
-  const { messages } = await loadMessages();
+  const messages = await loadCatalogMessages(validLocale);
 
   // Setup i18n for server components
   const i18n = setupI18n({ locale: validLocale, messages: { [validLocale]: messages } });
@@ -207,9 +197,7 @@ export default async function LocaleLayout({
 
   return (
     <html lang={validLocale}>
-      <body
-        className={`${barlow.variable} ${barlowSemiCondensed.variable} font-sans antialiased`}
-      >
+      <body className={`${barlow.variable} ${barlowSemiCondensed.variable} font-sans antialiased`}>
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{

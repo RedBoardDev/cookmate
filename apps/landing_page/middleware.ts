@@ -1,6 +1,6 @@
-import { NextResponse } from "next/server";
+import { defaultLocale, isValidLocale, locales } from "@cookmate/i18n";
 import type { NextRequest } from "next/server";
-import { locales, defaultLocale, isValidLocale } from "@cookmate/i18n";
+import { NextResponse } from "next/server";
 
 function getLocaleFromRequest(request: NextRequest): string {
   // 1. Check if locale is already in the path
@@ -13,9 +13,7 @@ function getLocaleFromRequest(request: NextRequest): string {
   // 2. Check Accept-Language header
   const acceptLanguage = request.headers.get("accept-language");
   if (acceptLanguage) {
-    const languages = acceptLanguage
-      .split(",")
-      .map((lang) => lang.split(";")[0].trim().split("-")[0].toLowerCase());
+    const languages = acceptLanguage.split(",").map((lang) => lang.split(";")[0].trim().split("-")[0].toLowerCase());
 
     for (const lang of languages) {
       if (isValidLocale(lang)) {
@@ -44,9 +42,7 @@ export function middleware(request: NextRequest) {
   }
 
   // Check if pathname already has a locale
-  const pathnameHasLocale = locales.some(
-    (locale) => pathname.startsWith(`/${locale}/`) || pathname === `/${locale}`
-  );
+  const pathnameHasLocale = locales.some((locale) => pathname.startsWith(`/${locale}/`) || pathname === `/${locale}`);
 
   if (pathnameHasLocale) {
     return NextResponse.next();

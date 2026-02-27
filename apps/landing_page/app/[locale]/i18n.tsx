@@ -1,9 +1,9 @@
 "use client";
 
-import { type Locale } from "@cookmate/i18n";
-import { setupI18n, type Messages } from "@lingui/core";
+import type { Locale } from "@cookmate/i18n";
+import { type Messages, setupI18n } from "@lingui/core";
 import { I18nProvider } from "@lingui/react";
-import { useMemo, type ReactNode } from "react";
+import { type ReactNode, useMemo } from "react";
 
 interface ClientI18nProviderProps {
   children: ReactNode;

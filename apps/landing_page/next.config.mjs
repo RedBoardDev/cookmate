@@ -1,8 +1,8 @@
-import bundleAnalyzer from "@next/bundle-analyzer"
+import bundleAnalyzer from "@next/bundle-analyzer";
 
 const withBundleAnalyzer = bundleAnalyzer({
   enabled: process.env.ANALYZE === "true",
-})
+});
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
@@ -31,7 +31,6 @@ const nextConfig = {
     // * Lingui SWC macro support
     swcPlugins: [["@lingui/swc-plugin", {}]],
   },
-
 
   async headers() {
     return [
@@ -74,8 +73,8 @@ const nextConfig = {
           },
         ],
       },
-    ]
+    ];
   },
-}
+};
 
-export default withBundleAnalyzer(nextConfig)
+export default withBundleAnalyzer(nextConfig);

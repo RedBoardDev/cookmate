@@ -1,7 +1,7 @@
 "use client";
 
-import { Check } from "lucide-react";
 import { Trans } from "@lingui/react/macro";
+import { Check } from "lucide-react";
 
 interface FeatureItemProps {
   children: string;
