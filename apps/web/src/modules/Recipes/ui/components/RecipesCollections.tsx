@@ -34,7 +34,7 @@ export function RecipesCollections({
         id: collection.id,
         label: collection.name,
         count: collection.recipeCount,
-        emoji: collection.emoji,
+        emoji: collection.emoji.value,
       })),
     ];
   }, [collections, i18n, totalRecipes]);
