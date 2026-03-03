@@ -60,7 +60,7 @@ export function BottomNav({ quickAddSlot }: BottomNavProps) {
           );
         })}
 
-        <div className="flex items-center justify-center">{quickAddSlot}</div>
+        <div className="-mt-6 flex items-start justify-center">{quickAddSlot}</div>
 
         {rightItems.map((item) => {
           const active = isNavActive(segments, item.match);

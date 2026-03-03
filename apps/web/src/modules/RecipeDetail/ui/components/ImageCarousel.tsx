@@ -77,7 +77,10 @@ export function ImageCarousel({ images }: ImageCarouselProps) {
             const imageSrc = image.src ?? FALLBACK_IMAGE_SRC;
 
             return (
-              <CarouselItem key={image.src ?? `fallback-${index}`} className="flex h-full w-full items-center justify-center pl-0">
+              <CarouselItem
+                key={image.src ?? `fallback-${index}`}
+                className="flex h-full w-full items-center justify-center pl-0"
+              >
                 <img
                   src={imageSrc}
                   alt={image.alt || t`Recipe image`}

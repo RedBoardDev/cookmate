@@ -2,7 +2,6 @@
 
 import type { RecipeDetailAggregate } from "@/modules/RecipeDetail/domain/entity/recipeDetail.aggregate";
 import { useRecipeSections } from "@/modules/RecipeDetail/ui/hooks/useRecipeSections";
-import { useServingsStepper } from "@/modules/RecipeDetail/ui/hooks/useServingsStepper";
 import { cn } from "@/shared/core/utils/cn";
 import { IngredientsCard } from "./IngredientsCard";
 import { Instructions } from "./Instructions";
@@ -10,13 +9,21 @@ import { SectionTabs } from "./SectionTabs";
 
 interface DetailSectionsProps {
   detail?: RecipeDetailAggregate;
+  servings?: number;
+  onDecreaseServings?: () => void;
+  onIncreaseServings?: () => void;
   isLoading?: boolean;
 }
 
-export function DetailSections({ detail, isLoading = false }: DetailSectionsProps) {
+export function DetailSections({
+  detail,
+  servings,
+  onDecreaseServings,
+  onIncreaseServings,
+  isLoading = false,
+}: DetailSectionsProps) {
   const { activeSection, onSelect } = useRecipeSections();
-  const { servings, decrement, increment } = useServingsStepper(detail?.servings ?? 1);
-  const shouldUseHandlers = !isLoading && detail !== undefined;
+  const shouldUseHandlers = !isLoading && detail !== undefined && servings !== undefined;
 
   return (
     <div className="flex flex-col gap-6 md:gap-8">
@@ -33,8 +40,8 @@ export function DetailSections({ detail, isLoading = false }: DetailSectionsProp
             ingredients={detail?.ingredients}
             defaultServings={detail?.servings}
             servings={shouldUseHandlers ? servings : undefined}
-            onDecrease={shouldUseHandlers ? decrement : undefined}
-            onIncrease={shouldUseHandlers ? increment : undefined}
+            onDecrease={shouldUseHandlers ? onDecreaseServings : undefined}
+            onIncrease={shouldUseHandlers ? onIncreaseServings : undefined}
             isLoading={isLoading}
           />
         </div>

@@ -18,15 +18,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
     const isNumber = resolvedType === "number";
 
     if (!hasAffix) {
-      return (
-        <input
-          type={resolvedType}
-          className={cn("input", className)}
-          ref={ref}
-          disabled={disabled}
-          {...props}
-        />
-      );
+      return <input type={resolvedType} className={cn("input", className)} ref={ref} disabled={disabled} {...props} />;
     }
 
     return (

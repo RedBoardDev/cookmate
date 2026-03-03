@@ -52,9 +52,7 @@ export function HeroStats({ duration, servings, difficulty, isLoading = false }:
               <span className="truncate text-sm font-semibold leading-tight text-foreground">
                 {isLoading ? <Skeleton width={40} /> : stat.value}
               </span>
-              <span className="truncate text-[11px] leading-tight text-muted-foreground md:text-xs">
-                {stat.label}
-              </span>
+              <span className="truncate text-[11px] leading-tight text-muted-foreground md:text-xs">{stat.label}</span>
             </div>
           </div>
         </div>

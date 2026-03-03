@@ -4,14 +4,17 @@ import { Button } from "@/shared/ui/primitives/button";
 
 interface HeroCtaProps {
   isLoading?: boolean;
+  onStartCooking?: () => void;
 }
 
-export function HeroCta({ isLoading = false }: HeroCtaProps) {
+export function HeroCta({ isLoading = false, onStartCooking }: HeroCtaProps) {
   return (
     <div className="flex flex-col gap-3">
       <Button
+        type="button"
         className="h-11 w-full rounded-2xl px-6 shadow-sm transition-shadow hover:shadow-md"
         disabled={isLoading}
+        onClick={onStartCooking}
       >
         <Trans>Start cooking</Trans>
       </Button>

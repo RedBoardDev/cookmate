@@ -15,6 +15,7 @@ interface HeroProps {
   onEdit?: () => void;
   onOpenCollections?: () => void;
   onShare?: () => void;
+  onStartCooking?: () => void;
   disableCollections?: boolean;
   disableShare?: boolean;
   collectionsModal?: ReactNode;
@@ -26,6 +27,7 @@ export function Hero({
   onEdit,
   onOpenCollections,
   onShare,
+  onStartCooking,
   disableCollections = false,
   disableShare = false,
   collectionsModal,
@@ -85,7 +87,7 @@ export function Hero({
                 difficulty={detail?.difficulty}
                 isLoading={isLoading}
               />
-              <HeroCta isLoading={isLoading} />
+              <HeroCta isLoading={isLoading} onStartCooking={onStartCooking} />
             </div>
           </div>
         </div>

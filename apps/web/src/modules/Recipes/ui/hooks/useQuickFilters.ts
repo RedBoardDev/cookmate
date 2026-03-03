@@ -19,9 +19,7 @@ export function useQuickFilters(initialFilters: QuickFilterId[]) {
       return undefined;
     }
 
-    const categories = selectedIds.filter(
-      (filter): filter is RecipeCategory => filter !== ALL_FILTER_ID,
-    );
+    const categories = selectedIds.filter((filter): filter is RecipeCategory => filter !== ALL_FILTER_ID);
 
     return categories.length > 0 ? { whereCategories: categories } : undefined;
   }, [selectedIds]);

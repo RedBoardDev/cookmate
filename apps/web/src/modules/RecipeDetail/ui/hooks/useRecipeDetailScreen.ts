@@ -7,12 +7,14 @@ import { toast } from "sonner";
 import { useRecipeDetailAggregate } from "@/modules/RecipeDetail/api/useRecipeDetailAggregate";
 import { recipeShareService } from "@/modules/RecipeDetail/application/shareUrl.service";
 import { useRecipeCollectionsActions } from "@/modules/RecipeDetail/ui/hooks/useRecipeCollectionsActions";
-import { getEditRecipePath } from "@/shared/core/utils/recipePaths";
+import { useServingsStepper } from "@/modules/RecipeDetail/ui/hooks/useServingsStepper";
+import { getCookingByStepPath, getEditRecipePath } from "@/shared/core/utils/recipePaths";
 
 export function useRecipeDetailScreen(recipeId: string) {
   const { t } = useLingui();
   const router = useRouter();
   const { detail, error, isLoading, refetch } = useRecipeDetailAggregate(recipeId);
+  const { servings, increment, decrement } = useServingsStepper(detail?.servings ?? 1);
 
   const collectionsActions = useRecipeCollectionsActions({
     recipeId: detail?.id ?? "",
@@ -66,13 +68,25 @@ export function useRecipeDetailScreen(recipeId: string) {
     router.push(getEditRecipePath(detail.id));
   }, [detail?.id, router]);
 
+  const handleStartCooking = useCallback(() => {
+    if (!detail?.id) {
+      return;
+    }
+
+    router.push(getCookingByStepPath(detail.id, servings));
+  }, [detail?.id, router, servings]);
+
   return {
     detail,
+    servings,
+    onIncreaseServings: increment,
+    onDecreaseServings: decrement,
     isLoading,
     error,
     retry,
     collectionsActions,
     onEdit: handleEdit,
     onShare: handleShare,
+    onStartCooking: handleStartCooking,
   };
 }

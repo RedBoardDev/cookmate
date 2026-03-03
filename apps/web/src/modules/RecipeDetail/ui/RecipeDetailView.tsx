@@ -5,10 +5,14 @@ import { Hero } from "@/modules/RecipeDetail/ui/components/hero/Hero";
 
 interface RecipeDetailViewProps {
   detail?: RecipeDetailAggregate;
+  servings?: number;
+  onDecreaseServings?: () => void;
+  onIncreaseServings?: () => void;
   isLoading?: boolean;
   onEdit?: () => void;
   onOpenCollections?: () => void;
   onShare?: () => void;
+  onStartCooking?: () => void;
   disableCollections?: boolean;
   disableShare?: boolean;
   collectionsModal?: ReactNode;
@@ -16,10 +20,14 @@ interface RecipeDetailViewProps {
 
 export function RecipeDetailView({
   detail,
+  servings,
+  onDecreaseServings,
+  onIncreaseServings,
   isLoading = false,
   onEdit,
   onOpenCollections,
   onShare,
+  onStartCooking,
   disableCollections,
   disableShare,
   collectionsModal,
@@ -37,11 +45,18 @@ export function RecipeDetailView({
           onEdit={onEdit}
           onOpenCollections={onOpenCollections}
           onShare={onShare}
+          onStartCooking={onStartCooking}
           disableCollections={disableCollections}
           disableShare={disableShare}
           collectionsModal={collectionsModal}
         />
-        <DetailSections detail={detail} isLoading={isLoading} />
+        <DetailSections
+          detail={detail}
+          servings={servings}
+          onDecreaseServings={onDecreaseServings}
+          onIncreaseServings={onIncreaseServings}
+          isLoading={isLoading}
+        />
       </div>
     </section>
   );
