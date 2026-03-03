@@ -5,6 +5,8 @@ import type { RecipeIngredient as DomainRecipeIngredient } from "@cookmate/domai
 interface RecipeIngredientProps {
   name: Ingredient["name"];
   amount: string | null;
+  quantity?: number | null;
+  unit?: string | null;
   note?: DomainRecipeIngredient["note"];
 }
 
@@ -20,6 +22,24 @@ function normalizeAmount(value: string | null): string | null {
   const normalizedValue = value.trim();
 
   return normalizedValue.length > 0 ? normalizedValue : null;
+}
+
+function normalizeUnit(value: string | null | undefined): string | null {
+  if (value === null || value === undefined) {
+    return null;
+  }
+
+  const normalizedValue = value.trim();
+
+  return normalizedValue.length > 0 ? normalizedValue : null;
+}
+
+function normalizeQuantity(value: number | null | undefined): number | null {
+  if (value === null || value === undefined) {
+    return null;
+  }
+
+  return Number.isFinite(value) ? value : null;
 }
 
 function isValidName(value: string): boolean {
@@ -40,6 +60,8 @@ export class RecipeIngredient extends ValueObject<RecipeIngredientProps> {
       ...props,
       name: normalizeValue(props.name),
       amount: normalizeAmount(props.amount),
+      quantity: normalizeQuantity(props.quantity),
+      unit: normalizeUnit(props.unit),
     });
   }
 
@@ -56,6 +78,8 @@ export class RecipeIngredient extends ValueObject<RecipeIngredientProps> {
       ...props,
       name: normalizeValue(props.name),
       amount: normalizeAmount(props.amount),
+      quantity: normalizeQuantity(props.quantity),
+      unit: normalizeUnit(props.unit),
     });
   }
 
@@ -67,7 +91,27 @@ export class RecipeIngredient extends ValueObject<RecipeIngredientProps> {
     return this.props.amount;
   }
 
+  get quantity(): number | null {
+    return this.props.quantity ?? null;
+  }
+
+  get unit(): string | null {
+    return this.props.unit ?? null;
+  }
+
   get note(): string | null | undefined {
     return this.props.note;
+  }
+
+  scaleQuantity(currentServings: number, originalServings: number): number | null {
+    if (this.quantity === null) {
+      return null;
+    }
+
+    if (!Number.isFinite(currentServings) || !Number.isFinite(originalServings) || originalServings <= 0) {
+      return this.quantity;
+    }
+
+    return this.quantity * (currentServings / originalServings);
   }
 }

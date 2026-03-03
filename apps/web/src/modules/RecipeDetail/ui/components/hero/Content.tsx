@@ -56,10 +56,7 @@ export function HeroContent({ title, description, tags, source, isLoading = fals
             <Badge
               key={tag}
               variant="outline"
-              className={cn(
-                "rounded-full border-border/60 bg-muted/60",
-                "text-xs font-medium text-muted-foreground",
-              )}
+              className={cn("rounded-full border-border/60 bg-muted/60", "text-xs font-medium text-muted-foreground")}
             >
               {tag}
             </Badge>
@@ -68,14 +65,12 @@ export function HeroContent({ title, description, tags, source, isLoading = fals
       ) : null}
 
       <div className="space-y-4 pt-1 md:pt-2">
-        <div className="space-y-3">
-          <h1 className="max-w-[18ch] text-2xl font-display leading-tight tracking-tight md:text-3xl">
+        <div className="w-full space-y-3">
+          <h1 className="w-full text-2xl font-display leading-tight tracking-tight md:text-3xl">
             {isLoading ? <Skeleton width="80%" /> : title}
           </h1>
           {hasDescription ? (
-            <p className="max-w-[44ch] text-sm leading-relaxed text-muted-foreground md:text-base">
-              {description}
-            </p>
+            <p className="w-full text-sm leading-relaxed text-muted-foreground md:text-sm">{description}</p>
           ) : null}
         </div>
 

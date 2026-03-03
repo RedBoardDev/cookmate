@@ -31,6 +31,7 @@ export function DetailSections({ detail, isLoading = false }: DetailSectionsProp
         >
           <IngredientsCard
             ingredients={detail?.ingredients}
+            defaultServings={detail?.servings}
             servings={shouldUseHandlers ? servings : undefined}
             onDecrease={shouldUseHandlers ? decrement : undefined}
             onIncrease={shouldUseHandlers ? increment : undefined}

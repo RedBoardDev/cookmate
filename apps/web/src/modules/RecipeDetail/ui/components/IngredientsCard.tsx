@@ -10,22 +10,48 @@ import { Card } from "@/shared/ui/primitives/card";
 
 interface IngredientsCardProps {
   ingredients?: readonly RecipeIngredient[];
+  defaultServings?: number;
   servings?: number;
   onDecrease?: () => void;
   onIncrease?: () => void;
   isLoading?: boolean;
 }
 
-function toDisplayAmount(amount: string | null, toTasteLabel: string): string {
-  if (!amount) {
+const quantityFormatter = new Intl.NumberFormat(undefined, {
+  maximumFractionDigits: 2,
+});
+
+function toDisplayAmount(
+  ingredient: RecipeIngredient,
+  currentServings: number | undefined,
+  defaultServings: number | undefined,
+  toTasteLabel: string,
+): string {
+  const scaledQuantity =
+    currentServings !== undefined && defaultServings !== undefined
+      ? ingredient.scaleQuantity(currentServings, defaultServings)
+      : null;
+
+  if (scaledQuantity !== null) {
+    const formattedQuantity = quantityFormatter.format(scaledQuantity);
+
+    if (!ingredient.unit) {
+      return formattedQuantity;
+    }
+
+    return `${formattedQuantity} ${ingredient.unit}`;
+  }
+
+  if (!ingredient.amount) {
     return toTasteLabel;
   }
 
-  return amount;
+  return ingredient.amount;
 }
 
 export function IngredientsCard({
   ingredients,
+  defaultServings,
   servings,
   onDecrease,
   onIncrease,
@@ -85,8 +111,8 @@ export function IngredientsCard({
 
         {isLoading ? (
           <ul className="space-y-3 text-sm">
-            {skeletonRows.map((width, index) => (
-              <li key={`ingredient-skeleton-${index}`} className="flex items-center justify-between gap-3">
+            {skeletonRows.map((width) => (
+              <li key={`ingredient-skeleton-${width}`} className="flex items-center justify-between gap-3">
                 <div className="flex items-center gap-3">
                   <Skeleton circle width={10} height={10} />
                   <Skeleton width={`${width * 100}%`} />
@@ -101,9 +127,9 @@ export function IngredientsCard({
           </p>
         ) : (
           <ul className="space-y-3 text-sm">
-            {safeIngredients.map((ingredient, index) => (
+            {safeIngredients.map((ingredient) => (
               <li
-                key={`${ingredient.name}-${ingredient.amount ?? "to-taste"}-${index}`}
+                key={[ingredient.name, ingredient.amount ?? "to-taste", ingredient.note ?? "no-note"].join("-")}
                 className="flex items-start justify-between gap-3"
               >
                 <div className="flex items-start gap-3">
@@ -113,7 +139,9 @@ export function IngredientsCard({
                     {ingredient.note ? <span className="text-xs text-muted-foreground">{ingredient.note}</span> : null}
                   </div>
                 </div>
-                <span className="text-xs text-muted-foreground">{toDisplayAmount(ingredient.amount, t`to taste`)}</span>
+                <span className="text-xs text-muted-foreground">
+                  {toDisplayAmount(ingredient, servings, defaultServings, t`to taste`)}
+                </span>
               </li>
             ))}
           </ul>

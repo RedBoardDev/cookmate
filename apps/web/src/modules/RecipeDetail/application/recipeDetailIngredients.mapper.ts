@@ -24,6 +24,8 @@ export const RecipeDetailIngredientsMapper = {
         return RecipeIngredient.create({
           name: ingredient.name,
           amount,
+          quantity: ingredient.quantity,
+          unit: ingredient.unit,
           note: ingredient.note,
         });
       });
