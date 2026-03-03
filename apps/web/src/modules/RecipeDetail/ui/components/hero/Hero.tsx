@@ -12,6 +12,7 @@ import { HeroStats } from "./Stats";
 interface HeroProps {
   detail?: RecipeDetailAggregate;
   isLoading?: boolean;
+  onEdit?: () => void;
   onOpenCollections?: () => void;
   onShare?: () => void;
   disableCollections?: boolean;
@@ -22,6 +23,7 @@ interface HeroProps {
 export function Hero({
   detail,
   isLoading = false,
+  onEdit,
   onOpenCollections,
   onShare,
   disableCollections = false,
@@ -41,6 +43,7 @@ export function Hero({
         <HeroActions
           variant="desktop"
           isLoading={isLoading}
+          onEdit={onEdit}
           onOpenCollections={onOpenCollections}
           onShare={onShare}
           disableCollections={disableCollections}
@@ -48,13 +51,7 @@ export function Hero({
         />
       </div>
 
-      <Card
-        variant="soft"
-        border="soft"
-        shadow="elevated"
-        radius="3xl"
-        className="relative w-full overflow-hidden"
-      >
+      <Card variant="soft" border="soft" shadow="elevated" radius="3xl" className="relative w-full overflow-hidden">
         <div className="grid gap-0 md:grid-cols-[minmax(0,0.48fr)_minmax(0,0.52fr)]">
           <HeroImage
             images={detail?.imageItems}
@@ -63,6 +60,7 @@ export function Hero({
               <HeroActions
                 variant="mobile"
                 isLoading={isLoading}
+                onEdit={onEdit}
                 onOpenCollections={onOpenCollections}
                 onShare={onShare}
                 disableCollections={disableCollections}

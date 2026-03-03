@@ -6,6 +6,7 @@ import { Hero } from "@/modules/RecipeDetail/ui/components/hero/Hero";
 interface RecipeDetailViewProps {
   detail?: RecipeDetailAggregate;
   isLoading?: boolean;
+  onEdit?: () => void;
   onOpenCollections?: () => void;
   onShare?: () => void;
   disableCollections?: boolean;
@@ -16,6 +17,7 @@ interface RecipeDetailViewProps {
 export function RecipeDetailView({
   detail,
   isLoading = false,
+  onEdit,
   onOpenCollections,
   onShare,
   disableCollections,
@@ -32,6 +34,7 @@ export function RecipeDetailView({
         <Hero
           detail={detail}
           isLoading={isLoading}
+          onEdit={onEdit}
           onOpenCollections={onOpenCollections}
           onShare={onShare}
           disableCollections={disableCollections}

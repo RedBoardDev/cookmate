@@ -15,7 +15,8 @@ export function RecipeDetailScreen({ recipeId }: RecipeDetailScreenProps) {
   const forceLoading = useDevSkeleton();
   const effectiveRecipeId = forceLoading ? "" : recipeId;
 
-  const { detail, error, isLoading, retry, collectionsActions, onShare } = useRecipeDetailScreen(effectiveRecipeId);
+  const { detail, error, isLoading, retry, collectionsActions, onEdit, onShare } =
+    useRecipeDetailScreen(effectiveRecipeId);
   const loading = forceLoading || isLoading;
 
   if (loading) {
@@ -33,6 +34,7 @@ export function RecipeDetailScreen({ recipeId }: RecipeDetailScreenProps) {
   return (
     <RecipeDetailView
       detail={detail}
+      onEdit={onEdit}
       onOpenCollections={collectionsActions.handleOpenModal}
       onShare={onShare}
       disableCollections={!detail.id}
