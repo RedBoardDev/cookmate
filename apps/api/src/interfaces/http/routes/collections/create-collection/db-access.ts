@@ -1,42 +1,38 @@
-import { collectionSchema, InvalidCollectionDataError } from "@cookmate/domain/collection";
+import { collectionInsertSchema, InvalidCollectionDataError } from "@cookmate/domain/collection";
 import type { z } from "zod";
 import { getPrisma } from "@/infra/db/prisma";
 import { handleError } from "@/shared/utils/handle-error";
-import type { body as collectionBodySchema } from "./schema";
+import type { body as bodySchema } from "./schema";
 
-type CreateCollectionInput = z.infer<typeof collectionBodySchema> & {
+type CreateCollectionInput = z.infer<typeof bodySchema> & {
   ownerId: string;
 };
 
 const createCollectionFn = async (input: CreateCollectionInput) => {
-  const now = new Date();
-
-  const result = collectionSchema.safeParse({
+  const parsed = collectionInsertSchema.safeParse({
     name: input.name,
     emoji: input.emoji,
     description: input.description ?? null,
     ownerId: input.ownerId,
-    createdAt: now,
-    updatedAt: now,
   });
-  if (!result.success) throw new InvalidCollectionDataError();
-  const collection = result.data;
 
-  const dbResult = await getPrisma().collection.create({
+  if (!parsed.success) {
+    throw new InvalidCollectionDataError();
+  }
+
+  const data = parsed.data;
+
+  const row = await getPrisma().collection.create({
     data: {
-      name: collection.name,
-      emoji: collection.emoji,
-      description: collection.description,
-      ownerId: collection.ownerId,
-      createdAt: collection.createdAt,
-      updatedAt: collection.updatedAt,
+      name: data.name,
+      emoji: data.emoji,
+      description: data.description,
+      ownerId: data.ownerId,
     },
-    select: {
-      id: true,
-    },
+    select: { id: true },
   });
 
-  return { id: dbResult.id };
+  return { id: row.id };
 };
 
 export const createCollection = handleError(createCollectionFn);

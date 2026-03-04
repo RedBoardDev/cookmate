@@ -1,10 +1,10 @@
-import { collectionFields } from "@cookmate/domain/collection";
+import { collectionValueSchemas } from "@cookmate/domain/collection";
 import { z } from "zod";
 
 export const body = z.object({
-  ...collectionFields.name,
-  ...collectionFields.emoji,
-  ...collectionFields.description,
+  name: collectionValueSchemas.name,
+  emoji: collectionValueSchemas.emoji,
+  description: collectionValueSchemas.description,
 });
 
 export const response = {
