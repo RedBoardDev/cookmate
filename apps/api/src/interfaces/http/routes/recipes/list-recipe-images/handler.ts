@@ -24,9 +24,11 @@ export const listRecipeImagesHandler: RouteHandler<typeof schemas> = async (ctx)
     countRecipeImages(where),
   ]);
 
+  const data = await selectConfig.transform(images);
+
   return {
     status: HttpStatus.OK,
-    data: selectConfig.transform(images),
+    data,
     metadata: {
       pagination: {
         page: pagination.page,
