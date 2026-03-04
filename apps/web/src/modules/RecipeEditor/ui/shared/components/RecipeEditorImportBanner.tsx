@@ -27,14 +27,7 @@ export function RecipeEditorImportBanner({ importState }: RecipeEditorImportBann
     return null;
   }
 
-  const remainingSeconds = Math.max(0, Math.ceil(importState.remainingMs / 1000));
   const sourceLabel = importState.source ? t(sourceLabels[importState.source] ?? msg`source`) : t(msg`source`);
-  const stepLabel =
-    importState.currentStep === "connecting"
-      ? t(msg`connecting`)
-      : importState.currentStep === "parsing"
-        ? t(msg`parsing`)
-        : t(msg`preparing`);
 
   return (
     <Card variant="soft" border="soft" radius="2xl" className="relative overflow-hidden">
@@ -50,9 +43,7 @@ export function RecipeEditorImportBanner({ importState }: RecipeEditorImportBann
           </div>
           <div className="space-y-1">
             <p className="text-sm font-medium text-foreground">{t`Importing your recipe...`}</p>
-            <p className="text-xs text-muted-foreground">
-              {t`From ${sourceLabel} · ${stepLabel} · ~${remainingSeconds}s left`}
-            </p>
+            <p className="text-xs text-muted-foreground">{t`From ${sourceLabel} · ${importState.progress}%`}</p>
           </div>
         </div>
 
