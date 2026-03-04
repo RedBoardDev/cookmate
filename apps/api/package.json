@@ -17,6 +17,8 @@
     "db:reset": "prisma migrate reset --force && yarn prisma:generate && yarn db:seed"
   },
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.995.0",
+    "@aws-sdk/s3-request-presigner": "^3.995.0",
     "@cookmate/domain": "workspace:*",
     "@fastify/cors": "11.2.0",
     "@fastify/helmet": "13.0.2",
