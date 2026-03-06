@@ -1,17 +1,17 @@
-"use client"
+"use client";
 
-import { useLingui, Trans } from "@lingui/react/macro"
-import { SectionContainer } from "../layout/section-container"
-import { SectionHeader } from "../ui/section-header"
-import { PrimaryButton } from "../ui/primary-button"
-import { FeatureItem } from "../ui/feature-item"
+import { Trans, useLingui } from "@lingui/react/macro";
+import { SectionContainer } from "../layout/section-container";
+import { FeatureItem } from "../ui/feature-item";
+import { PrimaryButton } from "../ui/primary-button";
+import { SectionHeader } from "../ui/section-header";
 
 interface PricingSectionProps {
-  onSignup: () => void
+  onSignup: () => void;
 }
 
 export function PricingSection({ onSignup }: PricingSectionProps) {
-  const { t } = useLingui()
+  const { t } = useLingui();
 
   return (
     <section id="pricing" className="py-20 md:py-28 relative overflow-hidden">
@@ -119,5 +119,5 @@ export function PricingSection({ onSignup }: PricingSectionProps) {
         <div className="absolute inset-0 bg-gradient-to-b from-[#F8F1E9]/0 via-[#F8F1E9]/10 via-[#F8F1E9]/20 to-[#F8F1E9]/30" />
       </div>
     </section>
-  )
+  );
 }

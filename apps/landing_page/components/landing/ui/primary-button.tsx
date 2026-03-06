@@ -1,6 +1,6 @@
 "use client";
 
-import { type ReactNode } from "react";
+import type { ReactNode } from "react";
 import { cn } from "@/lib/utils";
 
 interface PrimaryButtonProps {
@@ -14,7 +14,8 @@ interface PrimaryButtonProps {
 }
 
 const variants = {
-  primary: "bg-gradient-to-b from-[#C6502B] to-[#B54526] text-white hover:from-[#B54526] hover:to-[#A43F20] shadow-[0_1px_2px_rgba(0,0,0,0.05)]",
+  primary:
+    "bg-gradient-to-b from-[#C6502B] to-[#B54526] text-white hover:from-[#B54526] hover:to-[#A43F20] shadow-[0_1px_2px_rgba(0,0,0,0.05)]",
   dark: "bg-[#221B16] text-white hover:bg-[#2D2520] shadow-lg hover:shadow-xl",
   outline: "border-2 border-[#221B16] text-[#221B16] hover:bg-[#221B16] hover:text-white hover:shadow-md",
   white: "bg-white text-[#C6502B] hover:bg-[#F8F1E9] shadow-xl hover:shadow-2xl",
@@ -42,7 +43,7 @@ export function PrimaryButton({
     variants[variant],
     sizes[size],
     disabled && "opacity-70 cursor-not-allowed",
-    className
+    className,
   );
 
   if (asChild) {

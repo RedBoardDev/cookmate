@@ -1,20 +1,18 @@
-"use client"
+"use client";
 
-import { Link2, Sparkles, Instagram, Video, Camera, FileText } from "lucide-react"
-import { useLingui, Trans } from "@lingui/react/macro"
-import { SectionContainer } from "../layout/section-container"
-import { SectionHeader } from "../ui/section-header"
-import { ImportForm } from "./import-form"
-import { RecipePreview } from "./recipe-preview"
+import { Trans, useLingui } from "@lingui/react/macro";
+import { Link2, Sparkles } from "lucide-react";
+import { ImportForm } from "./import-form";
+import { RecipePreview } from "./recipe-preview";
 
 interface ImportDemoProps {
-  urlInput: string
-  setUrlInput: (value: string) => void
-  isProcessing: boolean
-  recipeImported: boolean
-  onImport: () => void
-  onReset: () => void
-  onSignup: () => void
+  urlInput: string;
+  setUrlInput: (value: string) => void;
+  isProcessing: boolean;
+  recipeImported: boolean;
+  onImport: () => void;
+  onReset: () => void;
+  onSignup: () => void;
 }
 
 export function ImportDemo({
@@ -26,7 +24,7 @@ export function ImportDemo({
   onReset,
   onSignup,
 }: ImportDemoProps) {
-  const { t } = useLingui()
+  const { t } = useLingui();
 
   return (
     <div className="bg-white rounded-2xl md:rounded-3xl shadow-[0_4px_12px_-8px_rgba(0,0,0,0.22)] border border-[#E6D7C7]/80 overflow-hidden">
@@ -50,16 +48,11 @@ export function ImportDemo({
 
       <div className="p-6 md:p-10">
         {!recipeImported ? (
-          <ImportForm
-            urlInput={urlInput}
-            setUrlInput={setUrlInput}
-            isProcessing={isProcessing}
-            onImport={onImport}
-          />
+          <ImportForm urlInput={urlInput} setUrlInput={setUrlInput} isProcessing={isProcessing} onImport={onImport} />
         ) : (
           <RecipePreview onSignup={onSignup} onReset={onReset} />
         )}
       </div>
     </div>
-  )
+  );
 }
