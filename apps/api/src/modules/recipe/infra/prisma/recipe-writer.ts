@@ -5,5 +5,5 @@ import { updateCollections } from "./writer/update-recipe-collections";
 export const recipeWriter = {
   create,
   update,
-  updateCollections: updateCollections
+  updateCollections: updateCollections,
 };

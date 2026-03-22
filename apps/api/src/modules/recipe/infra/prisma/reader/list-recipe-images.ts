@@ -2,24 +2,27 @@ import type { Prisma } from "@/generated/prisma/client";
 import { getPrisma } from "@/infra/db/prisma";
 import { type Pagination, paginationForComplexQuery } from "@/shared/lib/pagination";
 import { handleError } from "@/shared/utils/handle-error";
-import type { RecipeSelectResult } from "./types";
+import type { RecipeImageSelectResult } from "./recipe-image-types";
 
-const countAboveId = async (id: string | undefined, where?: Prisma.RecipeWhereInput): Promise<number | undefined> => {
+const countAboveId = async (
+  id: string | undefined,
+  where?: Prisma.RecipeImageWhereInput,
+): Promise<number | undefined> => {
   if (!id) return undefined;
-  return getPrisma().recipe.count({
+  return getPrisma().recipeImage.count({
     where: { ...where, id: { gt: id } },
   });
 };
 
-const listFn = async <TSelect extends Prisma.RecipeSelect>(
-  where: Prisma.RecipeWhereInput,
+const listFn = async <TSelect extends Prisma.RecipeImageSelect>(
+  where: Prisma.RecipeImageWhereInput,
   select: TSelect,
-  orderBy?: Prisma.RecipeOrderByWithRelationInput | Prisma.RecipeOrderByWithRelationInput[],
+  orderBy?: Prisma.RecipeImageOrderByWithRelationInput | Prisma.RecipeImageOrderByWithRelationInput[],
   pagination?: Pagination,
-): Promise<RecipeSelectResult<TSelect>[]> => {
+): Promise<RecipeImageSelectResult<TSelect>[]> => {
   const paginationQuery = await paginationForComplexQuery(pagination, () => countAboveId(pagination?.findId, where));
 
-  return getPrisma().recipe.findMany({
+  return getPrisma().recipeImage.findMany({
     where,
     select,
     orderBy: orderBy ?? { id: "desc" },

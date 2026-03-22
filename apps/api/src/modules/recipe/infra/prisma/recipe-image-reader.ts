@@ -1,8 +1,12 @@
-export { countRecipeImages } from "@/infra/db/repositories/recipe-image/count-recipe-images";
-export { findFirstRecipeImage, getRecipeImageSelect } from "@/infra/db/repositories/recipe-image/get-recipe-image";
-export { listRecipeImagesSelect } from "@/infra/db/repositories/recipe-image/list-recipe-images";
-export type {
-  GetRecipeImageSelectQueryType,
-  ListRecipeImagesSelectQueryType,
-  RecipeImageSelectResult,
-} from "@/infra/db/repositories/recipe-image/types";
+import { count } from "./reader/count-recipe-images";
+import { findFirst, getById } from "./reader/get-recipe-image";
+import { list } from "./reader/list-recipe-images";
+
+export type { RecipeImageSelectResult } from "./reader/recipe-image-types";
+
+export const recipeImageReader = {
+  getById,
+  findFirst,
+  list,
+  count,
+};

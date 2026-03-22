@@ -1,10 +1,10 @@
 import { combineWhere, parsePagination, parseSortParams, parseWhereParams } from "@/shared/lib/list-query";
 import { handleError } from "@/shared/utils/handle-error";
-import { countRecipes, listRecipesSelect } from "../../infra/prisma/recipe-reader";
 import { listRecipesSortConfig } from "../../http/routes/list-recipes/order-by";
+import type { ListRecipesQuery } from "../../http/routes/list-recipes/schema";
 import { selectConfig } from "../../http/routes/list-recipes/select";
 import { listRecipesWhereConfigs } from "../../http/routes/list-recipes/where";
-import type { ListRecipesQuery } from "../../http/routes/list-recipes/schema";
+import { recipeReader } from "../../infra/prisma/recipe-reader";
 
 export interface ListRecipesQueryInput {
   userId: string;
@@ -29,8 +29,8 @@ const executeListRecipesFn = async (input: ListRecipesQueryInput): Promise<ListR
   const where = combineWhere({ userId: input.userId }, filters);
 
   const [recipes, total] = await Promise.all([
-    listRecipesSelect(where, selectConfig.select, orderBy, pagination),
-    countRecipes(where),
+    recipeReader.list(where, selectConfig.select, orderBy, pagination),
+    recipeReader.count(where),
   ]);
 
   return {
