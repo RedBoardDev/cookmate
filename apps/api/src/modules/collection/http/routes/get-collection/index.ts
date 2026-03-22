@@ -3,7 +3,7 @@ import { getCollectionHandler } from "./handler";
 import { schemas } from "./schema";
 
 export const getCollectionRoute = route()
-  .get()
+  .get("/:collectionId")
   .auth()
   .meta({
     tags: ["Collections"],
