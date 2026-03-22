@@ -1,9 +1,11 @@
 import "@/styles/globals.css";
 import "react-loading-skeleton/dist/skeleton.css";
-import type { ReactNode } from "react";
+import type { Metadata, Viewport } from "next";
 import { Barlow, Barlow_Semi_Condensed } from "next/font/google";
+import type { ReactNode } from "react";
+import { allMessages, initI18n } from "@/shared/core/i18n/appRouterI18n";
+import { I18nProviderWrapper } from "@/shared/core/providers/i18n-provider";
 import { Toaster } from "@/shared/ui/primitives/sonner";
-import { I18nProviderWrapper } from "@/shared/providers/i18n-provider";
 
 const barlow = Barlow({
   subsets: ["latin"],
@@ -17,11 +19,27 @@ const barlowSemiCondensed = Barlow_Semi_Condensed({
   weight: ["600", "700"],
 });
 
-export default function RootLayout({ children }: { children: ReactNode }) {
+export const metadata: Metadata = {
+  title: {
+    default: "Cookmate",
+    template: "%s | Cookmate",
+  },
+  description: "Your personal recipe manager — import, organize, and cook with ease.",
+};
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
+};
+
+export default async function RootLayout({ children }: { children: ReactNode }) {
+  const locale = await initI18n();
+
   return (
-    <html lang="en" className="light" data-theme="light" suppressHydrationWarning>
+    <html lang={locale} className="light" data-theme="light" suppressHydrationWarning>
       <body className={`bg-background text-foreground ${barlow.variable} ${barlowSemiCondensed.variable}`}>
-        <I18nProviderWrapper>
+        <I18nProviderWrapper initialLocale={locale} initialMessages={allMessages[locale]}>
           {children}
           <Toaster />
         </I18nProviderWrapper>

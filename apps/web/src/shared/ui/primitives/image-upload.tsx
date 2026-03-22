@@ -5,13 +5,46 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { ImagePlus, UploadCloud, X } from "lucide-react";
 import Image from "next/image";
 import * as React from "react";
-import { useCallback, useEffect, useId, useRef, useState } from "react";
+import { useCallback, useEffect, useId, useMemo, useRef, useState } from "react";
 import { cn } from "@/shared/core/utils/cn";
 import { Button } from "@/shared/ui/primitives/button";
 
 export interface ImageUploadItem {
   file: File;
   url: string;
+}
+
+function parseAcceptRules(accept: string): string[] {
+  return accept
+    .split(",")
+    .map((item) => item.trim().toLowerCase())
+    .filter((item) => item.length > 0);
+}
+
+function isFileAccepted(file: File, acceptedRules: readonly string[]): boolean {
+  if (acceptedRules.length === 0) {
+    return true;
+  }
+
+  const mimeType = file.type.toLowerCase();
+  const fileName = file.name.toLowerCase();
+
+  return acceptedRules.some((rule) => {
+    if (rule === "*/*") {
+      return true;
+    }
+
+    if (rule.endsWith("/*")) {
+      const mimePrefix = rule.slice(0, -1);
+      return mimeType.startsWith(mimePrefix);
+    }
+
+    if (rule.startsWith(".")) {
+      return fileName.endsWith(rule);
+    }
+
+    return mimeType === rule;
+  });
 }
 
 const containerVariants = cva("relative w-full", {
@@ -95,6 +128,7 @@ const ImageUpload = React.forwardRef<HTMLDivElement, ImageUploadProps>(
     const generatedId = useId();
     const inputId = id ?? `image-upload-${generatedId}`;
     const [isDragging, setIsDragging] = useState(false);
+    const acceptedRules = useMemo(() => parseAcceptRules(accept), [accept]);
 
     // --- Synchronisation Files <-> Previews (Evite les memory leaks et le flickering) ---
     useEffect(() => {
@@ -141,7 +175,9 @@ const ImageUpload = React.forwardRef<HTMLDivElement, ImageUploadProps>(
       (fileList: FileList | null) => {
         if (!fileList?.length || disabled) return;
 
-        const imageFiles = Array.from(fileList).filter((f) => f.type.startsWith("image/"));
+        const imageFiles = Array.from(fileList).filter(
+          (file) => file.type.startsWith("image/") && isFileAccepted(file, acceptedRules),
+        );
         if (!imageFiles.length) return;
 
         const nextFiles = [...(files || [])];
@@ -153,7 +189,7 @@ const ImageUpload = React.forwardRef<HTMLDivElement, ImageUploadProps>(
 
         updateFiles(nextFiles);
       },
-      [files, maxCount, updateFiles, disabled],
+      [acceptedRules, files, maxCount, updateFiles, disabled],
     );
 
     const removeFile = useCallback(

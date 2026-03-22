@@ -1,11 +1,11 @@
 import type { ReactNode } from "react";
-import { AuthProvider } from "@/shared/providers/auth-provider";
-import { QueryProvider } from "@/shared/providers/query-provider";
+import { QueryProvider } from "@/shared/core/providers/query-provider";
+import { UserSessionProvider } from "@/shared/modules/user-session/ui/providers/UserSessionProvider";
 
 export default function ShortUrlLayout({ children }: { children: ReactNode }) {
   return (
     <QueryProvider>
-      <AuthProvider>{children}</AuthProvider>
+      <UserSessionProvider>{children}</UserSessionProvider>
     </QueryProvider>
   );
 }
