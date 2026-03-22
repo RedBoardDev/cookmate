@@ -29,7 +29,7 @@ Keep list routes consistent, explicit, and well-typed (OpenAPI/Zod).
 ```ts
 import type { Prisma } from "@/generated/prisma/client";
 import { z } from "zod";
-import { recipeTagSchema } from "@cookmate/domain/recipe";
+import { recipeCategorySchema } from "@cookmate/domain/recipe";
 import {
   defineWhereConfigs,
   whereDateRange,
@@ -45,16 +45,16 @@ import {
 type WhereInput = Prisma.RecipeWhereInput;
 
 export const listRecipesWhereConfigs = defineWhereConfigs<WhereInput>([
-  whereString("whereTitle", {
-    field: "title",
-    description: "Filter by title (contains)",
+  whereString("whereName", {
+    field: "name",
+    description: "Filter by name (contains)",
     contains: true,
     insensitive: true,
   }),
-  whereEnumArray("whereTags", {
-    field: "tags",
-    description: "Filter by tags (ANY)",
-    schema: recipeTagSchema,
+  whereEnumArray("whereCategories", {
+    field: "categories",
+    description: "Filter by categories (ANY)",
+    schema: recipeCategorySchema,
     op: "hasSome",
   }),
   whereEnumValue("whereDifficulty", {
@@ -78,7 +78,7 @@ export const listRecipesWhereConfigs = defineWhereConfigs<WhereInput>([
     description: "Complex filter",
     schema: z.string(),
     toWhere: (value, ctx) => ({
-      AND: [{ title: { contains: value } }, { userId: ctx.user.id }],
+      AND: [{ name: { contains: value } }, { userId: ctx.user.id }],
     }),
   }),
   whereUuidArray("whereIds", {
@@ -104,7 +104,7 @@ export const listRecipesSortConfig = defineSortConfig<OrderByInput>({
   default: [{ createdAt: "desc" }, { id: "desc" }],
   fields: {
     createdAt: (direction) => ({ createdAt: direction }),
-    title: (direction) => ({ title: direction }),
+    name: (direction) => ({ name: direction }),
   },
 });
 ```
