@@ -1,28 +1,29 @@
+
 import type { Prisma } from "@/generated/prisma/client";
 import { getPrisma } from "@/infra/db/prisma";
 import { type Pagination, paginationForComplexQuery } from "@/shared/lib/pagination";
 import { handleError } from "@/shared/utils/handle-error";
-import type { CollectionSelectResult } from "./types";
+import type { RecipeSelectResult } from "./types";
 
 const countAboveId = async (
   id: string | undefined,
-  where?: Prisma.CollectionWhereInput,
+  where?: Prisma.RecipeWhereInput,
 ): Promise<number | undefined> => {
   if (!id) return undefined;
-  return getPrisma().collection.count({
+  return getPrisma().recipe.count({
     where: { ...where, id: { gt: id } },
   });
 };
 
-const listFn = async <TSelect extends Prisma.CollectionSelect>(
-  where: Prisma.CollectionWhereInput,
+const listFn = async <TSelect extends Prisma.RecipeSelect>(
+  where: Prisma.RecipeWhereInput,
   select: TSelect,
-  orderBy?: Prisma.CollectionOrderByWithRelationInput | Prisma.CollectionOrderByWithRelationInput[],
+  orderBy?: Prisma.RecipeOrderByWithRelationInput | Prisma.RecipeOrderByWithRelationInput[],
   pagination?: Pagination,
-): Promise<CollectionSelectResult<TSelect>[]> => {
+): Promise<RecipeSelectResult<TSelect>[]> => {
   const paginationQuery = await paginationForComplexQuery(pagination, () => countAboveId(pagination?.findId, where));
 
-  return getPrisma().collection.findMany({
+  return getPrisma().recipe.findMany({
     where,
     select,
     orderBy: orderBy ?? { id: "desc" },

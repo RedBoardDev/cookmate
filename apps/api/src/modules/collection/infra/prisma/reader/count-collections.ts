@@ -1,4 +1,3 @@
-
 import type { Prisma } from "@/generated/prisma/client";
 import { getPrisma } from "@/infra/db/prisma";
 
