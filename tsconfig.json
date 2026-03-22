@@ -2,20 +2,14 @@
   "extends": "./packages/typescript-config/tsconfig.base.json",
   "compilerOptions": {
     "paths": {
-      "@cookmate/core/*": ["packages/core/src/*"],
-      "@cookmate/domain/*": ["packages/domain/src/*"],
-      "@cookmate/dsl/*": ["packages/dsl/src/*"],
-      "@cookmate/importers/*": ["packages/importers/src/*"],
-      "@cookmate/shared/*": ["packages/shared/src/*"]
+      "@cookmate/domain-driven-design/*": ["packages/domain-driven-design/src/*"],
+      "@cookmate/domain/*": ["packages/domain/src/*"]
     }
   },
   "include": ["apps", "packages"],
   "exclude": ["node_modules", "dist", ".turbo", ".next"],
   "references": [
-    { "path": "./packages/core" },
-    { "path": "./packages/domain" },
-    { "path": "./packages/dsl" },
-    { "path": "./packages/importers" },
-    { "path": "./packages/shared" }
+    { "path": "./packages/domain-driven-design" },
+    { "path": "./packages/domain" }
   ]
 }

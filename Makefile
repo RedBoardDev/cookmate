@@ -4,7 +4,7 @@ install:
 	yarn install --frozen-lockfile
 
 typecheck:
-	yarn tsc --noEmit
+	yarn turbo run typecheck
 
 dev:
 	yarn dev

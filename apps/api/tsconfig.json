@@ -4,8 +4,8 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["src/*"],
-      "@cookmate/core": ["../../packages/core/src/index.ts"],
-      "@cookmate/core/*": ["../../packages/core/src/*"],
+      "@cookmate/domain-driven-design": ["../../packages/domain-driven-design/src/index.ts"],
+      "@cookmate/domain-driven-design/*": ["../../packages/domain-driven-design/src/*"],
       "@cookmate/domain": ["../../packages/domain/src/index.ts"],
       "@cookmate/domain/*": ["../../packages/domain/src/*"]
     }
