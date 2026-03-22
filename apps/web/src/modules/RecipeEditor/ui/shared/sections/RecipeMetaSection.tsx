@@ -3,7 +3,7 @@
 import { BUDGETS, DIFFICULTIES } from "@cookmate/domain/shared/value-objects";
 import { Trans, useLingui } from "@lingui/react/macro";
 import { Flame, Gauge, Timer, Users } from "lucide-react";
-import { RECIPE_BUDGET_LABELS, RECIPE_DIFFICULTY_LABELS } from "@/modules/RecipeEditor/domain/vo/recipeLabels.vo";
+import { RECIPE_BUDGET_LABELS, RECIPE_DIFFICULTY_LABELS } from "@/shared/domain/vo/recipeLabels.vo";
 import { EditorFieldError } from "../components/EditorFieldError";
 import { EditorSectionCard } from "../components/EditorSectionCard";
 import { useTotalTimeSync } from "../hooks/useTotalTimeSync";

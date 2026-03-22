@@ -3,19 +3,18 @@
 import { Trans, useLingui } from "@lingui/react/macro";
 import { SlidersHorizontal } from "lucide-react";
 import Skeleton from "react-loading-skeleton";
-import type { QuickFilterId, QuickFilterOption } from "@/modules/Recipes/domain/vo/recipes.filters";
+import { useRecipesFilters } from "@/modules/Recipes/ui/context/RecipesFiltersContext";
 import { cn } from "@/shared/core/utils/cn";
 import { Button } from "@/shared/ui/primitives/button";
 
 interface RecipesFiltersProps {
-  quickFilters: QuickFilterOption[];
-  isSelected: (filter: QuickFilterId) => boolean;
-  onToggle: (filter: QuickFilterId) => void;
   isLoading?: boolean;
 }
 
-export function RecipesFilters({ quickFilters, isSelected, onToggle, isLoading = false }: RecipesFiltersProps) {
+export function RecipesFilters({ isLoading = false }: RecipesFiltersProps) {
   const { t } = useLingui();
+  const { quickFilters, isQuickFilterSelected, onToggleQuickFilter } = useRecipesFilters();
+
   const allFilter = quickFilters.find((f) => f.id === "all");
   const otherFilters = quickFilters.filter((f) => f.id !== "all");
   const skeletonWidths = [72, 96, 84, 110, 64];
@@ -41,10 +40,13 @@ export function RecipesFilters({ quickFilters, isSelected, onToggle, isLoading =
           ) : allFilter ? (
             <Button
               size="sm"
-              variant={isSelected(allFilter.id) ? "secondary" : "outline"}
-              className={cn("shrink-0 rounded-full px-4 transition-shadow", isSelected(allFilter.id) && "bg-secondary")}
-              aria-pressed={isSelected(allFilter.id)}
-              onClick={() => onToggle(allFilter.id)}
+              variant={isQuickFilterSelected(allFilter.id) ? "secondary" : "outline"}
+              className={cn(
+                "shrink-0 rounded-full px-4 transition-shadow",
+                isQuickFilterSelected(allFilter.id) && "bg-secondary",
+              )}
+              aria-pressed={isQuickFilterSelected(allFilter.id)}
+              onClick={() => onToggleQuickFilter(allFilter.id)}
             >
               {t(allFilter.label)}
             </Button>
@@ -64,7 +66,7 @@ export function RecipesFilters({ quickFilters, isSelected, onToggle, isLoading =
                 <Skeleton key={`${width}-${index}`} height={36} width={width} borderRadius={999} />
               ))
             : otherFilters.map((filterItem) => {
-                const active = isSelected(filterItem.id);
+                const active = isQuickFilterSelected(filterItem.id);
 
                 return (
                   <Button
@@ -73,7 +75,7 @@ export function RecipesFilters({ quickFilters, isSelected, onToggle, isLoading =
                     variant={active ? "secondary" : "outline"}
                     className="shrink-0 rounded-full px-4 transition-shadow"
                     aria-pressed={active}
-                    onClick={() => onToggle(filterItem.id)}
+                    onClick={() => onToggleQuickFilter(filterItem.id)}
                   >
                     {t(filterItem.label)}
                   </Button>

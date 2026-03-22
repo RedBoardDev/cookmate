@@ -1,9 +1,7 @@
 "use client";
 
 import type React from "react";
-import type { CollectionEntity } from "@/modules/Recipes/domain/entity/collection.entity";
 import type { RecipeEntity } from "@/modules/Recipes/domain/entity/recipe.entity";
-import type { QuickFilterId, QuickFilterOption } from "@/modules/Recipes/domain/vo/recipes.filters";
 import { RecipesCollections } from "@/modules/Recipes/ui/components/RecipesCollections";
 import { RecipesFilters } from "@/modules/Recipes/ui/components/RecipesFilters";
 import { RecipesGrid } from "@/modules/Recipes/ui/components/RecipesGrid";
@@ -15,21 +13,13 @@ import { Card } from "@/shared/ui/primitives/card";
 interface RecipesViewProps {
   isLoading?: boolean;
   totalRecipes: number;
-  collectionsCount: number;
   recipes: RecipeEntity[];
-  collections: CollectionEntity[];
-  selectedCollectionIds: string[];
-  onToggleCollection: (collectionId: string) => void;
-  quickFilters: QuickFilterOption[];
-  isQuickFilterSelected: (filter: QuickFilterId) => boolean;
-  onToggleQuickFilter: (filter: QuickFilterId) => void;
   hasNextPage?: boolean;
   isRefreshing?: boolean;
   isFetchingNextPage?: boolean;
   hasLoadMoreError?: boolean;
   onLoadMore?: () => void;
   onRetryLoadMore?: () => void;
-  onManageCollections?: () => void;
   collectionsModal?: React.ReactNode;
   addRecipeAction?: React.ReactNode;
 }
@@ -37,21 +27,13 @@ interface RecipesViewProps {
 export function RecipesView({
   isLoading = false,
   totalRecipes,
-  collectionsCount,
   recipes,
-  collections,
-  selectedCollectionIds,
-  onToggleCollection,
-  quickFilters,
-  isQuickFilterSelected,
-  onToggleQuickFilter,
   hasNextPage = false,
   isRefreshing = false,
   isFetchingNextPage = false,
   hasLoadMoreError = false,
   onLoadMore,
   onRetryLoadMore,
-  onManageCollections,
   collectionsModal,
   addRecipeAction,
 }: RecipesViewProps) {
@@ -70,22 +52,10 @@ export function RecipesView({
           )}
         >
           <div className="flex flex-col gap-6">
-            <RecipesHeader totalRecipes={totalRecipes} collectionsCount={collectionsCount} isLoading={isLoading} />
-            <RecipesCollections
-              collections={collections}
-              totalRecipes={totalRecipes}
-              selectedIds={selectedCollectionIds}
-              onToggle={onToggleCollection}
-              isLoading={isLoading}
-              onManageClick={onManageCollections}
-            />
+            <RecipesHeader totalRecipes={totalRecipes} isLoading={isLoading} />
+            <RecipesCollections totalRecipes={totalRecipes} isLoading={isLoading} />
             {collectionsModal}
-            <RecipesFilters
-              quickFilters={quickFilters}
-              isSelected={isQuickFilterSelected}
-              onToggle={onToggleQuickFilter}
-              isLoading={isLoading}
-            />
+            <RecipesFilters isLoading={isLoading} />
           </div>
         </Card>
         {isLoading ? (

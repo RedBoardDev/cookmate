@@ -2,18 +2,19 @@
 import { Trans, useLingui } from "@lingui/react/macro";
 import { Search } from "lucide-react";
 import Skeleton from "react-loading-skeleton";
+import { useRecipesFilters } from "@/modules/Recipes/ui/context/RecipesFiltersContext";
 import { UserMenu } from "@/shared/modules/user-session/ui/components/UserMenu";
 import { cn } from "@/shared/core/utils/cn";
 import { Input } from "@/shared/ui/primitives/input";
 
 interface RecipesHeaderProps {
   totalRecipes: number;
-  collectionsCount: number;
   isLoading?: boolean;
 }
 
-export function RecipesHeader({ totalRecipes, collectionsCount, isLoading = false }: RecipesHeaderProps) {
+export function RecipesHeader({ totalRecipes, isLoading = false }: RecipesHeaderProps) {
   const { t } = useLingui();
+  const { collectionsCount } = useRecipesFilters();
 
   return (
     <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">

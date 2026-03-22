@@ -2,6 +2,7 @@
 
 import type { ReactNode } from "react";
 import { QUICK_FILTER_OPTIONS } from "@/modules/Recipes/domain/vo/recipes.filters";
+import { RecipesFiltersProvider } from "@/modules/Recipes/ui/context/RecipesFiltersContext";
 import { useRecipesScreen } from "@/modules/Recipes/ui/hooks/useRecipesScreen";
 import { RecipesView } from "@/modules/Recipes/ui/RecipesView";
 import { RecipesErrorState } from "@/modules/Recipes/ui/states/RecipesErrorState";
@@ -37,26 +38,31 @@ export function RecipesScreen({ onManageCollections, collectionsModal, addRecipe
   }
 
   return (
-    <RecipesView
-      isLoading={isLoading}
-      totalRecipes={totalRecipes}
-      collectionsCount={collectionsCount}
-      recipes={recipes}
-      collections={collections}
-      selectedCollectionIds={selectedCollectionIds}
-      onToggleCollection={onToggleCollection}
-      quickFilters={QUICK_FILTER_OPTIONS}
-      isQuickFilterSelected={isQuickFilterSelected}
-      onToggleQuickFilter={onToggleQuickFilter}
-      hasNextPage={hasNextPage}
-      isRefreshing={isRefreshing}
-      isFetchingNextPage={isFetchingNextPage}
-      hasLoadMoreError={loadMoreError !== null}
-      onLoadMore={loadMore}
-      onRetryLoadMore={loadMore}
-      onManageCollections={onManageCollections}
-      collectionsModal={collectionsModal}
-      addRecipeAction={addRecipeAction}
-    />
+    <RecipesFiltersProvider
+      value={{
+        collections,
+        collectionsCount,
+        selectedCollectionIds,
+        onToggleCollection,
+        onManageCollections,
+        quickFilters: QUICK_FILTER_OPTIONS,
+        isQuickFilterSelected,
+        onToggleQuickFilter,
+      }}
+    >
+      <RecipesView
+        isLoading={isLoading}
+        totalRecipes={totalRecipes}
+        recipes={recipes}
+        hasNextPage={hasNextPage}
+        isRefreshing={isRefreshing}
+        isFetchingNextPage={isFetchingNextPage}
+        hasLoadMoreError={loadMoreError !== null}
+        onLoadMore={loadMore}
+        onRetryLoadMore={loadMore}
+        collectionsModal={collectionsModal}
+        addRecipeAction={addRecipeAction}
+      />
+    </RecipesFiltersProvider>
   );
 }

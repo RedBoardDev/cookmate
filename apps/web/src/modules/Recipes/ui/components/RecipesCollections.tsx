@@ -4,28 +4,18 @@ import { Trans, useLingui } from "@lingui/react/macro";
 import { BookOpen, Settings2 } from "lucide-react";
 import { useMemo } from "react";
 import Skeleton from "react-loading-skeleton";
-import type { CollectionEntity } from "@/modules/Recipes/domain/entity/collection.entity";
+import { useRecipesFilters } from "@/modules/Recipes/ui/context/RecipesFiltersContext";
 import { cn } from "@/shared/core/utils/cn";
 import { Button } from "@/shared/ui/primitives/button";
 
 interface RecipesCollectionsProps {
-  collections: CollectionEntity[];
   totalRecipes: number;
-  selectedIds: string[];
-  onToggle: (collectionId: string) => void;
   isLoading?: boolean;
-  onManageClick?: () => void;
 }
 
-export function RecipesCollections({
-  collections,
-  totalRecipes,
-  selectedIds,
-  onToggle,
-  isLoading = false,
-  onManageClick,
-}: RecipesCollectionsProps) {
+export function RecipesCollections({ totalRecipes, isLoading = false }: RecipesCollectionsProps) {
   const { i18n } = useLingui();
+  const { collections, selectedCollectionIds, onToggleCollection, onManageCollections } = useRecipesFilters();
 
   const collectionOptions = useMemo(() => {
     return [
@@ -48,7 +38,7 @@ export function RecipesCollections({
       size="sm"
       variant="outline"
       className="gap-2 rounded-full px-4 shadow-sm hover:shadow-md"
-      onClick={onManageClick}
+      onClick={onManageCollections}
     >
       <Settings2 className="h-4 w-4" />
       <Trans>Manage</Trans>
@@ -64,21 +54,21 @@ export function RecipesCollections({
           ) : allCollection ? (
             <Button
               size="sm"
-              variant={selectedIds.includes(allCollection.id) ? "secondary" : "outline"}
+              variant={selectedCollectionIds.includes(allCollection.id) ? "secondary" : "outline"}
               className={cn(
                 "shrink-0 rounded-full px-4",
                 "flex items-center gap-2 transition-shadow",
-                selectedIds.includes(allCollection.id) ? "shadow-sm" : "hover:shadow-sm",
+                selectedCollectionIds.includes(allCollection.id) ? "shadow-sm" : "hover:shadow-sm",
               )}
-              aria-pressed={selectedIds.includes(allCollection.id)}
-              onClick={() => onToggle(allCollection.id)}
+              aria-pressed={selectedCollectionIds.includes(allCollection.id)}
+              onClick={() => onToggleCollection(allCollection.id)}
             >
               <BookOpen className="h-4 w-4" />
               <span>{allCollection.label}</span>
               <span
                 className={cn(
                   "rounded-full px-2 py-0.5 text-xs",
-                  selectedIds.includes(allCollection.id)
+                  selectedCollectionIds.includes(allCollection.id)
                     ? "bg-background/30 text-secondary-foreground"
                     : "bg-muted/70 text-muted-foreground",
                 )}
@@ -102,7 +92,7 @@ export function RecipesCollections({
                 <Skeleton key={`${width}-${index}`} height={36} width={width} borderRadius={999} />
               ))
             : otherCollections.map((collection) => {
-                const isActive = selectedIds.includes(collection.id);
+                const isActive = selectedCollectionIds.includes(collection.id);
 
                 return (
                   <Button
@@ -115,7 +105,7 @@ export function RecipesCollections({
                       isActive ? "shadow-sm" : "hover:shadow-sm",
                     )}
                     aria-pressed={isActive}
-                    onClick={() => onToggle(collection.id)}
+                    onClick={() => onToggleCollection(collection.id)}
                   >
                     {collection.emoji ? (
                       <span className="text-base leading-none">{collection.emoji}</span>

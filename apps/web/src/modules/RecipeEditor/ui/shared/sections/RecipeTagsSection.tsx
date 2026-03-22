@@ -3,7 +3,7 @@
 import type { RecipeAttribute, RecipeCategory } from "@cookmate/domain/recipe";
 import { RECIPE_ATTRIBUTES, RECIPE_CATEGORIES } from "@cookmate/domain/shared/value-objects";
 import { Trans, useLingui } from "@lingui/react/macro";
-import { RECIPE_ATTRIBUTE_LABELS, RECIPE_CATEGORY_LABELS } from "@/modules/RecipeEditor/domain/vo/recipeLabels.vo";
+import { RECIPE_ATTRIBUTE_LABELS, RECIPE_CATEGORY_LABELS } from "@/shared/domain/vo/recipeLabels.vo";
 import { Button } from "@/shared/ui/primitives/button";
 import { EditorFieldError } from "../components/EditorFieldError";
 import { EditorSectionCard } from "../components/EditorSectionCard";

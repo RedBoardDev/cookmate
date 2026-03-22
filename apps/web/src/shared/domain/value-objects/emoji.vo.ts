@@ -1,5 +1,5 @@
-import { ValueObject } from "@cookmate/core";
 import { collectionValueSchemas } from "@cookmate/domain/collection";
+import { ValueObject } from "@cookmate/domain-driven-design";
 
 interface EmojiProps {
   value: string;
