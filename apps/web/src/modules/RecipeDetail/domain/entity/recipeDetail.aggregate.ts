@@ -1,5 +1,5 @@
-import { Entity, UniqueEntityID } from "@cookmate/core";
 import type { RecipeCategory, RecipeSource } from "@cookmate/domain/recipe";
+import { Entity, UniqueEntityID } from "@cookmate/domain-driven-design";
 import type { RecipeDifficulty } from "@/modules/RecipeDetail/domain/vo/recipeDifficulty.vo";
 import type { RecipeDuration } from "@/modules/RecipeDetail/domain/vo/recipeDuration.vo";
 import type { RecipeImageItem, RecipeImages } from "@/modules/RecipeDetail/domain/vo/recipeImages.vo";

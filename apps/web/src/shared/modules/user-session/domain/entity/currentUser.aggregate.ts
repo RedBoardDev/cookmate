@@ -1,5 +1,5 @@
-import { Entity, UniqueEntityID } from "@cookmate/core";
 import type { User } from "@cookmate/domain/user";
+import { Entity, UniqueEntityID } from "@cookmate/domain-driven-design";
 
 interface CurrentUserAggregateProps {
   user: User;

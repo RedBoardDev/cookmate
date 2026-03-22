@@ -1,5 +1,5 @@
-import { Entity, UniqueEntityID } from "@cookmate/core";
 import { type User, UserPolicies } from "@cookmate/domain/user";
+import { Entity, UniqueEntityID } from "@cookmate/domain-driven-design";
 import { userAvatarService } from "@/shared/modules/user-session/domain/services/userAvatar.service";
 
 interface SettingsAggregateProps {

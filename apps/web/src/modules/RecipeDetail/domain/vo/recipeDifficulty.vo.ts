@@ -1,6 +1,6 @@
-import { ValueObject } from "@cookmate/core";
 import type { RecipeDifficulty as DomainRecipeDifficulty } from "@cookmate/domain/recipe";
 import { DIFFICULTIES } from "@cookmate/domain/shared/value-objects";
+import { ValueObject } from "@cookmate/domain-driven-design";
 import type { MessageDescriptor } from "@lingui/core";
 import { msg } from "@lingui/core/macro";
 

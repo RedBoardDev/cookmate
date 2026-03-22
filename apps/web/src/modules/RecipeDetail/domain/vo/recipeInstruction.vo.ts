@@ -1,5 +1,5 @@
-import { ValueObject } from "@cookmate/core";
 import type { Instruction } from "@cookmate/domain/instruction";
+import { ValueObject } from "@cookmate/domain-driven-design";
 import type { RecipeDuration } from "@/modules/RecipeDetail/domain/vo/recipeDuration.vo";
 
 interface RecipeInstructionProps {

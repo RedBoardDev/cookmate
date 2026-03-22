@@ -1,9 +1,9 @@
 import { CollectionEntity } from "@/modules/Collections/domain/entity/collection.entity";
 import { EmojiVO } from "@/shared/domain/value-objects/emoji.vo";
-import type { CreateCollectionInput } from "./collection.schema";
+import type { CollectionApiData } from "./collection.schema";
 
 export const CollectionMapper = {
-  toDomain(data: CreateCollectionInput): CollectionEntity {
+  toDomain(data: CollectionApiData): CollectionEntity {
     return CollectionEntity.create({
       id: data.id,
       name: data.name,

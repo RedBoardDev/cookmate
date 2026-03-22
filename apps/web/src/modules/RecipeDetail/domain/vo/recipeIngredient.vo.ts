@@ -1,6 +1,6 @@
-import { ValueObject } from "@cookmate/core";
 import type { Ingredient } from "@cookmate/domain/ingredient";
 import type { RecipeIngredient as DomainRecipeIngredient } from "@cookmate/domain/recipe-ingredient";
+import { ValueObject } from "@cookmate/domain-driven-design";
 
 interface RecipeIngredientProps {
   name: Ingredient["name"];

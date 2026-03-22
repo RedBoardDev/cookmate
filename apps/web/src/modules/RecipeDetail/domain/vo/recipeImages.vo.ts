@@ -1,5 +1,5 @@
-import { ValueObject } from "@cookmate/core";
 import type { RecipeImage as DomainRecipeImage } from "@cookmate/domain/recipe-image";
+import { ValueObject } from "@cookmate/domain-driven-design";
 
 export type RecipeImageItem = {
   src: string | null;

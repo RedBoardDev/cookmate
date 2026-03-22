@@ -1,5 +1,5 @@
-import { Entity, UniqueEntityID } from "@cookmate/core";
 import type { Recipe, RecipeCategory } from "@cookmate/domain/recipe";
+import { Entity, UniqueEntityID } from "@cookmate/domain-driven-design";
 
 interface RecipeEntityProps {
   recipe: Recipe;

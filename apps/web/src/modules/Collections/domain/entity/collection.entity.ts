@@ -1,5 +1,5 @@
-import { Entity, UniqueEntityID } from "@cookmate/core";
 import type { CollectionProps } from "@cookmate/domain/collection";
+import { Entity, UniqueEntityID } from "@cookmate/domain-driven-design";
 import type { EmojiVO } from "@/shared/domain/value-objects/emoji.vo";
 
 interface CollectionEntityProps {

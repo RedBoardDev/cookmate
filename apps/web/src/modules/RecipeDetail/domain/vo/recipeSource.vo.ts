@@ -1,6 +1,6 @@
-import { ValueObject } from "@cookmate/core";
 import type { RecipeSource as DomainRecipeSource } from "@cookmate/domain/recipe";
 import { InvalidSourceError, SOURCES } from "@cookmate/domain/shared/value-objects";
+import { ValueObject } from "@cookmate/domain-driven-design";
 
 interface RecipeSourceProps {
   value: DomainRecipeSource;

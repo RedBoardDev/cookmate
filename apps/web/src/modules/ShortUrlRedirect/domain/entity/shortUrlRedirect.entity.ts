@@ -1,4 +1,4 @@
-import { Entity, UniqueEntityID } from "@cookmate/core";
+import { Entity, UniqueEntityID } from "@cookmate/domain-driven-design";
 
 interface ShortUrlRedirectEntityProps {
   shortUrl: string;

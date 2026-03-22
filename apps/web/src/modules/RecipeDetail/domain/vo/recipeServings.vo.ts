@@ -1,4 +1,4 @@
-import { ValueObject } from "@cookmate/core";
+import { ValueObject } from "@cookmate/domain-driven-design";
 
 /** Positive integer (≥1). Matches domain recipe field semantics. */
 interface RecipeServingsProps {
