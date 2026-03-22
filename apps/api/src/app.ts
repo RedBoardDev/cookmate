@@ -13,7 +13,7 @@ import {
   registerSwagger,
   registerWebSocket,
 } from "@/interfaces/http/plugins/index";
-import { registerRoutes } from "@/interfaces/http/routes/index";
+import { registerModuleRoutes } from "@/modules";
 
 export function buildApp(env: AppEnv) {
   const app = Fastify({
@@ -39,7 +39,7 @@ export function buildApp(env: AppEnv) {
   // WebSocket
   void app.register(registerWebSocket);
 
-  void app.register(registerRoutes);
+  void app.register(registerModuleRoutes);
 
   app.setErrorHandler(errorHandler);
 
