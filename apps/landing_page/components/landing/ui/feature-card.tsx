@@ -1,8 +1,8 @@
 "use client";
 
-import { type LucideIcon } from "lucide-react";
-import { type ReactNode } from "react";
 import { Trans } from "@lingui/react/macro";
+import type { LucideIcon } from "lucide-react";
+import type { ReactNode } from "react";
 import { cn } from "@/lib/utils";
 
 interface FeatureCardProps {
@@ -35,11 +35,18 @@ export function FeatureCard({
           "hover:shadow-[0_4px_12px_-8px_rgba(0,0,0,0.22)]",
           "focus-within:ring-2 focus-within:ring-accent/40 focus-within:ring-offset-2 focus-within:ring-offset-background",
           hoverBorder,
-          hoverShadow
+          hoverShadow,
         )}
       >
         <div className="flex items-start gap-4 mb-5">
-          <div className={cn("w-12 h-12 rounded-2xl bg-gradient-to-br", iconGradient, "flex items-center justify-center flex-shrink-0 shadow-lg", iconShadow)}>
+          <div
+            className={cn(
+              "w-12 h-12 rounded-2xl bg-gradient-to-br",
+              iconGradient,
+              "flex items-center justify-center flex-shrink-0 shadow-lg",
+              iconShadow,
+            )}
+          >
             <Icon className="w-6 h-6 text-white" />
           </div>
           <div>

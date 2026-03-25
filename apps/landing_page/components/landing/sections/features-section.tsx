@@ -1,37 +1,37 @@
-"use client"
+"use client";
 
-import { useState, useMemo, useCallback } from "react"
-import Image from "next/image"
-import { useLingui, Trans } from "@lingui/react/macro"
-import { ChefHat, Calendar, ShoppingCart, Search, Play, Pause, Plus, Check } from "lucide-react"
-import { FeatureCard } from "../ui/feature-card"
-import { SectionContainer } from "../layout/section-container"
+import { Trans, useLingui } from "@lingui/react/macro";
+import { Calendar, Check, ChefHat, Pause, Play, Plus, Search, ShoppingCart } from "lucide-react";
+import Image from "next/image";
+import { useCallback, useMemo, useState } from "react";
+import { SectionContainer } from "../layout/section-container";
+import { FeatureCard } from "../ui/feature-card";
 
 interface FeaturesSectionProps {
-  onAuthClick: (tab: "login" | "signup") => void
+  onAuthClick: (tab: "login" | "signup") => void;
 }
 
 export function FeaturesSection({ onAuthClick }: FeaturesSectionProps) {
-  const { t } = useLingui()
-  const [cookStep, setCookStep] = useState(0)
-  const [timerRunning, setTimerRunning] = useState(false)
-  const [timerValue, setTimerValue] = useState(180)
-  const [searchQuery, setSearchQuery] = useState(() => t`quick chicken tonight`)
-  const [searchTags, setSearchTags] = useState<string[]>(() => [t`Quick`, t`Chicken`, t`Dinner`])
+  const { t } = useLingui();
+  const [cookStep, setCookStep] = useState(0);
+  const [timerRunning, setTimerRunning] = useState(false);
+  const [timerValue, _setTimerValue] = useState(180);
+  const [searchQuery, setSearchQuery] = useState(() => t`quick chicken tonight`);
+  const [searchTags, setSearchTags] = useState<string[]>(() => [t`Quick`, t`Chicken`, t`Dinner`]);
   const [shoppingItems, setShoppingItems] = useState(() => [
     { item: t`Cherry tomatoes`, qty: "500g", checked: true },
     { item: t`Fresh spinach`, qty: "200g", checked: true },
     { item: t`Grated Parmesan`, qty: "100g", checked: false },
     { item: t`Crème fraîche`, qty: "25cl", checked: false },
-  ])
+  ]);
   const [planningDays, setPlanningDays] = useState(() => [
     { day: t`Mon`, hasRecipe: true, recipe: "/beef-bourguignon-french-stew-with-vegetables.jpg" },
     { day: t`Tue`, hasRecipe: true, recipe: "/mediterranean-quinoa-bowl-with-feta-and-vegetables.jpg" },
     { day: t`Wed`, hasRecipe: false },
     { day: t`Thu`, hasRecipe: true, recipe: "/honey-glazed-salmon-with-asparagus.jpg" },
     { day: t`Fri`, hasRecipe: true, recipe: "/korean-fried-chicken-with-gochujang-sauce.jpg" },
-  ])
-  const [expandedCollection, setExpandedCollection] = useState<number | null>(null)
+  ]);
+  const [_expandedCollection, setExpandedCollection] = useState<number | null>(null);
 
   const cookSteps = useMemo(
     () => [
@@ -56,7 +56,7 @@ export function FeaturesSection({ onAuthClick }: FeaturesSectionProps) {
       },
     ],
     [t],
-  )
+  );
 
   const tagLabels = useMemo(
     () => ({
@@ -69,35 +69,33 @@ export function FeaturesSection({ onAuthClick }: FeaturesSectionProps) {
       easy: t`Easy`,
     }),
     [t],
-  )
+  );
 
   const handleSearchChange = useCallback(
     (value: string) => {
-      setSearchQuery(value)
+      setSearchQuery(value);
       if (value.length > 3) {
-        const words = value.toLowerCase().split(" ")
-        const extractedTags: string[] = []
-        if (words.some((w) => ["quick", "fast", "rapide", "vite"].includes(w))) extractedTags.push(tagLabels.quick)
-        if (words.some((w) => ["chicken", "poulet"].includes(w))) extractedTags.push(tagLabels.chicken)
-        if (words.some((w) => ["tonight", "dinner", "diner", "soir"].includes(w))) extractedTags.push(tagLabels.dinner)
+        const words = value.toLowerCase().split(" ");
+        const extractedTags: string[] = [];
+        if (words.some((w) => ["quick", "fast", "rapide", "vite"].includes(w))) extractedTags.push(tagLabels.quick);
+        if (words.some((w) => ["chicken", "poulet"].includes(w))) extractedTags.push(tagLabels.chicken);
+        if (words.some((w) => ["tonight", "dinner", "diner", "soir"].includes(w))) extractedTags.push(tagLabels.dinner);
         if (words.some((w) => ["vegetarian", "veggie", "vegetable", "vegetarien"].includes(w)))
-          extractedTags.push(tagLabels.vegetarian)
-        if (words.some((w) => ["dessert", "sweet"].includes(w))) extractedTags.push(tagLabels.dessert)
-        if (words.some((w) => ["italian", "italien"].includes(w))) extractedTags.push(tagLabels.italian)
-        if (words.some((w) => ["easy", "simple", "facile"].includes(w))) extractedTags.push(tagLabels.easy)
-        setSearchTags(extractedTags)
+          extractedTags.push(tagLabels.vegetarian);
+        if (words.some((w) => ["dessert", "sweet"].includes(w))) extractedTags.push(tagLabels.dessert);
+        if (words.some((w) => ["italian", "italien"].includes(w))) extractedTags.push(tagLabels.italian);
+        if (words.some((w) => ["easy", "simple", "facile"].includes(w))) extractedTags.push(tagLabels.easy);
+        setSearchTags(extractedTags);
       } else {
-        setSearchTags([])
+        setSearchTags([]);
       }
     },
     [tagLabels],
-  )
+  );
 
   const toggleShoppingItem = useCallback((index: number) => {
-    setShoppingItems((items) =>
-      items.map((item, i) => (i === index ? { ...item, checked: !item.checked } : item)),
-    )
-  }, [])
+    setShoppingItems((items) => items.map((item, i) => (i === index ? { ...item, checked: !item.checked } : item)));
+  }, []);
 
   const addRecipeToDay = useCallback(
     (dayIndex: number) => {
@@ -108,11 +106,11 @@ export function FeaturesSection({ onAuthClick }: FeaturesSectionProps) {
               ? { ...day, hasRecipe: true, recipe: "/mediterranean-quinoa-bowl-with-feta-and-vegetables.jpg" }
               : day,
           ),
-        )
+        );
       }
     },
     [planningDays],
-  )
+  );
 
   const collections = useMemo(
     () => [
@@ -154,7 +152,7 @@ export function FeaturesSection({ onAuthClick }: FeaturesSectionProps) {
       },
     ],
     [t],
-  )
+  );
 
   return (
     <section id="features" className="py-20 md:py-28 relative overflow-hidden">
@@ -196,59 +194,58 @@ export function FeaturesSection({ onAuthClick }: FeaturesSectionProps) {
             hoverBorder="hover:border-[#C6502B]/20"
             hoverShadow="hover:shadow-[#C6502B]/[0.04]"
           >
-
-              <div className="bg-gradient-to-br from-[#F8F1E9]/80 to-[#F5EDE3]/80 rounded-xl p-4 border border-[#E6D7C7]/30">
-                <div className="flex items-center justify-between mb-3">
-                  <span className="text-xs text-[#6E6258]">
-                    <Trans>
-                      Step {cookStep + 1} of {cookSteps.length}
-                    </Trans>
-                  </span>
-                  {cookSteps[cookStep].timer && (
-                    <button
-                      onClick={() => setTimerRunning(!timerRunning)}
-                      className="flex items-center gap-2 px-3 py-1.5 bg-white rounded-lg shadow-sm hover:shadow-md transition-all duration-200 border border-[#E6D7C7]/50 hover:border-[#C6502B]/30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C6502B]/40 focus-visible:ring-offset-2 active:scale-95"
-                    >
-                      {timerRunning ? (
-                        <Pause className="w-3 h-3 text-[#C6502B]" />
-                      ) : (
-                        <Play className="w-3 h-3 text-[#C6502B]" />
-                      )}
-                      <span className="text-xs font-mono text-[#221B16]">
-                        {Math.floor(timerValue / 60)}:{(timerValue % 60).toString().padStart(2, "0")}
-                      </span>
-                    </button>
-                  )}
-                </div>
-
-                <div className="h-1.5 bg-[#E6D7C7]/50 rounded-full overflow-hidden mb-4">
-                  <div
-                    className="h-full bg-gradient-to-r from-[#C6502B] to-[#F0B04C] rounded-full transition-all duration-300"
-                    style={{ width: `${((cookStep + 1) / cookSteps.length) * 100}%` }}
-                  />
-                </div>
-
-                <p className="text-sm text-[#221B16] mb-4 leading-relaxed line-clamp-2">
-                  <span className="font-semibold">{cookSteps[cookStep].title}</span> — {cookSteps[cookStep].desc}
-                </p>
-
-                <div className="flex gap-2">
+            <div className="bg-gradient-to-br from-[#F8F1E9]/80 to-[#F5EDE3]/80 rounded-xl p-4 border border-[#E6D7C7]/30">
+              <div className="flex items-center justify-between mb-3">
+                <span className="text-xs text-[#6E6258]">
+                  <Trans>
+                    Step {cookStep + 1} of {cookSteps.length}
+                  </Trans>
+                </span>
+                {cookSteps[cookStep].timer && (
                   <button
-                    onClick={() => setCookStep(Math.max(0, cookStep - 1))}
-                    disabled={cookStep === 0}
-                    className="flex-1 py-2 text-xs font-medium text-[#6E6258] bg-white rounded-lg border border-[#E6D7C7]/50 disabled:opacity-40 hover:bg-[#FDFBF8] hover:border-[#E6D7C7] hover:shadow-sm transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C6502B]/40 focus-visible:ring-offset-2 active:scale-95 disabled:active:scale-100"
+                    onClick={() => setTimerRunning(!timerRunning)}
+                    className="flex items-center gap-2 px-3 py-1.5 bg-white rounded-lg shadow-sm hover:shadow-md transition-all duration-200 border border-[#E6D7C7]/50 hover:border-[#C6502B]/30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C6502B]/40 focus-visible:ring-offset-2 active:scale-95"
                   >
-                    <Trans>Previous</Trans>
+                    {timerRunning ? (
+                      <Pause className="w-3 h-3 text-[#C6502B]" />
+                    ) : (
+                      <Play className="w-3 h-3 text-[#C6502B]" />
+                    )}
+                    <span className="text-xs font-mono text-[#221B16]">
+                      {Math.floor(timerValue / 60)}:{(timerValue % 60).toString().padStart(2, "0")}
+                    </span>
                   </button>
-                  <button
-                    onClick={() => setCookStep(Math.min(cookSteps.length - 1, cookStep + 1))}
-                    disabled={cookStep === cookSteps.length - 1}
-                    className="flex-1 py-2 text-xs font-medium text-white bg-gradient-to-b from-[#C6502B] to-[#B54526] rounded-lg disabled:opacity-40 hover:from-[#B54526] hover:to-[#A43F20] hover:shadow-md transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C6502B]/40 focus-visible:ring-offset-2 active:scale-95 disabled:active:scale-100"
-                  >
-                    <Trans>Next</Trans>
-                  </button>
-                </div>
+                )}
               </div>
+
+              <div className="h-1.5 bg-[#E6D7C7]/50 rounded-full overflow-hidden mb-4">
+                <div
+                  className="h-full bg-gradient-to-r from-[#C6502B] to-[#F0B04C] rounded-full transition-all duration-300"
+                  style={{ width: `${((cookStep + 1) / cookSteps.length) * 100}%` }}
+                />
+              </div>
+
+              <p className="text-sm text-[#221B16] mb-4 leading-relaxed line-clamp-2">
+                <span className="font-semibold">{cookSteps[cookStep].title}</span> — {cookSteps[cookStep].desc}
+              </p>
+
+              <div className="flex gap-2">
+                <button
+                  onClick={() => setCookStep(Math.max(0, cookStep - 1))}
+                  disabled={cookStep === 0}
+                  className="flex-1 py-2 text-xs font-medium text-[#6E6258] bg-white rounded-lg border border-[#E6D7C7]/50 disabled:opacity-40 hover:bg-[#FDFBF8] hover:border-[#E6D7C7] hover:shadow-sm transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C6502B]/40 focus-visible:ring-offset-2 active:scale-95 disabled:active:scale-100"
+                >
+                  <Trans>Previous</Trans>
+                </button>
+                <button
+                  onClick={() => setCookStep(Math.min(cookSteps.length - 1, cookStep + 1))}
+                  disabled={cookStep === cookSteps.length - 1}
+                  className="flex-1 py-2 text-xs font-medium text-white bg-gradient-to-b from-[#C6502B] to-[#B54526] rounded-lg disabled:opacity-40 hover:from-[#B54526] hover:to-[#A43F20] hover:shadow-md transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C6502B]/40 focus-visible:ring-offset-2 active:scale-95 disabled:active:scale-100"
+                >
+                  <Trans>Next</Trans>
+                </button>
+              </div>
+            </div>
           </FeatureCard>
 
           <FeatureCard
@@ -260,38 +257,37 @@ export function FeaturesSection({ onAuthClick }: FeaturesSectionProps) {
             hoverBorder="hover:border-[#5F7A57]/20"
             hoverShadow="hover:shadow-[#5F7A57]/[0.04]"
           >
-
-              <div className="bg-gradient-to-br from-[#F8F1E9]/80 to-[#F5EDE3]/80 rounded-xl p-4 border border-[#E6D7C7]/30">
-                <div className="grid grid-cols-5 gap-2">
-                  {planningDays.map((day, i) => (
-                    <div key={day.day} className="text-center">
-                      <span className="text-[10px] text-[#6E6258] block mb-1.5">{day.day}</span>
-                      <button
-                        onClick={() => addRecipeToDay(i)}
-                        className={`w-full aspect-square rounded-lg flex items-center justify-center transition-all ${
-                          day.hasRecipe
-                            ? "bg-white shadow-sm border border-[#E6D7C7]/50 hover:scale-105 hover:shadow-md"
-                            : "bg-[#5F7A57]/10 border-2 border-[#5F7A57] border-dashed hover:bg-[#5F7A57]/20 hover:border-[#5F7A57]"
-                        }`}
-                      >
-                        {day.hasRecipe && day.recipe ? (
-                          <Image
-                            src={day.recipe}
-                            alt={t`Recipe for ${day.day}`}
-                            width={80}
-                            height={80}
-                            className="w-full h-full rounded object-cover"
-                            loading="lazy"
-                            priority={false}
-                          />
-                        ) : (
-                          <Plus className="w-3 h-3 text-[#5F7A57]" />
-                        )}
-                      </button>
-                    </div>
-                  ))}
-                </div>
+            <div className="bg-gradient-to-br from-[#F8F1E9]/80 to-[#F5EDE3]/80 rounded-xl p-4 border border-[#E6D7C7]/30">
+              <div className="grid grid-cols-5 gap-2">
+                {planningDays.map((day, i) => (
+                  <div key={day.day} className="text-center">
+                    <span className="text-[10px] text-[#6E6258] block mb-1.5">{day.day}</span>
+                    <button
+                      onClick={() => addRecipeToDay(i)}
+                      className={`w-full aspect-square rounded-lg flex items-center justify-center transition-all ${
+                        day.hasRecipe
+                          ? "bg-white shadow-sm border border-[#E6D7C7]/50 hover:scale-105 hover:shadow-md"
+                          : "bg-[#5F7A57]/10 border-2 border-[#5F7A57] border-dashed hover:bg-[#5F7A57]/20 hover:border-[#5F7A57]"
+                      }`}
+                    >
+                      {day.hasRecipe && day.recipe ? (
+                        <Image
+                          src={day.recipe}
+                          alt={t`Recipe for ${day.day}`}
+                          width={80}
+                          height={80}
+                          className="w-full h-full rounded object-cover"
+                          loading="lazy"
+                          priority={false}
+                        />
+                      ) : (
+                        <Plus className="w-3 h-3 text-[#5F7A57]" />
+                      )}
+                    </button>
+                  </div>
+                ))}
               </div>
+            </div>
           </FeatureCard>
 
           <FeatureCard
@@ -303,34 +299,33 @@ export function FeaturesSection({ onAuthClick }: FeaturesSectionProps) {
             hoverBorder="hover:border-[#F0B04C]/20"
             hoverShadow="hover:shadow-[#F0B04C]/[0.04]"
           >
-
-              <div className="bg-gradient-to-br from-[#F8F1E9]/80 to-[#F5EDE3]/80 rounded-xl p-4 border border-[#E6D7C7]/30 space-y-2">
-                {shoppingItems.map((item, i) => (
-                  <button
-                    key={i}
-                    onClick={() => toggleShoppingItem(i)}
-                    className="w-full flex items-center gap-3 hover:bg-white/30 rounded-lg p-1.5 transition-all group/item"
+            <div className="bg-gradient-to-br from-[#F8F1E9]/80 to-[#F5EDE3]/80 rounded-xl p-4 border border-[#E6D7C7]/30 space-y-2">
+              {shoppingItems.map((item, i) => (
+                <button
+                  key={i}
+                  onClick={() => toggleShoppingItem(i)}
+                  className="w-full flex items-center gap-3 hover:bg-white/30 rounded-lg p-1.5 transition-all group/item"
+                >
+                  <div
+                    className={`w-4 h-4 rounded-full border-2 flex items-center justify-center transition-all ${
+                      item.checked
+                        ? "bg-[#5F7A57] border-[#5F7A57] scale-110"
+                        : "border-[#E6D7C7] bg-white group-hover/item:border-[#5F7A57]/50"
+                    }`}
                   >
-                    <div
-                      className={`w-4 h-4 rounded-full border-2 flex items-center justify-center transition-all ${
-                        item.checked
-                          ? "bg-[#5F7A57] border-[#5F7A57] scale-110"
-                          : "border-[#E6D7C7] bg-white group-hover/item:border-[#5F7A57]/50"
-                      }`}
-                    >
-                      {item.checked && <Check className="w-2.5 h-2.5 text-white animate-in fade-in duration-200" />}
-                    </div>
-                    <span
-                      className={`flex-1 text-sm text-left transition-all ${
-                        item.checked ? "text-[#6E6258] line-through" : "text-[#221B16]"
-                      }`}
-                    >
-                      {item.item}
-                    </span>
-                    <span className="text-xs text-[#6E6258]">{item.qty}</span>
-                  </button>
-                ))}
-              </div>
+                    {item.checked && <Check className="w-2.5 h-2.5 text-white animate-in fade-in duration-200" />}
+                  </div>
+                  <span
+                    className={`flex-1 text-sm text-left transition-all ${
+                      item.checked ? "text-[#6E6258] line-through" : "text-[#221B16]"
+                    }`}
+                  >
+                    {item.item}
+                  </span>
+                  <span className="text-xs text-[#6E6258]">{item.qty}</span>
+                </button>
+              ))}
+            </div>
           </FeatureCard>
 
           <FeatureCard
@@ -342,36 +337,35 @@ export function FeaturesSection({ onAuthClick }: FeaturesSectionProps) {
             hoverBorder="hover:border-[#C6502B]/20"
             hoverShadow="hover:shadow-[#C6502B]/[0.04]"
           >
-
-              <div className="bg-gradient-to-br from-[#F8F1E9]/80 to-[#F5EDE3]/80 rounded-xl p-4 border border-[#E6D7C7]/30">
-                <div className="flex items-center gap-3 px-3 py-2.5 bg-white rounded-lg mb-3 shadow-sm border border-[#E6D7C7]/50">
-                  <Search className="w-4 h-4 text-[#6E6258]/50" />
-                  <input
-                    type="text"
-                    value={searchQuery}
-                    onChange={(e) => handleSearchChange(e.target.value)}
-                    placeholder={t`Type your search...`}
-                    className="flex-1 text-sm text-[#221B16] bg-transparent border-none outline-none placeholder:text-[#6E6258]/50"
-                  />
-                </div>
-                {searchTags.length > 0 && (
-                  <div className="flex flex-wrap gap-2 animate-in fade-in slide-in-from-top-2 duration-300">
-                    {searchTags.map((tag) => (
-                      <span
-                        key={tag}
-                        className="px-2.5 py-1 bg-[#C6502B]/10 text-[#C6502B] rounded-full text-xs font-medium animate-in fade-in zoom-in duration-200"
-                      >
-                        {tag}
-                      </span>
-                    ))}
-                  </div>
-                )}
-                {!searchQuery && (
-                  <p className="text-xs text-[#6E6258]/60 text-center mt-2">
-                    <Trans>Examples: "quick chicken", "vegetarian", "easy dessert"</Trans>
-                  </p>
-                )}
+            <div className="bg-gradient-to-br from-[#F8F1E9]/80 to-[#F5EDE3]/80 rounded-xl p-4 border border-[#E6D7C7]/30">
+              <div className="flex items-center gap-3 px-3 py-2.5 bg-white rounded-lg mb-3 shadow-sm border border-[#E6D7C7]/50">
+                <Search className="w-4 h-4 text-[#6E6258]/50" />
+                <input
+                  type="text"
+                  value={searchQuery}
+                  onChange={(e) => handleSearchChange(e.target.value)}
+                  placeholder={t`Type your search...`}
+                  className="flex-1 text-sm text-[#221B16] bg-transparent border-none outline-none placeholder:text-[#6E6258]/50"
+                />
               </div>
+              {searchTags.length > 0 && (
+                <div className="flex flex-wrap gap-2 animate-in fade-in slide-in-from-top-2 duration-300">
+                  {searchTags.map((tag) => (
+                    <span
+                      key={tag}
+                      className="px-2.5 py-1 bg-[#C6502B]/10 text-[#C6502B] rounded-full text-xs font-medium animate-in fade-in zoom-in duration-200"
+                    >
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+              )}
+              {!searchQuery && (
+                <p className="text-xs text-[#6E6258]/60 text-center mt-2">
+                  <Trans>Examples: "quick chicken", "vegetarian", "easy dessert"</Trans>
+                </p>
+              )}
+            </div>
           </FeatureCard>
 
           <div className="md:col-span-2 group">
@@ -386,8 +380,8 @@ export function FeaturesSection({ onAuthClick }: FeaturesSectionProps) {
                   </h3>
                   <p className="text-[#6E6258] text-sm leading-relaxed">
                     <Trans>
-                      Create your collections like on Spotify. "Quick", "Batch cooking", "Cravings"... Organize the
-                      way you think.
+                      Create your collections like on Spotify. "Quick", "Batch cooking", "Cravings"... Organize the way
+                      you think.
                     </Trans>
                   </p>
                 </div>
@@ -415,7 +409,9 @@ export function FeaturesSection({ onAuthClick }: FeaturesSectionProps) {
                                 loading="lazy"
                                 priority={false}
                               />
-                              <div className={`absolute inset-0 bg-gradient-to-br ${collection.gradient} opacity-[0.12] mix-blend-overlay`} />
+                              <div
+                                className={`absolute inset-0 bg-gradient-to-br ${collection.gradient} opacity-[0.12] mix-blend-overlay`}
+                              />
                             </div>
                           ))}
 
@@ -438,5 +434,5 @@ export function FeaturesSection({ onAuthClick }: FeaturesSectionProps) {
         </div>
       </SectionContainer>
     </section>
-  )
+  );
 }

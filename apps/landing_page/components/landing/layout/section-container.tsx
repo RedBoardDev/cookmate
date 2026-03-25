@@ -1,6 +1,6 @@
 "use client";
 
-import { type ReactNode } from "react";
+import type { ReactNode } from "react";
 import { cn } from "@/lib/utils";
 
 interface SectionContainerProps {
@@ -17,9 +17,5 @@ const maxWidths = {
 };
 
 export function SectionContainer({ children, maxWidth = "md", className }: SectionContainerProps) {
-  return (
-    <div className={cn(maxWidths[maxWidth], "mx-auto px-4 md:px-8", className)}>
-      {children}
-    </div>
-  );
+  return <div className={cn(maxWidths[maxWidth], "mx-auto px-4 md:px-8", className)}>{children}</div>;
 }
